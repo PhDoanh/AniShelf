@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      # Cấu hình kết nối đến DB trên cloud
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://my-cloud-db-host:5432/anishelf
+      - SPRING_DATASOURCE_USERNAME=your_cloud_db_username
+      - SPRING_DATASOURCE_PASSWORD=your_cloud_db_password
