@@ -28,4 +28,4 @@ jobs:
         context: ./backend
         file: ./backend/Dockerfile
         push: true
-        tags: your-dockerhub-username/anishelf-backend:latest
+        tags: doanhanma/anishelf-backend:latest
