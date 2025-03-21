@@ -5,14 +5,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.library</groupId>
-  <artifactId>AniShelf</artifactId>
+  <artifactId>anishelf</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
     <module>backend</module>
     <module>frontend</module>
-    <!-- docs không cần module vì không build -->
   </modules>
 
   <!-- Dependency Management dùng để khai báo phiên bản chung cho các dependency -->
