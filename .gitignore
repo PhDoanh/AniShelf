@@ -39,7 +39,6 @@ backend/.springBeans
 backend/.sts4-cache
 
 ### IntelliJ IDEA ###
-backend/.idea
 backend/*.iws
 backend/*.iml
 backend/*.ipr
@@ -58,6 +57,6 @@ backend/**/src/test/**/build/
 backend/.vscode/
 
 # others
-.idea
+.idea/
 target/
 out/
