@@ -1,6 +1,5 @@
-// Đây là file mẫu để tham khảo
-
 module com.library.frontend {
+    requires com.library.backend;
     requires javafx.controls;
     requires javafx.fxml;
 

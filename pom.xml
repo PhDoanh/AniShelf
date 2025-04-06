@@ -9,30 +9,41 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <!--  Khai báo các module con của dự án-->
   <modules>
     <module>backend</module>
     <module>frontend</module>
   </modules>
 
+  <!--  Quản lý phiên bản tập trung cho các dependency và plugin-->
+  <properties>
+    <java.version>17</java.version>
+    <javafx.version>17.0.2</javafx.version>
+    <junit.version>5.9.2</junit.version>
+    <postgres.version>42.5.0</postgres.version>
+  </properties>
+
   <!-- Dependency Management dùng để khai báo phiên bản chung cho các dependency -->
-  <dependencyManagement>
-    <dependencies>
-      <!-- Spring Boot BOM -->
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>2.7.3</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <!-- JavaFX BOM -->
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-bom</artifactId>
-        <version>17.0.2</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+<!--  <dependencyManagement>-->
+<!--    <dependencies>-->
+<!--    </dependencies>-->
+<!--  </dependencyManagement>-->
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!-- Plugin biên dịch ứng dụng Java-->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.14.0</version>
+          <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
 </project>
