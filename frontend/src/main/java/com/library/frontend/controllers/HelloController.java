@@ -1,6 +1,6 @@
 // Đây là file mẫu để tham khảo
 
-package com.library.frontend;
+package com.library.frontend.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

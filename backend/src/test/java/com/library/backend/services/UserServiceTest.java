@@ -1,8 +1,7 @@
-package com.library.test;
+package com.library.backend.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import com.library.backend.UserService;
 
 public class UserServiceTest {
 

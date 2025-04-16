@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     build:
@@ -9,6 +7,8 @@ services:
       - "8080:8080"
     environment:
       # Cấu hình kết nối đến DB trên cloud
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://my-cloud-db-host:5432/anishelf
-      - SPRING_DATASOURCE_USERNAME=your_cloud_db_username
-      - SPRING_DATASOURCE_PASSWORD=your_cloud_db_password
+      - DATABASE_HOST=217.142.224.197
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=aniself
+      - DATABASE_USERNAME=master
+      - DATABASE_PASSWORD=doanhanma

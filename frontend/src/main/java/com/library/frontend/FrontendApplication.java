@@ -7,10 +7,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import com.library.backend.UserService;
-import com.library.backend.UserRepository;
+import com.library.backend.services.UserService;
+import com.library.backend.dao.UserDAO;
 
-public class HelloApplication extends Application {
+public class FrontendApplication extends Application {
 
     @Override
     public void start(Stage stage) {
@@ -30,7 +30,7 @@ public class HelloApplication extends Application {
         Label dbLabel = new Label();
 
         loadDbButton.setOnAction(e -> {
-            UserRepository repository = new UserRepository();
+            UserDAO repository = new UserDAO();
             String dbName = repository.getFirstUserName();
             if (dbName != null) {
                 dbLabel.setText("DB user: " + dbName);
@@ -46,6 +46,7 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
+        java.util.TimeZone.setDefault(java.util.TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
         launch(args);
     }
 }

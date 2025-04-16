@@ -1,4 +1,4 @@
-package com.library.backend;
+package com.library.backend.services;
 
 public class UserService {
     public String greetUser(String name) {
