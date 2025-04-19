@@ -39,6 +39,17 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
+
+            <!-- Plugin thêm cấu hình khi chạy test cho backend-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire}</version>
+                <configuration>
+                    <argLine>-Duser.timezone=Asia/Ho_Chi_Minh</argLine>
+                </configuration>
+            </plugin>
+
             <!-- Plugin gom các phụ thuộc ngoài mã biên dịch vào một JAR
             để chạy backend trong Docker Container -->
             <plugin>
