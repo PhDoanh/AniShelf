@@ -8,8 +8,8 @@ import java.sql.SQLException;
 public class UserDAO {
 
     public String getFirstUserName() {
-        String sql = "SELECT name FROM users LIMIT 1";
-        try (Connection conn = DatabaseConnection.getConnection();
+        String sql = "SELECT name FROM Users LIMIT 1";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
