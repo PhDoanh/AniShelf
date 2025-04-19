@@ -60,3 +60,5 @@ backend/.vscode/
 .idea/
 target/
 out/
+copilot-rules.md
+
