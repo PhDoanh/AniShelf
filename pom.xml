@@ -2,37 +2,60 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.library</groupId>
-  <artifactId>anishelf</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
+    <groupId>com.library</groupId>
+    <artifactId>anishelf</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <!-- Chỉ dùng để nhập vào các POM con -->
+    <packaging>pom</packaging>
 
-  <modules>
-    <module>backend</module>
-    <module>frontend</module>
-  </modules>
+    <!--  Khai báo các module con và thứ tự build của chúng -->
+    <modules>
+        <module>backend</module>
+        <module>frontend</module>
+    </modules>
 
-  <!-- Dependency Management dùng để khai báo phiên bản chung cho các dependency -->
-  <dependencyManagement>
-    <dependencies>
-      <!-- Spring Boot BOM -->
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>2.7.3</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <!-- JavaFX BOM -->
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-bom</artifactId>
-        <version>17.0.2</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+    <!--  Quản lý phiên bản tập trung cho các dependency và plugin -->
+    <properties>
+        <java.version>21</java.version>
+        <javafx.version>21</javafx.version>
+        <junit.version>5.9.2</junit.version>
+        <postgres.version>42.6.0</postgres.version>
+        <atlantafx.version>2.0.1</atlantafx.version>
+        <maven.compiler>3.9.0</maven.compiler>
+        <maven.surefire>3.1.2</maven.surefire>
+        <maven.shade>3.5.0</maven.shade>
+        <ikonli.version>12.3.1</ikonli.version>
+    </properties>
+
+    <!-- Khai báo phiên bản dùng chung cho các phụ thuộc trong POM con -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.kordamp.ikonli</groupId>
+                <artifactId>ikonli-bom</artifactId>
+                <version>${ikonli.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Plugin biên dịch module hiện tại dựa trên các phụ thuộc trong module path -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler}</version>
+                    <configuration>
+                        <release>${java.version}</release>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
 </project>

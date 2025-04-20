@@ -1,25 +1,52 @@
-// Đây là file mẫu để tham khảo
-
 package com.library.frontend;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.IOException;
+import com.library.backend.services.UserService;
+import com.library.backend.dao.UserDAO;
 
 public class FrontendApplication extends Application {
+
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(FrontendApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
+    public void start(Stage stage) {
+        TextField nameField = new TextField();
+        Button greetButton = new Button("Enter");
+        Label messageLabel = new Label();
+
+        // Existing logic for greeting using the backend service
+        UserService userService = new UserService();
+        greetButton.setOnAction(e -> {
+            String enteredName = nameField.getText();
+            messageLabel.setText(userService.greetUser(enteredName));
+        });
+
+        // New components to load and display data from the database
+        Button loadDbButton = new Button("Load DB Info");
+        Label dbLabel = new Label();
+
+        loadDbButton.setOnAction(e -> {
+            UserDAO repository = new UserDAO();
+            String dbName = repository.getFirstUserName();
+            if (dbName != null) {
+                dbLabel.setText("DB user: " + dbName);
+            } else {
+                dbLabel.setText("No user found in DB.");
+            }
+        });
+
+        VBox root = new VBox(10, nameField, greetButton, messageLabel, loadDbButton, dbLabel);
+        stage.setScene(new Scene(root, 300, 250));
+        stage.setTitle("Simple JavaFX Greeting");
         stage.show();
     }
 
     public static void main(String[] args) {
-        launch();
+        java.util.TimeZone.setDefault(java.util.TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        launch(args);
     }
 }
