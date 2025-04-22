@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 public class Book {
     private Long ISBN;
     private String title;
+    private String author;
+    private String category;
     private String imagePath;
     private String description;
     private String placeAt;
@@ -52,6 +54,22 @@ public class Book {
         this.title = title;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    
     public String getImagePath() {
         return imagePath;
     }
@@ -142,11 +160,13 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "ISBN=" + ISBN +
-                ", title='" + title + '\'' +
-                ", status=" + status +
-                ", quantity=" + quantity +
-                '}';
+        // just needed info for debugging
+        return String.format(
+            "Book{ISBN=%d, title='%s', status=%s, quantity=%d}", 
+            ISBN, 
+            title, 
+            status, 
+            quantity
+        );
     }
 }
