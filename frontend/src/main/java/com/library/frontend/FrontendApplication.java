@@ -2,50 +2,35 @@ package com.library.frontend;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import com.library.backend.services.UserService;
-import com.library.backend.dao.UserDAO;
 
+import com.library.frontend.models.HomePage;
+
+/**
+ * Lớp khởi động chính của ứng dụng JavaFX
+ * Cấu hình và hiển thị giao diện người dùng
+ */
 public class FrontendApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-        TextField nameField = new TextField();
-        Button greetButton = new Button("Enter");
-        Label messageLabel = new Label();
-
-        // Existing logic for greeting using the backend service
-        UserService userService = new UserService();
-        greetButton.setOnAction(e -> {
-            String enteredName = nameField.getText();
-            messageLabel.setText(userService.greetUser(enteredName));
-        });
-
-        // New components to load and display data from the database
-        Button loadDbButton = new Button("Load DB Info");
-        Label dbLabel = new Label();
-
-        loadDbButton.setOnAction(e -> {
-            UserDAO repository = new UserDAO();
-            String dbName = repository.getFirstUserName();
-            if (dbName != null) {
-                dbLabel.setText("DB user: " + dbName);
-            } else {
-                dbLabel.setText("No user found in DB.");
-            }
-        });
-
-        VBox root = new VBox(10, nameField, greetButton, messageLabel, loadDbButton, dbLabel);
-        stage.setScene(new Scene(root, 300, 250));
-        stage.setTitle("Simple JavaFX Greeting");
+        // Khởi tạo trang chủ với chế độ "Guest" mặc định
+        HomePage homePage = new HomePage();
+        
+        // Tạo scene với nội dung từ trang chủ
+        Scene scene = new Scene(homePage.render(), 1280, 720);
+        
+        // Thêm stylesheet cho giao diện
+        scene.getStylesheets().add(getClass().getResource("/styles/application.css").toExternalForm());
+        
+        // Cấu hình và hiển thị cửa sổ chính
+        stage.setTitle("AniShelf - Thư viện Truyện tranh");
+        stage.setScene(scene);
         stage.show();
     }
 
     public static void main(String[] args) {
+        // Thiết lập múi giờ mặc định
         java.util.TimeZone.setDefault(java.util.TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
         launch(args);
     }
