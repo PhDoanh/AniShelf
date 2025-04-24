@@ -49,32 +49,6 @@
                     <argLine>-Duser.timezone=Asia/Ho_Chi_Minh</argLine>
                 </configuration>
             </plugin>
-
-            <!-- Plugin gom các phụ thuộc ngoài mã biên dịch vào một JAR
-            để chạy backend trong Docker Container -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>${maven.shade}</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Tránh rắc rối liên quan đến Docker Container-->
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.library.backend.BackendApplication</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 </project>
