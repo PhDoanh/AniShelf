@@ -60,7 +60,8 @@ backend/.vscode/
 .idea/
 target/
 out/
-copilot-rules.md
+rules.md
 docker-compose.yml
 backend/Dockerfile
 .github/workflows/docker-image.yml
+requirements.md

@@ -12,8 +12,8 @@ public class BookDAO {
         String sql = "SELECT * FROM \"Books\"";
         
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
             
             while (rs.next()) {
                 Book book = new Book();
@@ -36,7 +36,7 @@ public class BookDAO {
         String sql = "SELECT * FROM \"Books\" WHERE \"ISBN\" = ?";
         
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             
             ps.setLong(1, ISBN);
             try (ResultSet rs = ps.executeQuery()) {
@@ -63,7 +63,7 @@ public class BookDAO {
         String sql = "SELECT * FROM \"Books\" WHERE LOWER(title) LIKE LOWER(?)";
         
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             
             ps.setString(1, "%" + titleKeyword + "%");
             try (ResultSet rs = ps.executeQuery()) {
