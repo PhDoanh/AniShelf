@@ -20,7 +20,7 @@ cd AniShelf
 
 Bước 3: Tải xuống các phụ thuộc và biên dịch mã nguồn
 ```bash
-mvnw.cmd clean install
+.\mvnw.cmd clean install
 ```
 
 *P/s: Sử dụng `-DskipTests` để bỏ qua các test nếu cần*
