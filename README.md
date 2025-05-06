@@ -30,5 +30,4 @@ Bước 4: Chạy ứng dụng JavaFX
 .\mvnw.cmd clean javafx:run
 ```
 
-
-
+Hello World!
