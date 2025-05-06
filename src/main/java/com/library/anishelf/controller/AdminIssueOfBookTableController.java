@@ -14,8 +14,8 @@ import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
 
-public class AdminIssueOfBookTableController extends BaseTableController<Report, AdminIssueMainPageController, AdminIssueTableRowController> {
-    protected static final String ROW_FXML_VIEW = "/view/AdminIssueTableRow.fxml";
+public class AdminIssueOfBookTableController extends BaseTableController<Report, AdminIssueMainPageController, AdminIssueTableRowOfIssueController> {
+    protected static final String ROW_FXMLg_VIEW = "/view/AdminIssueTableRow.fxml";
 
     @FXML
     private TextField emailFindText;

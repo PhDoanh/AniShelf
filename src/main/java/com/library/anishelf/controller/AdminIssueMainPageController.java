@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
-public class AdminIssueMainPageController extends BasePageController<Report, AdminIssueDetailController, AdminIssueTableController> {
+public class AdminIssueMainPageController extends BasePageController<Report, AdminIssueOfBookDetailController, AdminIssueOfBookTableController> {
     private static final String TABLE_FXML_VIEW = "/view/AdminIssueTable.fxml";
     private static final String DETAIL_FXML_VIEW = "/view/AdminIssueDetail.fxml";
     @FXML
