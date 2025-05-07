@@ -1,0 +1,146 @@
+/* Main application custom styles */
+
+/* ==================== */
+/* GENERAL */
+/* ==================== */
+.root {
+	-fx-font-family: "Noto Sans", sans-serif;
+	-fx-font-size: 14px;
+}
+
+/* Theme selection styling */
+.theme-label {
+	-fx-text-fill: -color-fg-default;
+	-fx-padding: 3px 5px;
+	-fx-border-radius: 3px;
+	-fx-background-radius: 3px;
+}
+
+.selected-theme {
+	-fx-background-color: -color-accent-emphasis;
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+	-fx-border-radius: 3px;
+	-fx-background-radius: 3px;
+	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 2, 0, 1, 1);
+}
+
+/* Style cho thanh điều hướng */
+#navigationBar {
+	-fx-background-color: -color-bg-default;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
+	-fx-padding: 5 10;
+	-fx-alignment: center-left;
+	-fx-spacing: 10;
+}
+
+/* Hiệu ứng hover cho nút navigation */
+.nav-button {
+	-fx-background-color: transparent;
+	-fx-cursor: hand;
+	-fx-padding: 8 15;
+	-fx-background-radius: 4;
+	-fx-transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+	-fx-background-color: rgba(100, 100, 100, 0.1);
+}
+
+/* .nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-color;
+    -fx-cursor: hand;
+    -fx-padding: 8 15;
+    -fx-background-radius: 4;
+}
+
+.nav-button:hover {
+    -fx-background-color: derive(-fx-control-inner-background, -10%); 
+} */
+
+/* Style cho active button */
+.active-nav-button {
+	-fx-background-color: -color-accent-emphasis;
+	-fx-text-fill: -color-fg-emphasis;
+	-fx-cursor: hand;
+	-fx-padding: 8 15;
+	-fx-background-radius: 4;
+}
+
+/* Style cho search box */
+#searchText {
+	-fx-background-radius: 15;
+	-fx-padding: 8 15;
+	-fx-prompt-text-fill: #757575;
+}
+
+#advancedSearchButton {
+	-fx-background-radius: 50%;
+	-fx-background-color: transparent;
+	-fx-cursor: hand;
+}
+
+#advancedSearchButton:hover {
+	-fx-background-color: rgba(100, 100, 100, 0.1);
+}
+
+/* Style cho avatar và user name */
+#avatarImage {
+	-fx-background-radius: 50%;
+	-fx-border-radius: 50%;
+	-fx-background-color: -color-accent-muted;
+	-fx-border-color: -color-border-default;
+	-fx-border-width: 1px;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 4, 0, 0, 0);
+}
+
+#avatarImage:hover {
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 8, 0, 0, 0);
+}
+
+/* Animation transitions */
+.scroll-transition {
+	-fx-transition: -fx-translate-y 0.3s ease;
+}
+
+/* Dropdown menu styles */
+.avatar-dropdown-menu {
+	-fx-background-color: -color-bg-default;
+	-fx-background-radius: 8px;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 5);
+	-fx-border-radius: 8px;
+	-fx-border-color: -color-border-default;
+	-fx-border-width: 1px;
+	-fx-padding: 8px;
+}
+
+.avatar-dropdown-menu .button {
+	-fx-background-color: transparent;
+	-fx-text-fill: -color-fg-default;
+	-fx-background-radius: 6px;
+	-fx-border-radius: 6px;
+	-fx-cursor: hand;
+	-fx-font-size: 14px;
+	-fx-alignment: CENTER_LEFT;
+	-fx-padding: 8px 12px;
+	-fx-graphic-text-gap: 10px;
+}
+
+.avatar-dropdown-menu .button:hover {
+	-fx-background-color: -color-neutral-muted;
+}
+
+.avatar-dropdown-menu .button:pressed {
+	-fx-background-color: -color-neutral-emphasis;
+}
+
+.avatar-dropdown-menu .button .ikonli-font-icon {
+	-fx-icon-color: -color-fg-muted;
+	-fx-icon-size: 16px;
+}
+
+/* Avatar hover effect */
+#avatarContainer {
+	-fx-cursor: hand;
+}
