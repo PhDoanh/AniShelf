@@ -1,7 +1,11 @@
-# Compiled class file
+# Compiled Files
 *.class
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-# Log file
+# Log Files
 *.log
 
 # BlueJ files
@@ -10,7 +14,7 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.nar
@@ -19,48 +23,47 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Virtual machine crash logs
 hs_err_pid*
 replay_pid*
 
-# Backend specific
-backend/HELP.md
-backend/.mvn/wrapper/maven-wrapper.jar
-backend/**/src/main/**/target/
-backend/**/src/test/**/target/
-
-### STS ###
-backend/.apt_generated
-backend/.classpath
-backend/.factorypath
-backend/.project
-backend/.settings
-backend/.springBeans
-backend/.sts4-cache
-
-### IntelliJ IDEA ###
-backend/*.iws
-backend/*.iml
-backend/*.ipr
-
-### NetBeans ###
-backend/nbproject/private/
-backend/nbbuild/
-backend/dist/
-backend/nbdist/
-backend/.nb-gradle/
-backend/build/
-backend/**/src/main/**/build/
-backend/**/src/test/**/build/
-
-### VS Code ###
-backend/.vscode/
-
-# others
+# IDE - IntelliJ IDEA
 .idea/
-target/
-out/
-copilot-rules.md
-docker-compose.yml
-backend/Dockerfile
-.github/workflows/docker-image.yml
+*.iws
+*.iml
+*.ipr
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+
+# IDE - Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# IDE - NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# IDE - VS Code
+.vscode/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+
+# Project specific
+rules.md
+requirements.md
