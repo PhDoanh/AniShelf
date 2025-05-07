@@ -5,7 +5,7 @@
  */
 
 -- Clear existing data
-TRUNCATE "BookReservation", "BookIssue", "BookMark", "Comments", "Reports",
+TRUNCATE "BookReservation", "BookIssue", "BookMark", "Comments",
          "Users", "Admins", "Members",
          "BookItem", "Books_Authors", "Books_Category", "Books",
          "Authors", "Category"
@@ -94,7 +94,5 @@ INSERT INTO "Comments" ("member_ID", "ISBN", "title", "content", "rate") VALUES
     (2, 9784088725093, 'Great manga!', 'One of the best manga series ever!', '5'),
     (3, 9784088591902, 'Classic', 'A classic ninja story', '4');
 
--- Insert some reports
-INSERT INTO "Reports" ("member_ID", "title", "content", "ReportStatus") VALUES
-    (2, 'Damaged Book', 'Found torn pages in One Piece Volume 1', 'PENDING'::report_status);
+-- Removed Reports data
 

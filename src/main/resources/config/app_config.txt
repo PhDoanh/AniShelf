@@ -1,0 +1,4 @@
+Normal
+50
+your_password_here
+false
