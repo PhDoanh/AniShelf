@@ -29,6 +29,3 @@ Bước 4: Chạy ứng dụng JavaFX
 ```bash
 .\mvnw.cmd clean javafx:run
 ```
-
-
-
