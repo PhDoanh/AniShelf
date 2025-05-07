@@ -121,21 +121,21 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @Override
     protected void loadItemDetails() {
-        if (!getTitlePageStack().peek().equals(item.getISBN() + "")) {
-            getTitlePageStack().push(item.getISBN() + "");
+        if (!getTitlePageStack().peek().equals(item.getIsbn() + "")) {
+            getTitlePageStack().push(item.getIsbn() + "");
         }
         isSettingItem = true;
         isSettingItem2 = true;
 
         bookNameText.setText(item.getTitle());
-        ISBNText.setText(String.valueOf(item.getISBN()));
+        ISBNText.setText(String.valueOf(item.getIsbn()));
         authorNameText.setText(getAuthors(item.getAuthors()));
         categoryText.setText(getCategories(item.getCategories()));
         numberOfBookText.setText(item.getQuantity() + "");
-        numberOfBorrowText.setText(String.valueOf(item.getNumberOfLoanedBooks()));
-        numberOfLostText.setText(String.valueOf(item.getNumberOfLostBooks()));
-        locationText.setText(item.getPlaceAt());
-        bookContentText.setText(item.getDescription());
+        numberOfBorrowText.setText(String.valueOf(item.getLoanedBooksCount()));
+        numberOfLostText.setText(String.valueOf(item.getLostBooksCount()));
+        locationText.setText(item.getLocation());
+        bookContentText.setText(item.getSummary());
 
         // Tải ảnh bất đồng bộ
         Task<Image> loadImageTask = new Task<>() {
@@ -263,11 +263,11 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
 
     @Override
     protected boolean getNewItemInformation() throws Exception {
-        item.setISBN(Long.parseLong(ISBNText.getText().trim()));
+        item.setIsbn(Long.parseLong(ISBNText.getText().trim()));
         item.setTitle(bookNameText.getText().trim());
-        item.setPlaceAt(locationText.getText().trim());
+        item.setLocation(locationText.getText().trim());
         item.setQuantity(Integer.parseInt(numberOfBookText.getText().trim()));
-        item.setDescription(bookContentText.getText());
+        item.setSummary(bookContentText.getText());
         //Xử lý authors thành List
         String authorList = authorNameText.getText();
         List<Author> authors = Arrays.stream(authorList.split("\\s*,\\s*"))
@@ -365,7 +365,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
         if (ISBNText.getText().isEmpty() || ISBNText.getText().equals("") || ISBNText.getText() == null) {
             CustomerAlter.showMessage("Vui lòng nhập ISBN cho quyển sách trước");
         } else {
-            item.setISBN(Long.parseLong(ISBNText.getText().trim()));
+            item.setIsbn(Long.parseLong(ISBNText.getText().trim()));
             item.setImagePath(getImagePath(item));
             //Nếu như có chọn ảnh thì set ảnh cho bookImage
             if (item.getImagePath() != null) {
@@ -435,7 +435,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
         commandInvoker.setCommand(scanCommand);
         if (commandInvoker.executeCommand()) {
             item = ((AdminCommand) scanCommand).getBookResult();
-            System.out.println(item.getISBN());
+            System.out.println(item.getIsbn());
             loadItemDetails();
         } else {
             System.out.println("chiuuuu");
@@ -469,7 +469,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
     private void loadBookItem() {
         copyBookTableVbox.getChildren().clear();
         Map<String, Object> findCriteria2 = new HashMap<>();
-        findCriteria2.put("ISBN", this.item.getISBN());
+        findCriteria2.put("ISBN", this.item.getIsbn());
         try {
             List<BookItem> bookItemList = BookItemDAO.getInstance().searchByCriteria(findCriteria2);
             for (BookItem item : bookItemList) {
