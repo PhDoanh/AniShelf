@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class AdminReservationBookPageController extends BasePageController<BookReservation, AdminReservationBookDetailController, AdminReservationTableController> {
+public class AdminReservationBookPageController extends BasePageController<BookReservation, AdminReservationBookDetailController, AdminReservationBookTableController> {
 
     private static final String TABLE_FXML_VIEW = "/view/AdminReservationTable.fxml";
     private static final String DETAIL_FXML_VIEW = "/view/AdminReservationDetail.fxml";

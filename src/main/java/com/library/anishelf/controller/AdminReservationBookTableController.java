@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class AdminReservationBookTableController extends BaseTableController<BookReservation, AdminReservationBookPageController, AdminReservationTableRowController> {
+public class AdminReservationBookTableController extends BaseTableController<BookReservation, AdminReservationBookPageController, AdminReservationTableRowBookController> {
 
     private static final String ROW_FXML_VIEW = "/view/AdminReservationTableRow.fxml";
 
