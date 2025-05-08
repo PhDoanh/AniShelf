@@ -1,10 +1,7 @@
 package com.library.anishelf.util;
 
-import com.library.anishelf.controller.UserMenuController;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.Objects;
 /**
  * Class quản lý theme của ứng dụng
  */
-public class ThemeManager {
+public class ThemeManagerUtil {
     private static final String CUPERTINO_DARK_CSS = "/style/cupertino-dark.css";
     private static final String CUPERTINO_LIGHT_CSS = "/style/cupertino-light.css";
     private static final String NORD_DARK_CSS = "/style/nord-dark.css";
@@ -29,18 +26,18 @@ public class ThemeManager {
     private static final String BUTTON_ACTIVE_STYLE_CLASS = "active-nav-button";
     private static final String BUTTON_INACTIVE_STYLE_CLASS = "nav-button";
 
-    private static ThemeManager instance;
+    private static ThemeManagerUtil instance;
     private final List<Pane> panes;
     private String currentTheme;
 
-    private ThemeManager() {
+    private ThemeManagerUtil() {
         panes = new ArrayList<>();
         currentTheme = DEFAULT;
     }
 
-    public static ThemeManager getInstance() {
+    public static ThemeManagerUtil getInstance() {
         if (instance == null) {
-            instance = new ThemeManager();
+            instance = new ThemeManagerUtil();
         }
         return instance;
     }
