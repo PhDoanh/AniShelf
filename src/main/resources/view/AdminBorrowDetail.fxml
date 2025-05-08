@@ -19,9 +19,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <HBox fx:id="mainDetailPane" prefHeight="501.0" prefWidth="817.0" style=""   xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.AdminBorrowDetailController">
-
    <children>
       <StackPane prefHeight="502.0" prefWidth="893.0"  HBox.hgrow="ALWAYS">
          <children>
@@ -110,12 +108,10 @@
                                                          <children>
                                                             <Pane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="105.0" HBox.hgrow="NEVER">
                                                                <children>
-
                                                                   <AnchorPane layoutX="6.0" layoutY="14.0" prefHeight="108.0" prefWidth="88.0" style="" />
                                                                   <ImageView fx:id="memberImage" fitHeight="108.0" fitWidth="88.0" layoutX="6.0" layoutY="14.0" pickOnBounds="true">
                                                                      <image>
                                                                         <Image url="@../image/default/avatar.png" />
-
                                                                      </image>
                                                                   </ImageView>
                                                                   <Button fx:id="scanMemberButton" layoutX="3.0" layoutY="138.0" mnemonicParsing="false" mouseTransparent="true" onAction="#onScanMemberButtonAction" prefHeight="8.0" prefWidth="94.0"  text="Quét mã vạch" visible="false" />
@@ -126,9 +122,7 @@
                                                    </children>
                                                 </HBox>
                                                 <Label layoutX="16.0" layoutY="18.0" style="-fx-font-size: 20;"  text="Thông tin chi tiết" />
-
                                                 <Button fx:id="editButton" layoutX="169.0" layoutY="19.0" mnemonicParsing="false" onAction="#onEditButtonAction" prefHeight="22.0" prefWidth="33.0" style="-fx-font-size: 10;  -fx-text-fill: FFF; -fx-background-radius: 0;"  text="Edit" />
-
                                              </children>
                                           </AnchorPane>
                                        </children>
@@ -194,10 +188,12 @@
                                                             <Pane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="105.0" HBox.hgrow="NEVER">
                                                                <children>
 
+
                                                                   <AnchorPane layoutX="6.0" layoutY="14.0" prefHeight="108.0" prefWidth="88.0" style="" />
                                                                   <ImageView fx:id="bookImage" fitHeight="108.0" fitWidth="88.0" layoutX="6.0" layoutY="14.0" pickOnBounds="true">
                                                                      <image>
                                                                         <Image url="@../image/default/book.png" />
+
 
                                                                      </image>
                                                                   </ImageView>
@@ -246,7 +242,9 @@
                                                                </children>
                                                             </HBox>
 
+
                                                             <HBox alignment="CENTER_LEFT" layoutX="1.0" prefHeight="22.0" prefWidth="140.0" style="">
+
 
                                                                <children>
                                                                   <Label  text="ID:">
@@ -288,7 +286,9 @@
                                                          </padding>
                                                       </Label>
 
+
                                                       <ChoiceBox fx:id="borrowStatus" prefWidth="150.0" style="" >
+
 
                                                          <HBox.margin>
                                                             <Insets top="12.0" />
