@@ -28,12 +28,12 @@ public class AdminBookItemRowController {
      */
     public void setBookInstance(BookItem bookInstance) {
         this.bookInstance = bookInstance;
-        bookIdText.setText(String.valueOf(bookInstance.getBarcode()));
-        if(bookInstance.getNote() != null) {
+        bookIdText.setText(String.valueOf(bookInstance.getBookBarcode()));
+        if(bookInstance.getRemarks() != null) {
             noteTextField.setText(String.valueOf(bookInstance));
         } else {
             noteTextField.setText("-");
         }
-        conditionText.setText(String.valueOf(bookInstance.getStatus().getDisplayName()));
+        conditionText.setText(String.valueOf(bookInstance.getBookItemStatus().getDisplayName()));
     }
 }
