@@ -38,10 +38,14 @@
         <google.zxing.version>3.4.1</google.zxing.version>
         <guava.version>33.2.1-jre</guava.version>
         
+        <!-- GraphQL dependencies -->
+        <graphql-java.version>20.6</graphql-java.version>
+        
         <!-- Các thư viện tiện ích -->
         <json.version>20210307</json.version>
         <javax.mail.version>1.6.2</javax.mail.version>
         <opencv.version>4.9.0-0</opencv.version>
+        <caffeine.version>3.1.8</caffeine.version>
         
         <!-- Cơ sở dữ liệu -->
         <mysql.version>8.0.33</mysql.version>
@@ -54,6 +58,18 @@
     </properties>
 
     <dependencies>
+        <!-- GraphQL dependencies -->
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java</artifactId>
+            <version>${graphql-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.14</version>
+        </dependency>
+        
         <!-- Google APIs và công cụ -->
         <dependency>
             <groupId>com.google.http-client</groupId>
@@ -106,6 +122,11 @@
             <groupId>org.openpnp</groupId>
             <artifactId>opencv</artifactId>
             <version>${opencv.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>${caffeine.version}</version>
         </dependency>
 
         <!-- Cơ sở dữ liệu -->

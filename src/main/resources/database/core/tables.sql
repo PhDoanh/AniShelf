@@ -134,12 +134,3 @@ CREATE TABLE IF NOT EXISTS "Comments" (
     CONSTRAINT fk_comments_member FOREIGN KEY ("member_ID") REFERENCES "Members" ("member_ID") ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT fk_comments_isbn FOREIGN KEY ("ISBN") REFERENCES "Books" ("ISBN") ON UPDATE CASCADE ON DELETE CASCADE
 );
-
-CREATE TABLE IF NOT EXISTS "Reports" (
-    "report_ID" SERIAL PRIMARY KEY,
-    "member_ID" INTEGER NOT NULL,
-    "title" TEXT,
-    "content" TEXT NOT NULL,
-    "ReportStatus" report_status NOT NULL DEFAULT 'PENDING',
-    CONSTRAINT fk_reports_member FOREIGN KEY ("member_ID") REFERENCES "Members" ("member_ID") ON UPDATE CASCADE ON DELETE CASCADE
-);
