@@ -15,13 +15,13 @@ import java.util.Random;
  * The type Account dao.
  */
 public class AccountDAO {
-    private static Database database;
+    private static DatabaseConnection databaseConnection;
     private static AccountDAO accountDAO;
     private static final RuntimeDebugUtil logger = RuntimeDebugUtil.getInstance();
     private static final String TAG = "AccountDAO";
 
     private AccountDAO() {
-        database = Database.getInstance();
+        databaseConnection = DatabaseConnection.getInstance();
     }
 
     /**
@@ -88,7 +88,7 @@ public class AccountDAO {
     public int validateUserLogin(String username, String password) throws SQLException {
         logger.debug(TAG, "Thực hiện đăng nhập user với username: " + username);
 
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_USER)) {
+        try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(GET_ACCOUNT_USER)) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
 
@@ -119,7 +119,7 @@ public class AccountDAO {
     public int validateAdminLogin(String username, String password) throws SQLException {
         logger.debug(TAG, "Thực hiện đăng nhập admin với username: " + username);
 
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_ACCOUNT_ADMIN)) {
+        try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(GET_ACCOUNT_ADMIN)) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
 
@@ -158,7 +158,7 @@ public class AccountDAO {
         }
 
         // Bắt đầu transaction
-        database.getConnection().setAutoCommit(false);
+        databaseConnection.getConnection().setAutoCommit(false);
 
         try {
             // Tạo thành viên mới và lấy ID
@@ -168,13 +168,13 @@ public class AccountDAO {
             boolean result = addUserAccount(username, password, memberId);
 
             // Commit transaction nếu mọi thứ thành công
-            database.getConnection().commit();
+            databaseConnection.getConnection().commit();
             logger.info(TAG, "Đăng ký thành công cho: " + username + " với memberId: " + memberId);
             return result;
         } catch (SQLException e) {
             // Rollback transaction nếu có lỗi
             try {
-                database.getConnection().rollback();
+                databaseConnection.getConnection().rollback();
             } catch (SQLException rollbackEx) {
                 logger.error(TAG, "Lỗi khi rollback transaction: " + rollbackEx.getMessage(), rollbackEx);
             }
@@ -184,7 +184,7 @@ public class AccountDAO {
         } finally {
             // Khôi phục auto-commit
             try {
-                database.getConnection().setAutoCommit(true);
+                databaseConnection.getConnection().setAutoCommit(true);
             } catch (SQLException autoCommitEx) {
                 logger.error(TAG, "Lỗi khi khôi phục auto-commit: " + autoCommitEx.getMessage(), autoCommitEx);
             }
@@ -192,7 +192,7 @@ public class AccountDAO {
     }
 
     private boolean isUsernameExists(String username) throws SQLException {
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_USER_BY_USERNAME)) {
+        try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(GET_USER_BY_USERNAME)) {
             preparedStatement.setString(1, username);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next();
@@ -204,7 +204,7 @@ public class AccountDAO {
     }
 
     private int insertMember(@NotNull Person person) throws SQLException {
-        try (PreparedStatement updateStatement = database.getConnection().prepareStatement(INSERT_MEMBER, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement updateStatement = databaseConnection.getConnection().prepareStatement(INSERT_MEMBER, Statement.RETURN_GENERATED_KEYS)) {
             updateStatement.setString(1, person.getFirstName());
             updateStatement.setString(2, person.getLastName());
             updateStatement.setString(3, person.getBirthdate());
@@ -230,7 +230,7 @@ public class AccountDAO {
     }
 
     private boolean addUserAccount(String username, String password, int memberID) throws SQLException {
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(INSERT_USER)) {
+        try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(INSERT_USER)) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             preparedStatement.setInt(3, memberID);
@@ -256,7 +256,7 @@ public class AccountDAO {
     public boolean initiatePasswordReset(String email) throws SQLException {
         logger.info(TAG, "Bắt đầu quá trình khôi phục mật khẩu cho email: " + email);
 
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(GET_RESET_PASSWORD_USER)) {
+        try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(GET_RESET_PASSWORD_USER)) {
             preparedStatement.setString(1, email);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -287,7 +287,7 @@ public class AccountDAO {
     private void storeOTP(String username, String OTP) throws SQLException {
         logger.debug(TAG, "Lưu OTP cho username: " + username);
 
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_OTP_AND_EXPIRY)) {
+        try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(UPDATE_OTP_AND_EXPIRY)) {
             preparedStatement.setString(1, OTP);
             preparedStatement.setString(2, username);
 
@@ -313,7 +313,7 @@ public class AccountDAO {
     public boolean validateOTP(String email, String OTP) throws SQLException {
         logger.debug(TAG, "Xác thực OTP cho email: " + email);
 
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(VALIDATE_OTP)) {
+        try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(VALIDATE_OTP)) {
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, OTP);
 
@@ -385,7 +385,7 @@ public class AccountDAO {
     }
 
     private boolean updatePassword(String email, String newPassword) throws SQLException {
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(UPDATE_USER)) {
+        try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(UPDATE_USER)) {
             preparedStatement.setString(1, newPassword);
             preparedStatement.setString(2, email);
 
