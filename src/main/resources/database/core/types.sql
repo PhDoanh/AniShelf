@@ -7,4 +7,4 @@ CREATE TYPE gender_type AS ENUM ('MALE', 'FEMALE', 'OTHER');
 CREATE TYPE account_status AS ENUM ('ACTIVE', 'BLACKLISTED', 'CLOSED', 'NONE');
 CREATE TYPE reservation_status AS ENUM ('WAITING', 'COMPLETED', 'CANCELED');
 CREATE TYPE book_issue_status AS ENUM ('BORROWED', 'RETURNED', 'LOST');
-CREATE TYPE report_status AS ENUM ('PENDING', 'RESOLVED');
+-- Removed report_status ENUM type

@@ -40,5 +40,4 @@ CREATE INDEX idx_bookissue_status ON "BookIssue" ("BookIssueStatus");
 CREATE INDEX idx_comments_isbn ON "Comments" ("ISBN");
 CREATE INDEX idx_comments_member_id ON "Comments" ("member_ID");
 
-CREATE INDEX idx_reports_member_id ON "Reports" ("member_ID");
-CREATE INDEX idx_reports_status ON "Reports" ("ReportStatus");
+-- Removed Report indexes
