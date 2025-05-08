@@ -1,6 +1,6 @@
 package com.library.anishelf.controller;
 
-import com.library.anishelf.util.ImageCache;
+import com.library.anishelf.util.CacheManagerUtil;
 import com.library.anishelf.service.command.AdminCommand;
 import com.library.anishelf.service.command.Command;
 import com.library.anishelf.dao.BookItemDAO;
@@ -142,14 +142,14 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
             @Override
             protected Image call() throws Exception {
                 try {
-                    Image image = ImageCache.getImageLRUCache().get(item.getImagePath());
+                    Image image = CacheManagerUtil.getImageFromCache(item.getImagePath());
                     if (image != null) {
                         System.out.println("tai anh trong cache");
                         return image;
                     } else {
                         System.out.println("Khong co anh trong cache");
                         Image image1 = new Image(item.getImagePath(), true);
-                        ImageCache.getImageLRUCache().put(item.getImagePath(), image1);
+                        CacheManagerUtil.putImageToCache(item.getImagePath(), image1);
                         return new Image(image1.getUrl());
                     }
                 } catch (Exception e) {
@@ -370,7 +370,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
             //Nếu như có chọn ảnh thì set ảnh cho bookImage
             if (item.getImagePath() != null) {
                 Image image = new Image(item.getImagePath());
-                ImageCache.getImageLRUCache().put(item.getImagePath(), image);
+                CacheManagerUtil.putImageToCache(item.getImagePath(), image);
                 bookImage.setImage(image);
             }
         }
@@ -471,7 +471,7 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
         Map<String, Object> findCriteria2 = new HashMap<>();
         findCriteria2.put("ISBN", this.item.getIsbn());
         try {
-            List<BookItem> bookItemList = BookItemDAO.getInstance().searchByCriteria(findCriteria2);
+            List<BookItem> bookItemList = BookItemDAO.getInstance().findByCriteria(findCriteria2);
             for (BookItem item : bookItemList) {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AdminBookCopyRow.fxml"));
