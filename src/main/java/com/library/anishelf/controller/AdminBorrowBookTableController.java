@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class AdminBorrowBookTableController extends BaseTableController<BookIssue, AdminBorrowBookPageController,AdminBorrowTableRowController> {
+public class AdminBorrowBookTableController extends BaseTableController<BookIssue, AdminBorrowBookPageController, AdminBorrowBookTableRowController> {
 
     private static final String ROW_FXML_VIEW = "/view/AdminBorrowTableRow.fxml";
 

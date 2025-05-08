@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class AdminBorrowBookPageController extends BasePageController<BookIssue, AdminBorrowBookDetailController, AdminBorrowTableController> {
+public class AdminBorrowBookPageController extends BasePageController<BookIssue, AdminBorrowBookDetailController, AdminBorrowBookTableController> {
 
     private static final String TABLE_FXML_VIEW = "/view/AdminBorrowTable.fxml";
     private static final String DETAIL_FXML_VIEW = "/view/AdminBorrowDetail.fxml";
