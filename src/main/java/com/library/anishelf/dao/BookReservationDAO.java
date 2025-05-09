@@ -1,6 +1,9 @@
 package com.library.anishelf.dao;
 
 import com.github.benmanes.caffeine.cache.Cache;
+import com.library.anishelf.model.BookItem;
+import com.library.anishelf.model.enums.BookItemStatus;
+import com.library.anishelf.model.Member;
 import com.library.anishelf.model.BookReservation;
 import com.library.anishelf.model.enums.BookReservationStatus;
 import com.library.anishelf.util.CacheManagerUtil;
@@ -71,7 +74,8 @@ public class BookReservationDAO implements GenericDAO<BookReservation> {
 
     @Override
     public void insert(@NotNull BookReservation entity) throws SQLException {
-        logger.debug(TAG, "Thêm đặt chỗ mới cho sách: barcode=" + entity.getBookItem().getBookBarcode());
+        logger.debug(TAG, "Thêm đặt chỗ mới cho sách: ISBN=" + entity.getBookItem().getIsbn() + 
+                     ", barcode=" + entity.getBookItem().getBookBarcode());
         try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(INSERT_BOOK_RESERVATION, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, entity.getMember().getPerson().getId());
             preparedStatement.setInt(2, entity.getBookItem().getBookBarcode());
@@ -80,6 +84,14 @@ public class BookReservationDAO implements GenericDAO<BookReservation> {
 
             int result = preparedStatement.executeUpdate();
             logger.info(TAG, "Thêm đặt chỗ thành công, " + result + " dòng bị ảnh hưởng");
+            
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int reservationId = generatedKeys.getInt(1);
+                    entity.setId(reservationId);
+                    logger.debug(TAG, "Đặt chỗ mới được tạo với ID: " + reservationId);
+                }
+            }
             
             memberDAO.fetchCache(entity.getMember().getPerson().getId());
             bookItemDAO.invalidateBookItemCache(entity.getBookItem().getBookBarcode());
@@ -299,5 +311,41 @@ public class BookReservationDAO implements GenericDAO<BookReservation> {
     public void invalidateBookReservationCache(int reservationID) {
         logger.debug(TAG, "Xóa đặt chỗ ID " + reservationID + " khỏi cache");
         bookReservationCache.invalidate(reservationID);
+    }
+
+    /**
+     * Tạo đặt trước sách theo ISBN thay vì quét mã vạch
+     * @param member Thành viên đặt sách
+     * @param isbn ISBN của sách cần đặt
+     * @param reservationDate Ngày đặt sách
+     * @param dueDate Ngày hẹn trả
+     * @return BookReservation đã tạo hoặc null nếu không tìm thấy sách
+     * @throws SQLException nếu có lỗi xảy ra khi thao tác database
+     */
+    public BookReservation createReservationByISBN(Member member, long isbn, String reservationDate, String dueDate) throws SQLException {
+        logger.debug(TAG, "Tạo đặt sách mới theo ISBN: " + isbn + " cho thành viên ID: " + member.getPerson().getId());
+        
+        // Tìm BookItem có sẵn đầu tiên với ISBN tương ứng
+        BookItem bookItem = bookItemDAO.findFirstAvailableBookItemByISBN(isbn);
+        
+        if (bookItem == null) {
+            logger.warning(TAG, "Không tìm thấy bản sao nào có sẵn của sách có ISBN: " + isbn);
+            return null;
+        }
+        
+        // Tạo đối tượng BookReservation
+        BookReservation reservation = new BookReservation(0, member, bookItem, reservationDate, dueDate, BookReservationStatus.WAITING);
+        
+        // Lưu vào cơ sở dữ liệu
+        insert(reservation);
+        
+        // Cập nhật trạng thái của BookItem thành RESERVED
+        bookItem.setBookItemStatus(BookItemStatus.RESERVED);
+        bookItemDAO.updateEntity(bookItem);
+        
+        logger.info(TAG, "Đã tạo đặt sách thành công với ID: " + reservation.getId() + 
+                   ", barcode: " + bookItem.getBookBarcode());
+        
+        return reservation;
     }
 }
