@@ -553,6 +553,28 @@ public class BookItemDAO implements GenericDAO<BookItem> {
     }
     
     /**
+     * Tìm kiếm BookItem đầu tiên có sẵn theo ISBN
+     * @param isbn ISBN của sách cần tìm
+     * @return BookItem đầu tiên có sẵn hoặc null nếu không tìm thấy
+     * @throws SQLException nếu có lỗi xảy ra khi truy vấn
+     */
+    public BookItem findFirstAvailableBookItemByISBN(long isbn) throws SQLException {
+        logger.debug(TAG, "Tìm kiếm BookItem có sẵn đầu tiên theo ISBN: " + isbn);
+        
+        List<BookItem> bookItems = getBookItemsByISBN(isbn);
+        
+        for (BookItem bookItem : bookItems) {
+            if (bookItem.getBookItemStatus() == BookItemStatus.AVAILABLE) {
+                logger.info(TAG, "Tìm thấy BookItem có sẵn với barcode: " + bookItem.getBookBarcode());
+                return bookItem;
+            }
+        }
+        
+        logger.warning(TAG, "Không tìm thấy BookItem có sẵn nào với ISBN: " + isbn);
+        return null;
+    }
+    
+    /**
      * Vô hiệu hóa cache cho BookItem theo barcode
      * @param barcode Barcode của BookItem cần vô hiệu hóa cache
      */
