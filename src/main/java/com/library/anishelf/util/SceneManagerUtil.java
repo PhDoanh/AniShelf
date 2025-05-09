@@ -1,6 +1,7 @@
 package com.library.anishelf.util;
 
-import com.library.anishelf.controller.UserMenuController;
+import com.library.anishelf.controller.NavigationBarController;
+import com.library.anishelf.controller.ProfilePageController;
 import com.library.anishelf.service.BookService;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -15,13 +16,13 @@ import java.util.Map;
 
 public class SceneManagerUtil {
 
-    private static final String USER_MENU_FXML = "/view/UserMenu-view.fxml";
-    private static final String BOOKMARK_FXML = "/view/Bookmark-view.fxml";
-    private static final String DASHBOARD_FXML = "/view/DashBoard-view.fxml";
-    private static final String RANKING_FXML = "/view/BookRanking-view.fxml";
-    private static final String HISTORY_FXML = "/view/History-view.fxml";
-    private static final String MORE_BOOK_FXML = "/view/MoreBook-view.fxml";
-    // Đã loại bỏ MUSIC_FXML
+    private static final String USER_MENU_FXML = "/view/NavigationBar.fxml";
+    private static final String BOOKMARK_FXML = "/view/Bookmark.fxml";
+    private static final String DASHBOARD_FXML = "/view/UserHomePage.fxml";
+    private static final String RANKING_FXML = "/view/BookRanking.fxml";
+    private static final String HISTORY_FXML = "/view/ReservedBorrowedHistoryPage.fxml";
+    private static final String MORE_BOOK_FXML = "/view/MoreBookPage.fxml";
+    
 
     private static SceneManagerUtil instance = null;
     private Map<String, Pane> fxmlCache = new HashMap<>();
@@ -46,7 +47,7 @@ public class SceneManagerUtil {
         if (instance == null) {
             instance = new SceneManagerUtil(container);
         } else {
-            instance.container = container;  // Đảm bảo cập nhật container nếu instance đã tồn tại
+            instance.container = container;  
         }
         return instance;
     }
@@ -60,7 +61,7 @@ public class SceneManagerUtil {
         return fxmlLoader.getController();
     }
 
-    // load and update scence
+    
     public Pane loadScene(String fxmlPath) {
         try {
             if (fxmlCache.containsKey(fxmlPath)) {
@@ -86,22 +87,22 @@ public class SceneManagerUtil {
     }
 
     public void updateSceneContainer(VBox content) {
-        // Kiểm tra xem có đang ở màn hình Information và có ảnh chưa lưu không
+        
         try {
-            // Lấy controller của Information view nếu đã được tạo
-            Object infoController = controllerCache.get("/view/Information-view.fxml");
-            if (infoController != null && infoController instanceof com.library.anishelf.controller.InformationController) {
-                com.library.anishelf.controller.InformationController controller = 
-                    (com.library.anishelf.controller.InformationController) infoController;
+            
+            Object infoController = controllerCache.get("/view/ProfilePage.fxml");
+            if (infoController != null && infoController instanceof ProfilePageController) {
+                ProfilePageController controller =
+                    (ProfilePageController) infoController;
                 
-                // Kiểm tra nếu controller có ảnh chưa lưu, khôi phục ảnh cũ
+                
                 controller.restoreOriginalImageIfNeeded();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        // Tiếp tục xử lý như bình thường
+        
         container.setPadding(Insets.EMPTY);
         container.getChildren().clear();
         VBox.setVgrow(content, Priority.ALWAYS);
@@ -109,11 +110,11 @@ public class SceneManagerUtil {
     }
 
     public <T> T getController(String fxmlPath) throws IOException {
-        return (T) controllerCache.get(fxmlPath); // Trả về controller đã lưu trong cache
+        return (T) controllerCache.get(fxmlPath); 
     }
 
-    public void addUserMenuController(UserMenuController userMenuController) {
-        controllerCache.put(USER_MENU_FXML,userMenuController);
+    public void addUserMenuController(NavigationBarController navigationBarController) {
+        controllerCache.put(USER_MENU_FXML, navigationBarController);
     }
 
     public void clearAllCaches() {
@@ -133,8 +134,8 @@ public class SceneManagerUtil {
 
     public void highlightBackButton() {
         try {
-            UserMenuController userMenuController = getController(USER_MENU_FXML);
-            userMenuController.changeColorButtonBack();
+            NavigationBarController navigationBarController = getController(USER_MENU_FXML);
+            navigationBarController.changeColorButtonBack();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
