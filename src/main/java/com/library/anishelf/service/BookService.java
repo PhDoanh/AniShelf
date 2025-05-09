@@ -174,34 +174,34 @@ public class BookService {
 
     public void removeReservedBook(BookReservation bookReservation) {
         logger.debug(TAG, "Xóa sách đặt trước: " + bookReservation.getBookItem().getTitle());
-        int index = findReservedBookIndex(bookReservation.getBookItem().getBookBarcode());
+        int index = findReservedBookIndex(bookReservation.getBookItem().getIsbn());
 
         if(index != -1) {
             pendingReservedBooks.remove(index);
             logger.debug(TAG, "Đã xóa sách đặt trước thành công");
         } else {
-            logger.warning(TAG, "Không tìm thấy sách đặt trước để xóa với barcode: " + 
-                    bookReservation.getBookItem().getBookBarcode());
+            logger.warning(TAG, "Không tìm thấy sách đặt trước để xóa với ISBN: " + 
+                    bookReservation.getBookItem().getIsbn());
         }
     }
 
-    private int findReservedBookIndex(long barCode) {
-        logger.debug(TAG, "Tìm vị trí sách đặt trước với barcode: " + barCode);
+    private int findReservedBookIndex(long isbn) {
+        logger.debug(TAG, "Tìm vị trí sách đặt trước với ISBN: " + isbn);
         try {
             if (pendingReservedBooks == null) {
                 pendingReservedBooks = BookService.getInstance().getPendingReservedBooks();
             }
             
             for (int i = 0; i < pendingReservedBooks.size(); i++) {
-                if (pendingReservedBooks.get(i).getBookItem().getBookBarcode() == barCode) {
+                if (pendingReservedBooks.get(i).getBookItem().getIsbn() == isbn) {
                     logger.debug(TAG, "Tìm thấy sách đặt trước tại vị trí: " + i);
                     return i;
                 }
             }
-            logger.debug(TAG, "Không tìm thấy sách đặt trước với barcode: " + barCode);
+            logger.debug(TAG, "Không tìm thấy sách đặt trước với ISBN: " + isbn);
             return -1;
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi tìm vị trí sách đặt trước với barcode: " + barCode, e);
+            logger.error(TAG, "Lỗi khi tìm vị trí sách đặt trước với ISBN: " + isbn, e);
             throw new RuntimeException("Lỗi khi tìm sách đặt trước", e);
         }
     }
