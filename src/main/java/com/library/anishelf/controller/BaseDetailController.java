@@ -9,12 +9,12 @@ public abstract class BaseDetailController<T> extends BasicController {
     protected boolean beingAddMode;
     protected boolean hasUnsavedChanges;
 
-    protected BasePageController mainController;
+    protected BasePageAppController mainController;
 
     /**
      * Set the main controller
      */
-    public void connectToParentController(BasePageController controller) {
+    public void connectToParentController(BasePageAppController controller) {
         this.mainController = controller;
     }
 
@@ -65,7 +65,7 @@ public abstract class BaseDetailController<T> extends BasicController {
                         commandInvoker.setCommand(addCommand);
                         if (commandInvoker.executeCommand()) {
                             getTitlePageStack().pop();
-                            mainController.loadData();
+                            mainController.refreshPageData();
                             setBeingAddMode(false);
                             System.out.println("Đã lưu thay đổi");
                         }
@@ -80,7 +80,7 @@ public abstract class BaseDetailController<T> extends BasicController {
                         commandInvoker.setCommand(editCommand);
                         if (commandInvoker.executeCommand()) {
                             getTitlePageStack().pop();
-                            mainController.loadData();
+                            mainController.refreshPageData();
                             fetchBookItemDetails();
                             setBeingEditMode(false);
                             System.out.println("Đã lưu thay đổi");
@@ -109,7 +109,7 @@ public abstract class BaseDetailController<T> extends BasicController {
                 if (commandInvoker.executeCommand()) {
                     getTitlePageStack().pop();
                     getTitlePageStack().pop();
-                    mainController.loadData();
+                    mainController.refreshPageData();
                     mainController.switchPage();
                     setBeingEditMode(false);
                     System.out.println("Đã lưu thay đổi");

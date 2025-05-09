@@ -13,14 +13,14 @@ import javafx.scene.layout.VBox;
 import java.sql.SQLException;
 import java.util.*;
 
-public abstract class BaseAppTableController<T, P extends BasePageController, R extends BaseRowController<T, P>> extends BasicController {
+public abstract class BaseAppTableController<T, P extends BasePageAppController, R extends BaseAppRowController<T, P>> extends BasicController {
     @FXML
     protected ScrollPane scrollPaneContainer;
     @FXML
     protected VBox tableBookPane;
 
     protected ObservableSet<T> dataItems = FXCollections.observableSet(new HashSet<>());
-    protected BasePageController mainController;
+    protected BasePageAppController mainController;
     protected Map<String, Object> searchFilters = new HashMap<>();
 
     private static final int SCROLL_LOAD_TRIGGER_THRESHOL = 10;  // Số hàng trước khi đến cuối bảng để kích hoạt tải thêm
@@ -57,9 +57,9 @@ public abstract class BaseAppTableController<T, P extends BasePageController, R 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(getItemRowFXML()));
                 HBox row = loader.load();
 
-                BaseRowController rowController = loader.getController();
-                rowController.setMainController(this.getMainnnnController());
-                rowController.setItem(item);
+                BaseAppRowController rowController = loader.getController();
+                rowController.connectToParentController(this.getMainnnnController());
+                rowController.setData(item);
 
                 childFitWidthParent(row, scrollPaneContainer);
                 tableBookPane.getChildren().add(row);
@@ -79,11 +79,11 @@ public abstract class BaseAppTableController<T, P extends BasePageController, R 
     }
 
     /**
-     * Sau khi lấy set mainController (PageController) thì mới tiến hành load các hàng vào bảng.
+     * Sau khi lấy set parentController (PageController) thì mới tiến hành load các hàng vào bảng.
      *
      * @param mainController
      */
-    public void setMainnnController(BasePageController mainController) {
+    public void setMainnnController(BasePageAppController mainController) {
         this.mainController = mainController;
         initializeScrollPagination();
         refreshTableData();
@@ -91,11 +91,11 @@ public abstract class BaseAppTableController<T, P extends BasePageController, R 
     }
 
     /**
-     * Lấy mainController (PageController) của fxml này.
+     * Lấy parentController (PageController) của fxml này.
      *
      * @return
      */
-    public BasePageController getMainnnnController() {
+    public BasePageAppController getMainnnnController() {
         return mainController;
     }
 
@@ -140,9 +140,9 @@ public abstract class BaseAppTableController<T, P extends BasePageController, R 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(getItemRowFXML()));
             HBox row = loader.load();
-            BaseRowController rowController = loader.getController();
-            rowController.setMainController(this.getMainnnnController());
-            rowController.setItem(item);
+            BaseAppRowController rowController = loader.getController();
+            rowController.connectToParentController(this.getMainnnnController());
+            rowController.setData(item);
             childFitWidthParent(row, scrollPaneContainer);
             tableBookPane.getChildren().add(row);
         } catch (Exception e) {

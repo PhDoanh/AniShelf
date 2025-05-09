@@ -3,7 +3,7 @@ package com.library.anishelf.controller;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 
-public abstract class BaseAppRowController<T, P extends BasePageController> extends BasicController {
+public abstract class BaseAppRowController<T, P extends BasePageAppController> extends BasicController {
     @FXML
     protected HBox mainRowContainer;
     protected T Data;
