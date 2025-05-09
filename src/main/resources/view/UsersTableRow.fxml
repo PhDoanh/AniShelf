@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox fx:id="mainRowHbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="242.0"   xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.UsersTableRowController">
+   <children>
+      <HBox alignment="CENTER" mouseTransparent="true" pickOnBounds="false" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="memberIDlabel"  text="23025143">
+               <padding>
+                  <Insets left="2.0" right="2.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" mouseTransparent="true" pickOnBounds="false" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="memberNameLabel" mouseTransparent="true" pickOnBounds="false"  text="NguyenVan C">
+               <padding>
+                  <Insets left="2.0" right="2.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" mouseTransparent="true" pickOnBounds="false" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="phoneNumberLabel" mouseTransparent="true" pickOnBounds="false"  text="0975687356">
+               <padding>
+                  <Insets left="2.0" right="2.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+   </children>
+</HBox>

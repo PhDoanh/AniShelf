@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="contentBox" alignment="CENTER" prefHeight="602.0" prefWidth="850.0"  xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.ProfilePageController">
+   <children>
+      <HBox prefHeight="497.0" prefWidth="850.0" style="-fx-background-radius: 20;"  VBox.vgrow="ALWAYS">
+         <children>
+            <VBox alignment="CENTER_LEFT" prefHeight="497.0" prefWidth="551.0" spacing="5.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <!-- Nút quay lại đã bị loại bỏ -->
+                  <Label  text="Hồ sơ cá nhân" textFill="#a64f3c">
+                     <font>
+                        <Font name="System Bold" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label  text="Họ" textFill="#a64f3c">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="lastNameText"  />
+                  <Label  text="Tên" textFill="#a64f3c">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="firstNameText"  />
+                  <Label  text="Giới tính" textFill="#a64f3c">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="genderChoiceBox" prefHeight="31.0" prefWidth="150.0"  />
+                  <Label  text="Ngày/tháng/năm sinh" textFill="#a64f3c">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="birthDate" prefHeight="31.0" prefWidth="174.0" />
+                  <Label  text="Số điện thoại" textFill="#a64f3c">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="phoneText"  />
+                  <Label  text="email" textFill="#a64f3c">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="emailText"  />
+               </children>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="497.0" prefWidth="396.0" spacing="20.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <ImageView fx:id="avatarImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/general/small_avatar.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="userIDText"  text="userID" />
+                  <Button mnemonicParsing="false" onAction="#onLoadImageButtonAction"  text="Tải lên ảnh" />
+                  <Button mnemonicParsing="false" onAction="#onSaveButtonAction"  text="Save" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" />
+         </padding>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="40.0" right="40.0" top="40.0" />
+   </padding>
+</VBox>

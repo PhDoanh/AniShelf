@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="dashboardBox" alignment="CENTER" prefHeight="625.0" prefWidth="567.0"  xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.UserHomePageController">
+   <children>
+      <HBox alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="61.0" prefWidth="691.0" spacing="10.0">
+         <children>
+            <Label text="Phổ biến">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <FontIcon iconColor="#ff5722" iconLiteral="fth-globe" iconSize="28" wrappingWidth="26.0">
+               <HBox.margin>
+                  <Insets bottom="6.0" />
+               </HBox.margin>
+            </FontIcon>
+         </children>
+      </HBox>
+      <ScrollPane hbarPolicy="ALWAYS" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="225.0" prefWidth="691.0"  vbarPolicy="NEVER">
+         <content>
+            <HBox fx:id="popularHBox" alignment="CENTER_LEFT" prefHeight="198.0" prefWidth="427.0" spacing="10.0">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </HBox>
+         </content>
+      </ScrollPane>
+      <HBox alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="691.0" spacing="10.0">
+         <children>
+            <Label text="Được yêu thích">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <FontIcon iconColor="#e91e63" iconLiteral="fth-heart" iconSize="28" wrappingWidth="28.0">
+               <HBox.margin>
+                  <Insets bottom="2.0" />
+               </HBox.margin>
+            </FontIcon>
+         </children>
+      </HBox>
+      <ScrollPane hbarPolicy="ALWAYS" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="235.0" prefWidth="691.0"  vbarPolicy="NEVER">
+         <content>
+            <HBox fx:id="highRankHBox" alignment="CENTER_LEFT">
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </HBox>
+         </content>
+      </ScrollPane>
+      <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="89.0" prefWidth="691.0">
+         <children>
+            <Button fx:id="moreButton" mnemonicParsing="false" onAction="#onMoreButtonAction" prefHeight="35.0" prefWidth="112.0"  text="Xem thêm" textFill="WHITE" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets left="50.0" right="50.0" />
+   </padding>
+</VBox>
