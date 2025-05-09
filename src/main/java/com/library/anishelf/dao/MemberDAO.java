@@ -190,7 +190,7 @@ public class MemberDAO implements GenericDAO<Member> {
                     String password = createRandomPassword();
                     if (addUser(member.getPerson().getPhone(), password, memberId)) {
                         logger.info("MemberDAO", "Gửi email thông tin tài khoản đến: " + member.getPerson().getEmail());
-                        EmailUtil.sendAsyncEmail(member.getPerson().getEmail(),
+                        EmailUtil.sendEmailAsync(member.getPerson().getEmail(),
                                 "TÀI KHOẢN", "Tài khoản: " + member.getPerson().getPhone()
                                         + ", Mật khẩu: " + password);
                     } else {
