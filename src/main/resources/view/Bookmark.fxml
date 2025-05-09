@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="625.0" prefWidth="567.0"  xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.BookmarkController">
+   <children>
+      <HBox alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="48.0" prefWidth="691.0" spacing="5.0" >
+         <children>
+            <Label prefHeight="40.0" prefWidth="262.0"  text="Sách đã đánh dấu:">
+               <font>
+                  <Font size="28.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" />
+               </padding></Label>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="225.0" prefWidth="691.0" >
+         <content>
+            <HBox fx:id="bookmarkHBox" alignment="CENTER_LEFT" prefHeight="190.0" prefWidth="246.0" spacing="10.0">
+               <padding>
+                  <Insets left="10.0" />
+               </padding></HBox>
+         </content>
+      </ScrollPane>
+      <HBox alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="58.0" prefWidth="691.0">
+         <children>
+            <Label prefHeight="40.0" prefWidth="222.0"  text="Gợi ý:">
+               <font>
+                  <Font size="28.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="235.0" prefWidth="691.0" >
+         <content>
+            <HBox fx:id="suggestHBox" alignment="CENTER_LEFT" prefHeight="190.0" prefWidth="457.0">
+               <padding>
+                  <Insets left="10.0" top="10.0" />
+               </padding></HBox>
+         </content>
+      </ScrollPane>
+   </children>
+   <padding>
+      <Insets bottom="30.0" left="50.0" right="50.0" top="5.0" />
+   </padding>
+</VBox>

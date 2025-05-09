@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="settingBox" alignment="CENTER" prefHeight="602.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.SettingPageController">
+   <children>
+      <HBox prefHeight="17.0" prefWidth="850.0" spacing="50.0">
+         <children>
+            <Label  text="Cài đặt" textFill="#a64f3c">
+               <font>
+                  <Font name="System Bold" size="27.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <VBox alignment="CENTER" prefHeight="556.0" prefWidth="850.0" spacing="5.0" style="-fx-background-radius: 20;" >
+         <padding>
+            <Insets left="50.0" />
+         </padding>
+         <VBox.margin>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="10.0" />
+         </VBox.margin>
+         <children>
+            <Label text="Chọn màu giao diện:">
+               <font>
+                  <Font size="29.0" />
+               </font>
+            </Label>
+            <HBox fx:id="themesContainer" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <!-- Nord Light Theme -->
+                  <VBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <Circle fill="#ffe2b1" onMouseClicked="#onNordLightMouseClicked" radius="32.0" stroke="#ffe2b1" strokeType="INSIDE" />
+                        <Label text="Nord Light" userData="nord-light" styleClass="theme-label" />
+                     </children>
+                  </VBox>
+                  
+                  <!-- Nord Dark Theme -->
+                  <VBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <Circle onMouseClicked="#onNordDarkMouseClicked" radius="32.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Label text="Nord Dark" userData="nord-dark" styleClass="theme-label" />
+                     </children>
+                  </VBox>
+                  
+                  <!-- Cupertino Dark Theme -->
+                  <VBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <Circle fill="#303030" onMouseClicked="#onCupertinoDarkMouseClicked" radius="32.0" stroke="#303030" strokeType="INSIDE" />
+                        <Label text="Cupertino Dark" userData="cupertino-dark" styleClass="theme-label" />
+                     </children>
+                  </VBox>
+                  
+                  <!-- Cupertino Light Theme -->
+                  <VBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <Circle fill="#f5f5f7" onMouseClicked="#onCupertinoLightMouseClicked" radius="32.0" stroke="#e0e0e0" strokeType="INSIDE" />
+                        <Label text="Cupertino Light" userData="cupertino-light" styleClass="theme-label" />
+                     </children>
+                  </VBox>
+                  
+                  <!-- Dracula Theme -->
+                  <VBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <Circle fill="#282a36" onMouseClicked="#onDraculaMouseClicked" radius="32.0" stroke="#44475a" strokeType="INSIDE" />
+                        <Label text="Dracula" userData="dracula" styleClass="theme-label" />
+                     </children>
+                  </VBox>
+                  
+                  <!-- Primer Dark Theme -->
+                  <VBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <Circle fill="#0d1117" onMouseClicked="#onPrimerDarkMouseClicked" radius="32.0" stroke="#161b22" strokeType="INSIDE" />
+                        <Label text="Primer Dark" userData="primer-dark" styleClass="theme-label" />
+                     </children>
+                  </VBox>
+                  
+                  <!-- Primer Light Theme -->
+                  <VBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <Circle fill="#ffffff" onMouseClicked="#onPrimerLightMouseClicked" radius="32.0" stroke="#e1e4e8" strokeType="INSIDE" />
+                        <Label text="Primer Light" userData="primer-light" styleClass="theme-label" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

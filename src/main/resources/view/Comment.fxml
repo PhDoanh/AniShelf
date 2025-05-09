@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="commentBox" spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.CommentController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="307.0" spacing="10.0">
+         <children>
+            <Circle fx:id="avatarImage" fill="#bcffc8" radius="19.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label fx:id="nameLabel" alignment="CENTER" prefHeight="24.0" prefWidth="83.0"  text="Ten" textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </HBox>
+      <ImageView fx:id="starImage" fitHeight="22.0" fitWidth="181.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/general/5star.png" />
+         </image>
+      </ImageView>
+      <Text fx:id="commentText" strokeType="OUTSIDE" strokeWidth="0.0" text="comment sth" wrappingWidth="305.13671875">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+   </children>
+   <padding>
+      <Insets left="10.0" top="5.0" />
+   </padding>
+</VBox>

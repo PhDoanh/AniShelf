@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.shape.Circle?>
+
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.NavigationBarController">
+   <children>
+      <BorderPane prefHeight="594.0" prefWidth="950.0">
+         <top>
+            <VBox fx:id="topContainer" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox fx:id="navigationBar" alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="950.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="103.0">
+                           <children>
+                              <ImageView fitHeight="51.0" fitWidth="67.0" onMouseClicked="#onDashBoardMouseClicked" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/app_logo.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" spacing="15.0" HBox.hgrow="SOMETIMES">
+                           <children>
+                              <Button fx:id="dashboardButton" mnemonicParsing="false" onAction="#onDashboardButtonAction" styleClass="nav-button">
+                                 <graphic>
+                                    <HBox alignment="CENTER" spacing="5.0">
+                                       <children>
+                                          <FontIcon iconLiteral="fth-home" iconSize="20" />
+                                       </children>
+                                    </HBox>
+                                 </graphic>
+                                 <tooltip>
+                                     <Tooltip text="Trang chính" />
+                                 </tooltip>
+                              </Button>
+                              <Button fx:id="bookmarkButton" mnemonicParsing="false" onAction="#onBookmarkButtonAction" styleClass="nav-button">
+                                 <graphic>
+                                    <HBox alignment="CENTER" spacing="5.0">
+                                       <children>
+                                          <FontIcon iconLiteral="fth-bookmark" iconSize="20" />
+                                       </children>
+                                    </HBox>
+                                 </graphic>
+                                 <tooltip>
+                                     <Tooltip text="Đánh dấu" />
+                                 </tooltip>
+                              </Button>
+                              <Button fx:id="bookRankingButton" mnemonicParsing="false" onAction="#onBookRankingButtonAction" styleClass="nav-button">
+                                 <graphic>
+                                    <HBox alignment="CENTER" spacing="5.0">
+                                       <children>
+                                          <FontIcon iconLiteral="fth-award" iconSize="20" />
+                                       </children>
+                                    </HBox>
+                                 </graphic>
+                                 <tooltip>
+                                     <Tooltip text="Bảng xếp hạng" />
+                                 </tooltip>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="295.0">
+                           <children>
+                              <TextField fx:id="searchText" prefHeight="25.0" prefWidth="220.0" promptText="Tìm sách gì?" />
+                              <Button fx:id="advancedSearchButton" mnemonicParsing="false" onAction="#onAdvancedSearchButtonAction" prefHeight="27.0" prefWidth="30.0">
+                                 <graphic>
+                                    <FontIcon iconLiteral="fth-search" iconSize="19" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="180.0">
+                           <children>
+                              <HBox fx:id="avatarContainer" alignment="CENTER" prefHeight="70.0" prefWidth="100.0">
+                                 <children>
+                                    <StackPane alignment="CENTER" prefHeight="40.0" prefWidth="40.0">
+                                       <children>
+                                          <!-- Đặt StackPane cho avatar, và chỉ định kích thước cố định -->
+                                          <ImageView fx:id="avatarImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/general/small_avatar.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                       <!-- Áp dụng hiệu ứng clip hình tròn cho StackPane -->
+                                       <clip>
+                                          <Circle radius="20.0" />
+                                       </clip>
+                                    </StackPane>
+                                 </children>
+                                 <padding>
+                                    <Insets right="15.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </top>
+         <center>
+            <StackPane prefHeight="605.0" prefWidth="891.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ScrollPane fx:id="contentScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="605.0" prefWidth="950.0" vbarPolicy="ALWAYS">
+                     <content>
+                        <VBox fx:id="contentBox" alignment="CENTER" prefHeight="605.0" prefWidth="950.0" />
+                     </content>
+                  </ScrollPane>
+                  <AnchorPane fx:id="suggestionContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" visible="false">
+                     <children>
+                        <ListView fx:id="suggestionList" layoutX="323.0" layoutY="-21.0" prefHeight="28.0" prefWidth="292.0" AnchorPane.rightAnchor="235.0" AnchorPane.topAnchor="-21.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </StackPane>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>
