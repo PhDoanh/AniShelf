@@ -1,7 +1,7 @@
 package com.library.anishelf.service;
 
 import com.library.anishelf.controller.CustomerAlter;
-import com.library.anishelf.controller.AdminMenuController;
+import com.library.anishelf.controller.AdminNavBarController;
 import com.library.anishelf.controller.BasicController;
 import com.library.anishelf.dao.AccountDAO;
 import com.library.anishelf.model.enums.Role;
@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import com.library.anishelf.controller.UserMenuController;
+import com.library.anishelf.controller.NavigationBarController;
 public class AuthenticationService extends BasicController implements ServiceHandler {
     private Role role;
     private String password;
@@ -65,12 +65,12 @@ public class AuthenticationService extends BasicController implements ServiceHan
 
     private void navigateToMenu() {
         // role.equals(Role.ADMIN)
-        if (false) {
+        if (true) {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/AdminMenu.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/AdminNavBar.fxml"));
                 Parent root = fxmlLoader.load();
 
-                AdminMenuController controller = fxmlLoader.getController();
+                AdminNavBarController controller = fxmlLoader.getController();
                 controller.setAdminID(adminId);
 
                 Scene scene = new Scene(root);
@@ -84,10 +84,10 @@ public class AuthenticationService extends BasicController implements ServiceHan
             }
         } else if (role.equals(Role.NONE)) {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/UserMenu-view.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/NavigationBar.fxml"));
                 Parent root = fxmlLoader.load();
 
-                UserMenuController userMenu = fxmlLoader.getController();
+                NavigationBarController userMenu = fxmlLoader.getController();
 
                 userMenu.setMemberID(memberId);
                 stage.setResizable(true);
