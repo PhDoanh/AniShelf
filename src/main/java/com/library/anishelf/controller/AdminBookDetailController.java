@@ -1,8 +1,8 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.service.AdminService;
 import com.library.anishelf.util.CacheManagerUtil;
-import com.library.anishelf.service.command.AdminCommand;
-import com.library.anishelf.service.command.Command;
+import com.library.anishelf.service.ServiceHandler;
 import com.library.anishelf.dao.BookItemDAO;
 import com.library.anishelf.model.Author;
 import com.library.anishelf.model.Book;
@@ -98,9 +98,6 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
     private Button saveButton;
 
     @FXML
-    private Button scanButton;
-
-    @FXML
     private ScrollPane scrollPane;
 
     @FXML
@@ -178,7 +175,6 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
         addButtonPane.setVisible(addMode);
         addButton.setVisible(addMode);
         choiceImageButton.setVisible(addMode);
-        scanButton.setVisible(addMode);
 
         //Cho phép các trường chỉnh sửa
         ISBNText.setEditable(addMode);
@@ -381,9 +377,9 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
         boolean confrimYes = CustomerAlter.showAlter("Bạn muốn xóa quyển sách này?");
         if (confrimYes) {
             //Xóa sách trong CSDL
-            Command deleteCommand = new AdminCommand("delete", this.item);
-            commandInvoker.setCommand(deleteCommand);
-            if (commandInvoker.executeCommand()) {
+            ServiceHandler deleteServiceHandler = new AdminService("delete", this.item);
+            serviceInvoker.setServiceHandler(deleteServiceHandler);
+            if (serviceInvoker.invokeService()) {
                 mainController.loadData();
                 mainController.alterPage();
                 loadStartStatus();
@@ -426,20 +422,6 @@ public class AdminBookDetailController extends BaseDetailController<Book> {
     @FXML
     void onSaveButtonAction(ActionEvent event) {
         saveChanges();
-
-    }
-
-    @FXML
-    void onScanButtonAction(ActionEvent event) {
-        Command scanCommand = new AdminCommand("scan", new Book());
-        commandInvoker.setCommand(scanCommand);
-        if (commandInvoker.executeCommand()) {
-            item = ((AdminCommand) scanCommand).getBookResult();
-            System.out.println(item.getIsbn());
-            loadItemDetails();
-        } else {
-            System.out.println("chiuuuu");
-        }
     }
 
     private void setButtonPageAnimation() {
