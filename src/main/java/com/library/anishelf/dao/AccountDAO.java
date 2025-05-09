@@ -269,7 +269,7 @@ public class AccountDAO {
                     // Gửi email OTP
                     String emailSubject = "[THÔNG BÁO] Khôi phục mật khẩu";
                     String emailBody = "Mã OTP của bạn là " + otp;
-                    EmailUtil.sendAsyncEmail(email, emailSubject, emailBody);
+                    EmailUtil.sendEmailAsync(email, emailSubject, emailBody);
 
                     logger.info(TAG, "Đã gửi OTP đến email: " + email);
                     return true;
