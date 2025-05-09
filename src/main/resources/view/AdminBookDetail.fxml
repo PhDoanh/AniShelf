@@ -119,11 +119,6 @@
                         <Font size="10.5" />
                      </font>
                   </Button>
-                  <Button fx:id="scanButton" alignment="CENTER" contentDisplay="CENTER" layoutX="523.0" layoutY="458.0" mnemonicParsing="false" onAction="#onScanButtonAction" prefHeight="49.0" prefWidth="122.0" style="-fx-font-size: 14;"  text="Quét mã vạch" textAlignment="CENTER" visible="false" AnchorPane.bottomAnchor="7.600000000000023" AnchorPane.rightAnchor="153.80000000000004">
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                  </Button>
                   <Button fx:id="deleteButton" layoutX="523.0" layoutY="458.0" mnemonicParsing="false" onAction="#onDeleteButtonAction" prefHeight="49.0" prefWidth="122.0"   text="Xóa" visible="false" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="153.80000000000004" />
                   <Button fx:id="saveButton" layoutX="656.0" layoutY="458.0" mnemonicParsing="false" onAction="#onSaveButtonAction" prefHeight="49.0" prefWidth="122.0"   text="Save" visible="false" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="20.80000000000004" />
                   <Button fx:id="page2Button" layoutX="51.0" layoutY="251.0" mnemonicParsing="false" onAction="#onPage2ButtonAction" prefHeight="13.0" prefWidth="32.0"  text="2" />
