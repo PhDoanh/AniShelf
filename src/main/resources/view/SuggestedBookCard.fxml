@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox fx:id="hbox" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onBookMouseClicked" prefHeight="48.0" prefWidth="262.0" spacing="3.0" style="" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.SuggestedBookCardController">
+   <children>
+      <ImageView fx:id="bookImage" fitHeight="45.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/default/book.png" />
+         </image>
+      </ImageView>
+      <VBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="105.0">
+         <children>
+            <Label fx:id="bookNameLabel" prefHeight="17.0" prefWidth="110.0" text="Label" />
+            <Label fx:id="authorNameLabel" text="Label" />
+         </children>
+      </VBox>
+      <ImageView fx:id="starImage" fitHeight="19.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/general/5star.png" />
+         </image>
+      </ImageView>
+   </children>
+   <padding>
+      <Insets left="3.0" right="3.0" />
+   </padding>
+</HBox>

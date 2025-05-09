@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="contentBox" alignment="CENTER" prefHeight="625.0" prefWidth="567.0"  xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.BookRankingController">
+   <children>
+      <HBox prefHeight="55.0" prefWidth="850.0" spacing="30.0">
+         <children>
+            <Label  text="Bảng xếp hạng" textFill="#a64f3c" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="540.0" prefWidth="540.0"  VBox.vgrow="ALWAYS">
+         <content>
+            <VBox fx:id="rankingVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="498.0" spacing="10.0">
+               <padding>
+                  <Insets left="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </content>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </ScrollPane>
+   </children>
+   <padding>
+      <Insets bottom="30.0" />
+   </padding>
+</VBox>

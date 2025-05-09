@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="bookBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="601.0" prefWidth="567.0"  xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.BookController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="306.0" prefWidth="711.0" spacing="2.0"  VBox.vgrow="ALWAYS">
+         <children>
+            <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="286.0" prefWidth="111.0">
+               <children>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonAction" prefHeight="32.0" prefWidth="35.0" style="" textFill="WHITE">
+                     <graphic>
+                        <FontIcon iconLiteral="fth-arrow-left" iconSize="21" iconColor="#a64f3c" />
+                     </graphic>
+                  </Button>
+               </children>
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+            </VBox>
+            <StackPane prefHeight="311.0" prefWidth="159.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <ImageView fx:id="bookImage" fitHeight="232.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" >
+                     <image>
+                        <Image url="@../image/general/frame.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </StackPane>
+            <VBox prefHeight="306.0" prefWidth="443.0" spacing="10.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="294.0" spacing="10.0">
+                     <children>
+                        <Label fx:id="bookNameLabel" maxWidth="267.0"  text="Tên Sách" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="29.0" />
+                           </font>
+                        </Label>
+                        <Button mnemonicParsing="false" onMouseClicked="#onOpenPreviewMouseClicked" style="">
+                           <graphic>
+                              <FontIcon iconLiteral="fth-eye" iconSize="24" iconColor="#000000" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <Label fx:id="authorNameLabel" prefHeight="17.0" prefWidth="285.0"  text="Tên tác giả" textFill="#ff920c">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="starImage" fitHeight="25.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                     <image>
+                        <Image url="@../image/general/5star.png" />
+                     </image>
+                  </ImageView>
+                  <HBox alignment="BOTTOM_LEFT" prefHeight="80.0" prefWidth="452.0" spacing="100.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="reserveBookButton" mnemonicParsing="false" onAction="#onReserveBookButtonAction" prefHeight="25.0" prefWidth="135.0"  text="Đặt trước" textFill="WHITE" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="bookmarkButton" mnemonicParsing="false" onAction="#onBookmarkButtonAction" prefHeight="25.0" prefWidth="135.0"  text="Đánh dấu" textFill="#839500" HBox.hgrow="ALWAYS" />
+                     </children>
+                     <padding>
+                        <Insets bottom="30.0" right="10.0" />
+                     </padding>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets left="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="309.0" prefWidth="575.0"  VBox.vgrow="ALWAYS">
+         <children>
+            <VBox prefHeight="303.0" prefWidth="400.0" spacing="10.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="470.0"  text="Thể loại" VBox.vgrow="ALWAYS" />
+                  <HBox fx:id="categoryHbox" prefHeight="36.0" prefWidth="373.0" spacing="5.0">
+                     <padding>
+                        <Insets left="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <Label maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="362.0"  text="Nội dung" VBox.vgrow="ALWAYS" />
+                  <ScrollPane prefHeight="125.0" prefWidth="253.0" >
+                     <content>
+                        <Text fx:id="contentText" strokeType="OUTSIDE" strokeWidth="0.0"  text="Nội dung" wrappingWidth="368.13671875" />
+                     </content>
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                  </ScrollPane>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="319.0" prefWidth="342.0" spacing="5.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="8.0" prefWidth="195.0" >
+                     <children>
+                        <Label maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="212.0" text="Bình luận" HBox.hgrow="ALWAYS" />
+                        <ChoiceBox fx:id="starChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="67.0" style="" />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" right="5.0" />
+                     </padding>
+                  </HBox>
+                  <ScrollPane maxWidth="1.7976931348623157E308" prefHeight="222.0" prefWidth="195.0" >
+                     <content>
+                        <VBox fx:id="commentsVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="148.0" prefWidth="178.0" />
+                     </content>
+                  </ScrollPane>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets right="40.0" />
+   </padding>
+</VBox>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox fx:id="hBox" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onBookMouseClicked" prefHeight="140.0" prefWidth="278.0" spacing="15.0"   xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.HorizontalTypeBookCardController">
+   <children>
+      <ImageView fx:id="bookImage" fitHeight="124.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+         <image>
+            <Image url="@../image/default/book.png" />
+         </image>
+      </ImageView>
+      <VBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="110.0" prefWidth="171.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="bookNameLabel" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="155.0" text="Book name">
+               <font>
+                  <Font name="Berlin Sans FB Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="authorNameLabel" minHeight="-Infinity" minWidth="-Infinity" prefHeight="21.0" prefWidth="158.0" text="Author name">
+               <font>
+                  <Font name="Berlin Sans FB" size="18.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="starImage" fitHeight="24.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../image/general/5star.png" />
+               </image>
+            </ImageView>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+</HBox>

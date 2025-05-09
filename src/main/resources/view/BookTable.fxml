@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox fx:id="mainPane" prefHeight="602.0" prefWidth="890.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.BookTableController">
+   <children>
+      <StackPane prefHeight="150.0" prefWidth="200.0"  HBox.hgrow="ALWAYS">
+         <children>
+            <AnchorPane fx:id="tableBookPane" prefHeight="602.0" prefWidth="890.0" style="">
+               <children>
+                  <HBox layoutX="15.0" layoutY="186.0" prefHeight="35.0" prefWidth="856.0" style=""  AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="22.399999999999977">
+                     <children>
+                        <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="34.0" HBox.hgrow="NEVER">
+                           <children>
+                              <Label style="-fx-font-size: 13;"  text="Find:" />
+                           </children>
+                        </HBox>
+                        <GridPane HBox.hgrow="ALWAYS">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="ALWAYS" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="ALWAYS" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="ALWAYS" prefWidth="100.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="ALWAYS" maxWidth="130.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="ALWAYS" maxWidth="130.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="ALWAYS" maxWidth="130.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="NEVER" maxWidth="42.0" prefWidth="42.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                          </rowConstraints>
+                           <children>
+                              <TextField fx:id="ISBNFindText" alignment="CENTER" prefHeight="33.0" prefWidth="126.0" promptText="ISBN"  />
+                              <TextField fx:id="bookNameFindTExt" alignment="CENTER" prefHeight="33.0" prefWidth="126.0" promptText="Tên sách"  GridPane.columnIndex="1" />
+                              <TextField fx:id="authorFindText" alignment="CENTER" prefHeight="33.0" prefWidth="126.0" promptText="Tác giả"  GridPane.columnIndex="2" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5">
+                                 <children>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" />
+                                 </children></HBox>
+                              <Button fx:id="findButton" mnemonicParsing="false" onAction="#onFindButtonAction" GridPane.columnIndex="7">
+                                 <graphic>
+                                       <FontIcon iconLiteral="fth-search" iconSize="64"/>
+                                 </graphic>
+                              </Button>
+                              <ChoiceBox fx:id="statusFindBox" prefWidth="150.0"  GridPane.columnIndex="6" />
+                              <ChoiceBox fx:id="categoryChoiceBox" prefWidth="150.0"  GridPane.columnIndex="3" />
+                           </children>
+                        </GridPane>
+                        <HBox maxWidth="10.0" minWidth="10.0" prefHeight="35.0" prefWidth="10.0" />
+                     </children>
+                  </HBox>
+                  <AnchorPane layoutX="47.0" layoutY="236.0" prefHeight="337.0" prefWidth="821.0" style=" -fx-background-radius: 6.6;"  AnchorPane.bottomAnchor="28.800000000000068" AnchorPane.leftAnchor="47.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="236.0">
+                     <children>
+                        <HBox prefHeight="38.0" prefWidth="821.0" style=""  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <children>
+                              <GridPane prefHeight="38.0" prefWidth="821.0" HBox.hgrow="ALWAYS">
+                                <columnConstraints>
+                                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="130.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="130.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="130.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="42.0" prefWidth="42.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label  text="Tác giả" GridPane.columnIndex="2" />
+                                    <Label  text="ISBN" />
+                                    <Label  text="Tên sách" GridPane.columnIndex="1" />
+                                    <Label  text="Thể loại" GridPane.columnIndex="3" />
+                                    <Label  text="Số lượng" GridPane.columnIndex="4" />
+                                    <Label  text="Nơi để sách" GridPane.columnIndex="5" />
+                                    <Label  text="Trạng thái" GridPane.columnIndex="6" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </HBox>
+                        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="14.0" layoutY="39.2" prefHeight="299.0" prefWidth="811.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0">
+                           <content>
+                              <VBox fx:id="tableVbox" prefHeight="294.0" prefWidth="806.0" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="categoryTable" layoutX="401.0" layoutY="214.0" prefHeight="206.0" prefWidth="134.0" visible="false">
+                     <children>
+                        <ScrollPane prefHeight="222.0" prefWidth="134.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <content>
+                              <VBox fx:id="categoryList" prefHeight="25.0" prefWidth="118.0" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+                  <Button fx:id="addButton" layoutX="678.0" minHeight="56.0" minWidth="67.0" mnemonicParsing="false" onAction="#onAddButtonAction" prefHeight="56.0" prefWidth="60.0" style="-fx-font-size: 25;"   text="+" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="20.0" />
+                  <HBox layoutX="36.0" layoutY="66.0" prefHeight="100.0" prefWidth="824.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="29.600000000000023">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="211.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <AnchorPane prefHeight="100.0" prefWidth="186.0"  HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="" />
+                                    <Label fx:id="totalNumberBookLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;"  text="123233" />
+                                    <Label layoutX="16.0" layoutY="67.0"  text="Số sách hiện có" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="25.0" />
+                                 </HBox.margin>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="210.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <AnchorPane prefHeight="100.0" prefWidth="186.0"  HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="" />
+                                    <Label fx:id="totalNumberBorrowLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;"  text="123233" />
+                                    <Label layoutX="16.0" layoutY="67.0"  text="Số sách đang mượn" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="25.0" />
+                                 </HBox.margin>
+                              </AnchorPane>
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="212.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <AnchorPane prefHeight="100.0" prefWidth="186.0"  HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="" />
+                                    <Label fx:id="totalNumberIssueLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;"  text="123233" textFill="RED" />
+                                    <Label layoutX="16.0" layoutY="67.0"  text="Số sách đặt trước" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="25.0" />
+                                 </HBox.margin>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="189.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <AnchorPane prefHeight="100.0" prefWidth="186.0"  HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="" />
+                                    <Label fx:id="totalNumberLostLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;"  text="123233" />
+                                    <Label layoutX="16.0" layoutY="67.0"  text="Số sách bị mất" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+   </children>
+</HBox>

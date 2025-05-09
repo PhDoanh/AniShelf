@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<HBox fx:id="mainRowHbox" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="806.0"  xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.BookTableRowController">
+   <children>
+      <GridPane HBox.hgrow="ALWAYS">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="114.0" minWidth="10.0" prefWidth="84.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="42.0" minWidth="42.0" prefWidth="42.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="ISBNLabel" text="0930-4034-43443" />
+            <Label fx:id="bookNameLabel" text="Loi thi tham ong dong" GridPane.columnIndex="1" />
+            <Label fx:id="authorNameLabel" text="Nguyen Van C" GridPane.columnIndex="2" />
+            <Label fx:id="categoryLabel" text="Thể loại" GridPane.columnIndex="3" />
+            <Label fx:id="numberOfBookLabel" text="Số lượng" GridPane.columnIndex="4" />
+            <Label fx:id="locationLabel" text="Nơi để sách" GridPane.columnIndex="5" />
+            <Label fx:id="statusLabel" text="Available" GridPane.columnIndex="6" />
+         </children>
+      </GridPane>
+   </children>
+</HBox>
