@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="604.0" prefWidth="888.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.BorrowedBooksTableController">
+   <children>
+      <AnchorPane prefHeight="602.0" prefWidth="893.0" style=""  HBox.hgrow="ALWAYS">
+         <children>
+            <HBox layoutX="7.0" layoutY="68.0" prefHeight="45.0" prefWidth="843.0"  AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="35.19999999999993">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="46.0" HBox.hgrow="NEVER">
+                     <children>
+                        <Label  text="Filter:" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="46.0" prefWidth="714.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <TextField fx:id="memeberIDFindText" alignment="CENTER" promptText="Member_ID" HBox.hgrow="ALWAYS">
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <TextField fx:id="borrowerFindText" alignment="CENTER" promptText="Tên người mượn" HBox.hgrow="ALWAYS">
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <TextField fx:id="bookNameFindText" alignment="CENTER" promptText="Tên sách">
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <!-- Removed barcode input field -->
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <TextField fx:id="borrowDateFindText" alignment="CENTER" promptText="Ngày mượn">
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <ChoiceBox fx:id="statusFindBox" prefWidth="150.0"   />
+                              <Label  />
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="27.0">
+                     <children>
+                        <Button fx:id="findButton" mnemonicParsing="false" onAction="#onFindButtonAction">
+                           <graphic>
+                                 <FontIcon iconLiteral="fth-search" iconSize="64"/>
+                           </graphic>
+                           <HBox.margin>
+                              <Insets right="2.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <AnchorPane layoutX="38.0" layoutY="126.0" prefHeight="437.0" prefWidth="821.0" style=" -fx-background-radius: 6.6;"  AnchorPane.bottomAnchor="35.19999999999993" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="33.60000000000002" AnchorPane.topAnchor="129.5999999999999">
+               <children>
+                  <HBox prefHeight="38.0" prefWidth="810.0" style=""  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="12.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label  text="Member_ID">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label  text="Tên người mượn">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label  text="Tên sách">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label  text="BarCode">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label  text="Ngày mượn">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label  text="Trạng thái">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox layoutY="38.0" prefHeight="400.0" prefWidth="822.0" AnchorPane.bottomAnchor="5.684341886080802E-14" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="38.0">
+                     <children>
+                        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="400.0" prefWidth="822.0" vbarPolicy="ALWAYS" HBox.hgrow="ALWAYS">
+                           <content>
+                              <VBox fx:id="tableVbox" prefHeight="399.0" prefWidth="805.0" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAddButtonAction" style="-fx-font-size: 25;"   text="+" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="20.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</HBox>
