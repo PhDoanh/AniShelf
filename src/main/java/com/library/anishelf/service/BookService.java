@@ -1,7 +1,7 @@
 package com.library.anishelf.service;
 
 import com.github.benmanes.caffeine.cache.Cache;
-import com.library.anishelf.controller.UserMenuController;
+import com.library.anishelf.controller.NavigationBarController;
 import com.library.anishelf.dao.BookDAO;
 import com.library.anishelf.dao.BookIssueDAO;
 import com.library.anishelf.dao.BookMarkDAO;
@@ -68,7 +68,7 @@ public class BookService {
     public List<BookReservation> getPendingReservedBooks() throws SQLException {
         if (pendingReservedBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
-            criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
+            criteria.put("member_ID", NavigationBarController.getMember().getPerson().getId());
             criteria.put("BookReservationStatus", BookReservationStatus.WAITING);
 
             pendingReservedBooks = BookReservationDAO.getInstance().findByCriteria(criteria);
@@ -78,7 +78,7 @@ public class BookService {
 
     public List<BookMark> getBookmarks() throws SQLException {
         if (bookmarks == null) {
-            bookmarks = BookMarkDAO.getInstance().getAllBookMarksForMember(UserMenuController.getMember());
+            bookmarks = BookMarkDAO.getInstance().getAllBookMarksForMember(NavigationBarController.getMember());
         }
         return bookmarks;
     }
@@ -86,7 +86,7 @@ public class BookService {
     public List<BookIssue> getReturnedBooks() throws SQLException {
         if (returnedBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
-            criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
+            criteria.put("member_ID", NavigationBarController.getMember().getPerson().getId());
             criteria.put("BookIssueStatus", BookIssueStatus.RETURNED);
             returnedBooks = BookIssueDAO.getInstance().findByCriteria(criteria);
         }
@@ -96,7 +96,7 @@ public class BookService {
     public List<BookIssue> getCurrentlyBorrowedBooks() throws SQLException {
         if (currentlyBorrowedBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
-            criteria.put("member_ID", UserMenuController.getMember().getPerson().getId());
+            criteria.put("member_ID", NavigationBarController.getMember().getPerson().getId());
             criteria.put("BookIssueStatus", BookIssueStatus.BORROWED);
             currentlyBorrowedBooks = BookIssueDAO.getInstance().findByCriteria(criteria);
         }
