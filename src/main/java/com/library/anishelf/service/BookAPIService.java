@@ -26,10 +26,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 /**
  * Service tương tác với AniList GraphQL API để tìm kiếm manga/anime.
  * Chuyển đổi dữ liệu từ AniList sang đối tượng Book để tương thích với ứng dụng.
+ * Sử dụng đa luồng để cải thiện hiệu suất.
  */
 public class BookAPIService {
     private static final String ANILIST_API_URL = "https://graphql.anilist.co";
@@ -38,12 +43,33 @@ public class BookAPIService {
     private static final Random random = new Random(); // Dùng để tạo ID giống ISBN
     private static final RuntimeDebugUtil logger = RuntimeDebugUtil.getInstance();
     
+    // Tạo ExecutorService để quản lý các tác vụ bất đồng bộ
+    private static final ExecutorService executorService = Executors.newFixedThreadPool(5);
+    
     // Danh sách các từ khoá cần lọc nội dung người lớn
     private static final Set<String> ADULT_CONTENT_KEYWORDS = new HashSet<>(Arrays.asList(
             "hentai", "ecchi", "adult", "mature", "erotic", "erotica", "sex", "sexual", 
             "nsfw", "nude", "nudity", "pornography", "porn", "18+", "explicit"
     ));
 
+    /**
+     * Thực thi truy vấn GraphQL tới AniList API bất đồng bộ.
+     * 
+     * @param query Chuỗi truy vấn GraphQL 
+     * @param variables Các biến cho truy vấn GraphQL
+     * @return CompletableFuture chứa kết quả dạng JSONObject
+     */
+    private static CompletableFuture<JSONObject> executeGraphQLQueryAsync(String query, JSONObject variables) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return executeGraphQLQuery(query, variables);
+            } catch (IOException e) {
+                logger.error("BookAPIService", "Lỗi gọi API: " + e.getMessage(), e);
+                return null;
+            }
+        }, executorService);
+    }
+    
     /**
      * Thực thi truy vấn GraphQL tới AniList API.
      * 
@@ -63,7 +89,7 @@ public class BookAPIService {
                 requestBody.put("variables", variables);
             }
             
-            // Thiết lập header và entỉty
+            // Thiết lập header và entity
             httpPost.setHeader("Content-Type", "application/json");
             httpPost.setHeader("Accept", "application/json");
             httpPost.setEntity(new StringEntity(requestBody.toString(), StandardCharsets.UTF_8));
@@ -84,200 +110,275 @@ public class BookAPIService {
     }
 
     /**
-     * Tìm kiếm manga dựa theo từ khoá.
+     * Tìm kiếm manga dựa theo từ khoá bất đồng bộ.
      * 
      * @param title Từ khoá tìm kiếm
-     * @return Danh sách truyện tranhj phù hợp với từ khoá
+     * @param callback Callback xử lý kết quả khi hoàn thành
+     * @return CompletableFuture chứa danh sách truyện tranh phù hợp với từ khoá
      */
-    public static List<Book> searchBooksByKeyword(String title) {
+    public static CompletableFuture<List<Book>> searchBooksByKeywordAsync(String title, Consumer<List<Book>> callback) {
         if (title == null || title.trim().isEmpty()) {
-            return new ArrayList<>();
+            List<Book> emptyList = new ArrayList<>();
+            if (callback != null) {
+                callback.accept(emptyList);
+            }
+            return CompletableFuture.completedFuture(emptyList);
         }
         
         // Kiểm tra cache trước
         List<Book> cachedBooks = bookCache.getIfPresent(title);
         if (cachedBooks != null) {
             logger.info("BookAPIService", "Trả về kết quả từ cache cho từ khóa: " + title);
-            return cachedBooks;
+            if (callback != null) {
+                callback.accept(cachedBooks);
+            }
+            return CompletableFuture.completedFuture(cachedBooks);
         }
         
-        List<Book> books = new ArrayList<>();
+        // Định nghĩa truy vấn GraphQL để tìm kiếm manga theo tiêu đề
+        String query = "query ($search: String) {\n" +
+                       "  Page(page: 1, perPage: 20) {\n" +
+                       "    media(search: $search, type: MANGA, sort: POPULARITY_DESC) {\n" +
+                       "      id\n" +
+                       "      title {\n" +
+                       "        romaji\n" +
+                       "        english\n" +
+                       "        native\n" +
+                       "      }\n" +
+                       "      description\n" +
+                       "      coverImage {\n" +
+                       "        large\n" +
+                       "        medium\n" +
+                       "      }\n" +
+                       "      staff {\n" +
+                       "        edges {\n" +
+                       "          node {\n" +
+                       "            name {\n" +
+                       "              full\n" +
+                       "            }\n" +
+                       "          }\n" +
+                       "          role\n" +
+                       "        }\n" +
+                       "      }\n" +
+                       "      genres\n" +
+                       "      siteUrl\n" +
+                       "      isAdult\n" +
+                       "    }\n" +
+                       "  }\n" +
+                       "}";
         
-        try {
-            // Định nghĩa truy vấn GraphQL để tìm kiếm manga theo tiêu đề
-            String query = "query ($search: String) {\n" +
-                           "  Page(page: 1, perPage: 20) {\n" +
-                           "    media(search: $search, type: MANGA, sort: POPULARITY_DESC) {\n" +
-                           "      id\n" +
-                           "      title {\n" +
-                           "        romaji\n" +
-                           "        english\n" +
-                           "        native\n" +
-                           "      }\n" +
-                           "      description\n" +
-                           "      coverImage {\n" +
-                           "        large\n" +
-                           "        medium\n" +
-                           "      }\n" +
-                           "      staff {\n" +
-                           "        edges {\n" +
-                           "          node {\n" +
-                           "            name {\n" +
-                           "              full\n" +
-                           "            }\n" +
-                           "          }\n" +
-                           "          role\n" +
-                           "        }\n" +
-                           "      }\n" +
-                           "      genres\n" +
-                           "      siteUrl\n" +
-                           "      isAdult\n" +
-                           "    }\n" +
-                           "  }\n" +
-                           "}";
-            
-            // Thiết lập biến truy vấn
-            JSONObject variables = new JSONObject();
-            variables.put("search", title);
-            
-            // Thực thi truy vấn
-            JSONObject response = executeGraphQLQuery(query, variables);
+        // Thiết lập biến truy vấn
+        JSONObject variables = new JSONObject();
+        variables.put("search", title);
+        
+        // Thực thi truy vấn bất đồng bộ
+        return executeGraphQLQueryAsync(query, variables).thenApply(response -> {
+            List<Book> books = new ArrayList<>();
             
             if (response != null && !response.has("errors")) {
-                JSONArray media = response.getJSONObject("data")
-                                         .getJSONObject("Page")
-                                         .getJSONArray("media");
-                
-                logger.info("BookAPIService", "Tìm thấy " + media.length() + " kết quả từ AniList cho từ khóa: " + title);
-                
-                for (int i = 0; i < media.length() && books.size() < MAX_BOOK; i++) {
-                    JSONObject manga = media.getJSONObject(i);
+                try {
+                    JSONArray media = response.getJSONObject("data")
+                                             .getJSONObject("Page")
+                                             .getJSONArray("media");
                     
-                    // Kiểm tra nội dung người lớn
-                    if (containsAdultContent(manga)) {
-                        logger.debug("BookAPIService", "Bỏ qua nội dung người lớn: " + 
-                                manga.getJSONObject("title").optString("english", 
-                                manga.getJSONObject("title").optString("romaji")));
-                        continue;
-                    }
+                    logger.info("BookAPIService", "Tìm thấy " + media.length() + " kết quả từ AniList cho từ khóa: " + title);
                     
-                    // Chuyển đổi manga từ AniList thành đối tượng Book
-                    Book book = mapMangaToBook(manga);
-                    if (book != null) {
-                        books.add(book);
+                    for (int i = 0; i < media.length() && books.size() < MAX_BOOK; i++) {
+                        JSONObject manga = media.getJSONObject(i);
+                        
+                        // Kiểm tra nội dung người lớn
+                        if (containsAdultContent(manga)) {
+                            logger.debug("BookAPIService", "Bỏ qua nội dung người lớn: " + 
+                                    manga.getJSONObject("title").optString("english", 
+                                    manga.getJSONObject("title").optString("romaji")));
+                            continue;
+                        }
+                        
+                        // Chuyển đổi manga từ AniList thành đối tượng Book
+                        Book book = mapMangaToBook(manga);
+                        if (book != null) {
+                            books.add(book);
+                        }
                     }
+                } catch (Exception e) {
+                    logger.error("BookAPIService", "Lỗi khi xử lý dữ liệu: " + e.getMessage(), e);
                 }
             }
             
             // Lưu kết quả vào cache
-            bookCache.put(title, books);
-            logger.info("BookAPIService", "Đã lưu " + books.size() + " sách vào cache cho từ khóa: " + title);
+            if (!books.isEmpty()) {
+                bookCache.put(title, books);
+                logger.info("BookAPIService", "Đã lưu " + books.size() + " sách vào cache cho từ khóa: " + title);
+            }
             
-        } catch (Exception e) {
-            logger.error("BookAPIService", "Lỗi khi tìm kiếm truyện: " + e.getMessage(), e);
-        }
-        
-        return books;
+            // Gọi callback nếu được cung cấp
+            if (callback != null) {
+                callback.accept(books);
+            }
+            
+            return books;
+        }).exceptionally(ex -> {
+            logger.error("BookAPIService", "Lỗi khi tìm kiếm truyện bất đồng bộ: " + ex.getMessage(), ex);
+            List<Book> emptyList = new ArrayList<>();
+            if (callback != null) {
+                callback.accept(emptyList);
+            }
+            return emptyList;
+        });
     }
 
     /**
-     * Tìm kiếm manga theo ID (được dùng như thay thế ISBN).
+     * Tìm kiếm manga dựa theo từ khoá (Phương thức đồng bộ cho tương thích ngược).
+     * 
+     * @param title Từ khoá tìm kiếm
+     * @return Danh sách truyện tranh phù hợp với từ khoá
+     */
+    public static List<Book> searchBooksByKeyword(String title) {
+        try {
+            // Gọi phương thức bất đồng bộ và đợi kết quả
+            return searchBooksByKeywordAsync(title, null).get();
+        } catch (Exception e) {
+            logger.error("BookAPIService", "Lỗi khi tìm kiếm truyện đồng bộ: " + e.getMessage(), e);
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Tìm kiếm manga theo ID (được dùng như thay thế ISBN) bất đồng bộ.
      * 
      * @param id ID AniList hoặc chuỗi giống ISBN
-     * @return Đối tượng Book nếu tìm thấy, null nếu không
+     * @param callback Callback xử lý kết quả khi hoàn thành
+     * @return CompletableFuture chứa đối tượng Book nếu tìm thấy, null nếu không
      */
-    public static Book searchBookByISBN(String id) {
+    public static CompletableFuture<Book> searchBookByISBNAsync(String id, Consumer<Book> callback) {
         if (id == null || id.trim().isEmpty()) {
-            return null;
+            if (callback != null) {
+                callback.accept(null);
+            }
+            return CompletableFuture.completedFuture(null);
         }
         
         // Kiểm tra cache trước
         List<Book> cachedBooks = bookCache.getIfPresent(id);
         if (cachedBooks != null && !cachedBooks.isEmpty()) {
             logger.info("BookAPIService", "Trả về kết quả từ cache cho ID: " + id);
-            return cachedBooks.get(0);
+            Book result = cachedBooks.get(0);
+            if (callback != null) {
+                callback.accept(result);
+            }
+            return CompletableFuture.completedFuture(result);
         }
         
+        int mediaId;
         try {
-            int mediaId;
-            try {
-                mediaId = Integer.parseInt(id);
-            } catch (NumberFormatException e) {
-                // Nếu ID không phải ID hợp lệ của AniList, thử tìm theo tiêu đề
-                logger.debug("BookAPIService", "ID không hợp lệ, thử tìm theo từ khóa: " + id);
-                List<Book> books = searchBooksByKeyword(id);
-                if (!books.isEmpty()) {
-                    return books.get(0);
+            mediaId = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            // Nếu ID không phải ID hợp lệ của AniList, thử tìm theo tiêu đề bất đồng bộ
+            logger.debug("BookAPIService", "ID không hợp lệ, thử tìm theo từ khóa: " + id);
+            return searchBooksByKeywordAsync(id, null).thenApply(books -> {
+                Book result = books.isEmpty() ? null : books.get(0);
+                if (callback != null) {
+                    callback.accept(result);
                 }
-                return null;
-            }
-            
-            // Định nghĩa truy vấn GraphQL để lấy manga theo ID
-            String query = "query ($id: Int) {\n" +
-                           "  Media(id: $id, type: MANGA) {\n" +
-                           "    id\n" +
-                           "    title {\n" +
-                           "      romaji\n" +
-                           "      english\n" +
-                           "      native\n" +
-                           "    }\n" +
-                           "    description\n" +
-                           "    coverImage {\n" +
-                           "      large\n" +
-                           "      medium\n" +
-                           "    }\n" +
-                           "    staff {\n" +
-                           "      edges {\n" +
-                           "        node {\n" +
-                           "          name {\n" +
-                           "            full\n" +
-                           "          }\n" +
-                           "        }\n" +
-                           "        role\n" +
-                           "      }\n" +
-                           "    }\n" +
-                           "    genres\n" +
-                           "    siteUrl\n" +
-                           "    isAdult\n" +
-                           "  }\n" +
-                           "}";
-            
-            // Thiết lập biến truy vấn
-            JSONObject variables = new JSONObject();
-            variables.put("id", mediaId);
-            
-            // Thực thi truy vấn
-            JSONObject response = executeGraphQLQuery(query, variables);
+                return result;
+            });
+        }
+        
+        // Định nghĩa truy vấn GraphQL để lấy manga theo ID
+        String query = "query ($id: Int) {\n" +
+                       "  Media(id: $id, type: MANGA) {\n" +
+                       "    id\n" +
+                       "    title {\n" +
+                       "      romaji\n" +
+                       "      english\n" +
+                       "      native\n" +
+                       "    }\n" +
+                       "    description\n" +
+                       "    coverImage {\n" +
+                       "      large\n" +
+                       "      medium\n" +
+                       "    }\n" +
+                       "    staff {\n" +
+                       "      edges {\n" +
+                       "        node {\n" +
+                       "          name {\n" +
+                       "            full\n" +
+                       "          }\n" +
+                       "        }\n" +
+                       "        role\n" +
+                       "      }\n" +
+                       "    }\n" +
+                       "    genres\n" +
+                       "    siteUrl\n" +
+                       "    isAdult\n" +
+                       "  }\n" +
+                       "}";
+        
+        // Thiết lập biến truy vấn
+        JSONObject variables = new JSONObject();
+        variables.put("id", mediaId);
+        
+        // Thực thi truy vấn bất đồng bộ
+        return executeGraphQLQueryAsync(query, variables).thenApply(response -> {
+            Book book = null;
             
             if (response != null && !response.has("errors") && response.getJSONObject("data").has("Media")) {
-                JSONObject manga = response.getJSONObject("data").getJSONObject("Media");
-                
-                // Kiểm tra nội dung người lớn
-                if (containsAdultContent(manga)) {
-                    logger.warning("BookAPIService", "Bỏ qua nội dung người lớn cho ID: " + id);
-                    return null;
-                }
-                
-                // Chuyển đổi manga từ AniList thành đối tuợng Book
-                Book book = mapMangaToBook(manga);
-                
-                // Lưu kết quả vào cache
-                if (book != null) {
-                    List<Book> cacheList = new ArrayList<>();
-                    cacheList.add(book);
-                    bookCache.put(id, cacheList);
-                    logger.info("BookAPIService", "Đã lưu sách vào cache cho ID: " + id);
-                    return book;
+                try {
+                    JSONObject manga = response.getJSONObject("data").getJSONObject("Media");
+                    
+                    // Kiểm tra nội dung người lớn
+                    if (containsAdultContent(manga)) {
+                        logger.warning("BookAPIService", "Bỏ qua nội dung người lớn cho ID: " + id);
+                        return null;
+                    }
+                    
+                    // Chuyển đổi manga từ AniList thành đối tượng Book
+                    book = mapMangaToBook(manga);
+                    
+                    // Lưu kết quả vào cache
+                    if (book != null) {
+                        List<Book> cacheList = new ArrayList<>();
+                        cacheList.add(book);
+                        bookCache.put(id, cacheList);
+                        logger.info("BookAPIService", "Đã lưu sách vào cache cho ID: " + id);
+                    }
+                } catch (Exception e) {
+                    logger.error("BookAPIService", "Lỗi khi xử lý kết quả: " + e.getMessage(), e);
                 }
             }
             
-        } catch (Exception e) {
-            logger.error("BookAPIService", "Lỗi khi lấy truyện theo ID: " + e.getMessage(), e);
-        }
-        
-        return null;
+            // Gọi callback nếu được cung cấp
+            if (callback != null) {
+                callback.accept(book);
+            }
+            
+            return book;
+        }).exceptionally(ex -> {
+            logger.error("BookAPIService", "Lỗi khi tìm kiếm sách theo ID: " + ex.getMessage(), ex);
+            if (callback != null) {
+                callback.accept(null);
+            }
+            return null;
+        });
     }
 
+    /**
+     * Tìm kiếm manga theo ID (được dùng như thay thế ISBN) - Phương thức đồng bộ cho tương thích ngược.
+     * 
+     * @param id ID AniList hoặc chuỗi giống ISBN
+     * @return Đối tượng Book nếu tìm thấy, null nếu không
+     */
+    public static Book searchBookByISBN(String id) {
+        try {
+            // Gọi phương thức bất đồng bộ và đợi kết quả
+            return searchBookByISBNAsync(id, null).get();
+        } catch (Exception e) {
+            logger.error("BookAPIService", "Lỗi khi tìm kiếm sách theo ID đồng bộ: " + e.getMessage(), e);
+            return null;
+        }
+    }
+
+    // Phần còn lại các phương thức helper không thay đổi
     /**
      * Kiểm tra xem manga có chứa nội dung người lớn hay không.
      * 
@@ -391,7 +492,7 @@ public class BookAPIService {
                 authors.add(new Author("Tác giả không xác định"));
             }
             
-            // Lấy thể lọai như các danh mục
+            // Lấy thể loại như các danh mục
             List<Category> categories = new ArrayList<>();
             JSONArray genres = manga.optJSONArray("genres");
             if (genres != null) {
@@ -494,27 +595,49 @@ public class BookAPIService {
     }
 
     /**
+     * Đóng executor service khi ứng dụng kết thúc.
+     * Nên gọi phương thức này khi ứng dụng đóng.
+     */
+    public static void shutdown() {
+        executorService.shutdown();
+        logger.info("BookAPIService", "Đã đóng executor service");
+    }
+
+    /**
      * Phương thức kiểm tra cho service.
      */
     public static void main(String[] args) {
-        // Thử tìm kiếm theo từ khoá
-        List<Book> books = searchBooksByKeyword("One Piece");
-        for (Book book : books) {
-            book.setQuantity(10);
-            try {
-                if (BookDAO.getInstance().findById(book.getIsbn()) == null) {
-                    BookDAO.getInstance().insert(book);
+        // Thử tìm kiếm bất đồng bộ
+        searchBooksByKeywordAsync("One Piece", books -> {
+            System.out.println("Tìm thấy " + books.size() + " sách với từ khóa 'One Piece'");
+            for (Book book : books) {
+                System.out.println(book.getIsbn() + " " + book.getTitle());
+                book.setQuantity(10);
+                try {
+                    if (BookDAO.getInstance().findById(book.getIsbn()) == null) {
+                        BookDAO.getInstance().insert(book);
+                    }
+                } catch (Exception e) {
+                    logger.error("BookAPIService", "Lỗi khi thêm sách vào CSDL: " + e.getMessage(), e);
                 }
-            } catch (Exception e) {
-                logger.error("BookAPIService", "Lỗi khi thêm sách vào CSDL: " + e.getMessage(), e);
             }
-            System.out.println(book.getIsbn() + " " + book.getTitle());
+        });
+        
+        // Thử tìm theo ID bất đồng bộ
+        searchBookByISBNAsync("21", book -> {  // ID của One Piece trong AniList
+            if (book != null) {
+                System.out.println("Tìm thấy bằng ID: " + book.getTitle());
+            }
+        });
+        
+        // Đợi hoàn thành để xem kết quả trong phương thức main
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         
-        // Thứ tìm theo ID
-        Book book = searchBookByISBN("21");  // ID của One Piece trong AniList
-        if (book != null) {
-            System.out.println("Tìm thấy bằng ID: " + book.getTitle());
-        }
+        // Đóng executor service khi test xong
+        shutdown();
     }
 }
