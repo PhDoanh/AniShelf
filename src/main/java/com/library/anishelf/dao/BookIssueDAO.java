@@ -1,5 +1,8 @@
 package com.library.anishelf.dao;
 
+import com.library.anishelf.model.Member;
+import com.library.anishelf.model.BookItem;
+import com.library.anishelf.model.enums.BookItemStatus;
 import com.library.anishelf.model.BookIssue;
 import com.library.anishelf.model.enums.BookIssueStatus;
 import com.library.anishelf.util.RuntimeDebugUtil;
@@ -694,5 +697,41 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
         } catch (SQLException e) {
             logger.error(TAG, "Error closing resources: " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * Tạo BookIssue mới cho sách có ISBN cụ thể
+     * @param member Thành viên mượn sách
+     * @param isbn ISBN của sách cần mượn
+     * @param issueDate Ngày mượn
+     * @param dueDate Ngày hẹn trả
+     * @return BookIssue đã tạo hoặc null nếu không có sách có sẵn
+     * @throws SQLException nếu có lỗi xảy ra khi thao tác database
+     */
+    public BookIssue createBookIssueByISBN(Member member, long isbn, String issueDate, String dueDate) throws SQLException {
+        logger.debug(TAG, "Tạo mượn sách mới theo ISBN: " + isbn + " cho thành viên: " + member.getPerson().getId());
+        
+        // Tìm BookItem có sẵn đầu tiên với ISBN tương ứng
+        BookItem bookItem = bookItemDAO.findFirstAvailableBookItemByISBN(isbn);
+        
+        if (bookItem == null) {
+            logger.warning(TAG, "Không tìm thấy bản sao nào có sẵn của sách có ISBN: " + isbn);
+            return null;
+        }
+        
+        // Tạo đối tượng BookIssue
+        BookIssue bookIssue = new BookIssue(0, member, bookItem, issueDate, dueDate, null, BookIssueStatus.BORROWED);
+        
+        // Lưu vào cơ sở dữ liệu
+        insert(bookIssue);
+        
+        // Cập nhật trạng thái của BookItem thành LOANED
+        bookItem.setBookItemStatus(BookItemStatus.LOANED);
+        bookItemDAO.updateEntity(bookItem);
+        
+        logger.info(TAG, "Đã tạo mượn sách thành công với ID: " + bookIssue.getIssueID() + 
+                   ", barcode: " + bookItem.getBookBarcode());
+        
+        return bookIssue;
     }
 }
