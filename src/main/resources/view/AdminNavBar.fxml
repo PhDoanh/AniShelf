@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="950.0"  xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.AdminNavBarController">
+   <children>
+      <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0">
+         <top>
+            <HBox prefHeight="70.0" prefWidth="950.0" style="" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="70.0" prefWidth="286.0">
+                     <children>
+                        <AnchorPane prefHeight="90.0" prefWidth="474.0" HBox.hgrow="NEVER">
+                           <children>
+                              <ImageView fx:id="logo" fitHeight="51.0" fitWidth="67.0" layoutX="29.7" layoutY="9.24" onDragDetected="#onLogoAction" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/app_logo.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="90.0" prefWidth="564.0" HBox.hgrow="ALWAYS" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane prefHeight="90.0" prefWidth="209.0" HBox.hgrow="NEVER" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <HBox nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" style="" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox fx:id="menuBar" maxWidth="62.0" minWidth="62.0" prefHeight="605.0" prefWidth="62.0" style=""  HBox.hgrow="ALWAYS">
+                     <children>
+                        <VBox>
+                           <children>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <FontIcon fx:id="openMenuIcon" iconLiteral="fth-maximize" iconSize="16" iconColor="#734e38" layoutX="48.0" layoutY="6.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <Button fx:id="addButton" alignment="BOTTOM_LEFT" layoutY="60.0" mnemonicParsing="false" onAction="#onAddButtonAction" prefHeight="45.0" prefWidth="56.0" style="-fx-font-size: 20; "  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+                                       <graphic>
+                                          <FontIcon iconLiteral="fth-plus-circle" iconSize="22" iconColor="#734e38"/>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="dashboardButton" alignment="BASELINE_LEFT" layoutY="102.0" mnemonicParsing="false" onAction="#onDashboardButtonAction" prefHeight="50.0" prefWidth="60.0" style="-fx-font-size: 20; "  textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="83.0">
+                                       <graphic>
+                                          <FontIcon iconLiteral="fth-home" iconSize="22" iconColor="#734e38"/>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="bookManagementButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onBookManagmentButtonAction" prefHeight="44.0" prefWidth="65.0" style="-fx-font-size: 20; " textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="133.0">
+                                       <graphic>
+                                          <FontIcon iconLiteral="fth-book" iconSize="22" iconColor="#734e38"/>
+                                       </graphic>
+                                       <padding>
+                                          <Insets left="14.0" />
+                                       </padding>
+                                    </Button>
+                                    <Button fx:id="borrowButton" alignment="BASELINE_LEFT" layoutY="153.0" mnemonicParsing="false" onAction="#onBorrowButtonAction" prefHeight="45.0" prefWidth="74.0" style="-fx-font-family: Cabin; -fx-font-size: 20; " textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="223.0">
+                                       <graphic>
+                                          <FontIcon iconLiteral="fth-shopping-cart" iconSize="22" iconColor="#734e38"/>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="readerManagementButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onReaderManagementButtonAction" prefHeight="42.0" prefWidth="42.0" style="-fx-font-size: 20; " textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="179.0">
+                                       <graphic>
+                                          <FontIcon iconLiteral="fth-users" iconSize="22" iconColor="#734e38"/>
+                                       </graphic>
+                                       <padding>
+                                          <Insets left="14.0" />
+                                       </padding>
+                                    </Button>
+                                    <Button fx:id="reservationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onReservationButtonAction" prefHeight="43.0" prefWidth="69.0" style="-fx-font-size: 20; " textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="269.0">
+                                       <graphic>
+                                          <FontIcon iconLiteral="fth-calendar" iconSize="22" iconColor="#734e38"/>
+                                       </graphic>
+                                       <padding>
+                                          <Insets left="14.0" />
+                                       </padding>
+                                    </Button>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                        <HBox VBox.vgrow="ALWAYS">
+                           <children>
+                              <AnchorPane layoutX="60.8" layoutY="60.8" prefHeight="185.0" prefWidth="46.0" style="" HBox.hgrow="SOMETIMES" />
+                           </children>
+                        </HBox>
+                        <VBox>
+                           <children>
+                              <HBox prefHeight="87.0" prefWidth="57.0" VBox.vgrow="NEVER">
+                                 <children>
+                                    <AnchorPane style="" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Button fx:id="settingButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onSettingButtonAction" prefHeight="43.0" prefWidth="50.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500;"  textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                             <graphic>
+                                                <FontIcon fx:id="settingIcon" iconLiteral="fth-settings" iconSize="22" iconColor="#734e38"/>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="logoutButton" alignment="BASELINE_LEFT" layoutY="44.0" mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="43.0" prefWidth="11.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500;"  textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                             <graphic>
+                                                <FontIcon fx:id="logoutIcon" iconLiteral="fth-log-out" iconSize="22" iconColor="#734e38"/>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <HBox fx:id="hBoxMain" prefHeight="606.0" prefWidth="861.0" style="" HBox.hgrow="SOMETIMES">
+                     <children>
+                        <AnchorPane prefHeight="606.0" prefWidth="867.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <AnchorPane fx:id="mainPane" prefHeight="606.0" prefWidth="887.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <AnchorPane fx:id="addTablePane" layoutY="80.0" prefHeight="245.0" prefWidth="325.0" style=" -fx-background-radius: 8;" visible="false" AnchorPane.leftAnchor="3.0">
+                                 <children>
+                                    <Label layoutX="85.0" layoutY="14.0" text="Bạn muốn thêm cái gì" />
+                                    <Button fx:id="addNewBorrowButtonAction" alignment="BASELINE_LEFT" layoutX="47.0" layoutY="50.0" mnemonicParsing="false" onAction="#onAddNewBorrowButtonAction" prefHeight="44.0" prefWidth="324.0"  text="Thêm đơn mượn sách mới" textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <graphic>
+                                          <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/general/aqua.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <padding>
+                                          <Insets left="30.0" />
+                                       </padding>
+                                    </Button>
+                                    <Button fx:id="addNewMemberButton" alignment="BASELINE_LEFT" layoutY="94.0" mnemonicParsing="false" onAction="#onAddNewMemberButtonAction" prefHeight="44.0" prefWidth="324.0"  text="Thêm bạn đọc mới" textOverrun="CLIP">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/general/blue.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <padding>
+                                          <Insets left="30.0" />
+                                       </padding>
+                                    </Button>
+                                    <Button fx:id="addNewBookButton" alignment="BASELINE_LEFT" layoutY="141.0" mnemonicParsing="false" onAction="#onAddNewBookButtonAction" prefHeight="44.0" prefWidth="324.0"  text="Thêm sách mới" textOverrun="CLIP">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/general/purple.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <padding>
+                                          <Insets left="30.0" />
+                                       </padding>
+                                    </Button>
+                                    <Button fx:id="addNewReservationButton" alignment="BASELINE_LEFT" layoutY="188.0" mnemonicParsing="false" onAction="#onAddNewReservationButtonAction" prefHeight="44.0" prefWidth="324.0"  text="Thêm đơn đặt trước" textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/general/light_gray.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <padding>
+                                          <Insets left="30.0" />
+                                       </padding>
+                                    </Button>
+                                    <Line endX="223.5" layoutX="145.0" layoutY="140.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" />
+                                    <Line endX="223.5" fill="#969696" layoutX="115.0" layoutY="46.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                    <Line endX="223.5" layoutX="125.0" layoutY="93.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" />
+                                    <Line endX="223.5" layoutX="135.0" layoutY="187.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" />
+                                    <Line endX="223.5" layoutX="108.0" layoutY="232.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </center>
+      </BorderPane>
+      <AnchorPane fx:id="overlay" opacity="0.5" prefHeight="200.0" prefWidth="200.0" style="" visible="false" />
+   </children>
+</StackPane>

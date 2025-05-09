@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane prefHeight="606.0" prefWidth="891.0"  xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.AdminHomePageController">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox prefHeight="64.0" prefWidth="891.0" VBox.vgrow="NEVER">
+               <children>
+                  <Label fx:id="titlePage" prefHeight="30.0" prefWidth="594.0" style="-fx-font-size: 26;"   text="Dashboard">
+                     <HBox.margin>
+                        <Insets left="56.0" top="26.0" />
+                     </HBox.margin>
+                  </Label>
+               </children></HBox>
+            <HBox maxHeight="300.0" prefHeight="162.0" prefWidth="891.0" VBox.vgrow="NEVER">
+               <children>
+                  <AnchorPane prefHeight="206.0" prefWidth="854.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <AnchorPane layoutX="43.0" prefHeight="94.0" prefWidth="215.0"  AnchorPane.leftAnchor="43.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label layoutX="15.0" layoutY="62.0"  text="Số người đọc" />
+                              <Label fx:id="totalReaderLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;"  text="390499534" AnchorPane.leftAnchor="59.2" AnchorPane.rightAnchor="26.400000000000006" />
+                              <Rectangle fill="#347bc8" height="30.0" layoutX="15.0" layoutY="22.0" stroke="TRANSPARENT" strokeType="INSIDE" width="30.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="43.0" layoutY="111.0" prefHeight="94.0" prefWidth="215.0"  AnchorPane.leftAnchor="43.0" AnchorPane.topAnchor="111.0">
+                           <children>
+                              <Label layoutX="15.0" layoutY="62.0"  text="Thống kê khác" />
+                              <Label fx:id="totalIssueLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;"  text="39" AnchorPane.leftAnchor="59.2" AnchorPane.rightAnchor="26.400000000000006" />
+                              <Rectangle fill="#d1d2d3" height="30.0" layoutX="15.0" layoutY="21.0" stroke="TRANSPARENT" strokeType="INSIDE" width="30.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="273.0" prefHeight="94.0" prefWidth="215.0"  AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label layoutX="15.0" layoutY="62.0"  text="Tổng số sách" />
+                              <Label fx:id="totalBookLabel" layoutX="59.0" layoutY="21.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-font-size: 25;"  text="2" AnchorPane.leftAnchor="59.0" AnchorPane.rightAnchor="26.400000000000006" />
+                              <Rectangle fill="#6a38d4" height="30.0" layoutX="15.0" layoutY="21.0" stroke="TRANSPARENT" strokeType="INSIDE" width="30.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="273.0" layoutY="111.0" prefHeight="94.0" prefWidth="215.0"  AnchorPane.topAnchor="111.0">
+                           <children>
+                              <Label layoutX="15.0" layoutY="62.0"  text="Số sách đang cho mượn" />
+                              <Label fx:id="totalBorrowLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;"  text="39" AnchorPane.leftAnchor="59.2" AnchorPane.rightAnchor="26.400000000000006" />
+                              <Rectangle fill="#07b2bf" height="30.0" layoutX="15.0" layoutY="21.0" stroke="TRANSPARENT" strokeType="INSIDE" width="30.0" />
+                           </children>
+                        </AnchorPane>
+                        <HBox layoutX="503.2" prefHeight="206.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="503.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane prefHeight="206.0" prefWidth="362.0"  HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label layoutX="14.0" layoutY="14.0"  text="Top book" />
+                                    <ScrollPane hbarPolicy="ALWAYS" layoutX="7.0" layoutY="39.2" prefHeight="190.0" prefWidth="360.0" style="" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="38.400000000000006">
+                                       <content>
+                                          <HBox fx:id="topBookHbox" prefHeight="152.0" prefWidth="359.0" />
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+            <HBox prefHeight="20.0" prefWidth="891.0" VBox.vgrow="NEVER" />
+            <HBox prefHeight="270.0" prefWidth="826.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <HBox prefHeight="270.0" prefWidth="850.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <AnchorPane prefHeight="270.0" prefWidth="850.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <AnchorPane layoutX="39.2" prefHeight="277.0" prefWidth="800.0"  AnchorPane.bottomAnchor="26.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Label layoutX="14.0" layoutY="14.0"  text="Biểu đồ sách cho mượn" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                                    <LineChart fx:id="lineChart" layoutX="-6.0" layoutY="38.0" prefHeight="228.0" prefWidth="790.0" AnchorPane.bottomAnchor="3.9999999999999716" AnchorPane.leftAnchor="-6.0" AnchorPane.rightAnchor="4.800000000000068" AnchorPane.topAnchor="38.0">
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </LineChart>
+                                    <ChoiceBox fx:id="dateReportBox" layoutX="266.0" layoutY="12.0" prefHeight="30.0" prefWidth="109.0" style=""  AnchorPane.rightAnchor="137.19999999999993" />
+                                    <ChoiceBox fx:id="dateReportBox2" layoutX="391.0" layoutY="12.0" prefHeight="30.0" prefWidth="109.0" style=""  AnchorPane.rightAnchor="15.400000000000006" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+                  <!-- Removed recent issues section -->
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
