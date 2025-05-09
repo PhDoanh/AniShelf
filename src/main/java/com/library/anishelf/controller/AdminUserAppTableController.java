@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
 
-public class AdminUserAppTableController extends BaseTableController<Member, AdminUserPageController, AdminUserTableRowController> {
+public class AdminUserAppTableController extends BaseTableController<Member, AdminUserPageController, AdminUserAppTableRowController> {
     protected static final String ROW_FXML_VIEW = "/view/AdminUserTableRow.fxml";
     @FXML
     private Button addButton;
