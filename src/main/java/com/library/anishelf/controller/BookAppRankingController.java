@@ -32,7 +32,7 @@ public class BookAppRankingController implements Initializable {
                 fxmlLoader.setLocation(getClass().getResource("/view/BookRankingCard-view.fxml"));
                 HBox cardBox = fxmlLoader.load();
                 BookRankingCardController cardController = fxmlLoader.getController();
-                cardController.setData(highRankAppBooks.get(i),String.valueOf(i+1));
+                cardController.setDataItem(highRankAppBooks.get(i),String.valueOf(i+1));
                 rankingContainer.getChildren().add(cardBox);
             } catch (IOException e) {
                 e.printStackTrace();
