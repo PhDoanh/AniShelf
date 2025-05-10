@@ -92,13 +92,13 @@ public class BookCard2Controller {
             fxmlLoader.setLocation(resource);
             VBox newContent = fxmlLoader.load();
 
-            BookController bookController = fxmlLoader.getController();
-            if (bookController == null) {
-                System.err.println("Could not get BookController!");
+            BookAppController bookAppController = fxmlLoader.getController();
+            if (bookAppController == null) {
+                System.err.println("Could not get BookAppController!");
                 return;
             }
             
-            bookController.setBook(currentBook);
+            bookAppController.setCurrentBook(currentBook);
             
             // Update content in a JavaFX thread-safe manner using the singleton
             com.library.anishelf.util.fxmlLoader.getInstance().updateContentBox(newContent);

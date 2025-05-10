@@ -26,7 +26,7 @@ public class BookCard1Controller {
 
     private static final String BOOK_FXML_VIEW = "/view/Book-view.fxml";
 
-    private Book bookItem;
+    private Book currentBook;
     @FXML
     private Label writerNameLabel;
 
@@ -45,11 +45,11 @@ public class BookCard1Controller {
     private String [] colorsView = {"DABEEA","E0FFCC"};
 
     /**
-     * thiết lập dữ liệu cho bookItem card.
+     * thiết lập dữ liệu cho currentBook card.
      * @param book sách truyền vào
      */
     public void setDataBook(Book book) {
-        this.bookItem = book;
+        this.currentBook = book;
         nameOfBookLabel.setText(book.getTitle());
         String author = "";
         List<Author> authorList = book.getAuthors();
@@ -80,8 +80,8 @@ public class BookCard1Controller {
             // Prevent event bubbling for better handling
             mouseEvent.consume();
             
-            // Check if bookItem is null before proceeding
-            if (bookItem == null) {
+            // Check if currentBook is null before proceeding
+            if (currentBook == null) {
                 System.err.println("Book object is null!");
                 return;
             }
@@ -96,13 +96,13 @@ public class BookCard1Controller {
             fxmlLoader.setLocation(resource);
             VBox newContent = fxmlLoader.load();
 
-            BookController bookController = fxmlLoader.getController();
-            if (bookController == null) {
-                System.err.println("Could not get BookController!");
+            BookAppController bookAppController = fxmlLoader.getController();
+            if (bookAppController == null) {
+                System.err.println("Could not get BookAppController!");
                 return;
             }
             
-            bookController.setBook(bookItem);
+            bookAppController.setCurrentBook(currentBook);
             
             // Update content in a JavaFX thread-safe manner
             if (this.fxmlLoader != null) {
@@ -115,7 +115,7 @@ public class BookCard1Controller {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Error loading bookItem view: " + e.getMessage());
+            System.err.println("Error loading currentBook view: " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Unexpected error: " + e.getMessage());
