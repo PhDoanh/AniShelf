@@ -13,7 +13,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
          <children>
-            <Label fx:id="bookNameLabel"  text="Tên sách" />
+            <Label fx:id="bookNameLabel"  text="Tên truyện" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">

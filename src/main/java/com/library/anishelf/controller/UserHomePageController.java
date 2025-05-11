@@ -29,12 +29,12 @@ public class UserHomePageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Sử dụng UserService để lấy sách phổ biến
+        // Sử dụng UserService để lấy truyện phổ biến
         UserService popularBooksService = new UserService("getPopularBooks", null);
         if (popularBooksService.processOperation()) {
             popularBooks = (List<Book>) popularBooksService.getPayload();
         } else {
-            System.out.println("Lỗi lấy sách phổ biến.");
+            System.out.println("Lỗi lấy truyện phổ biến.");
             popularBooks = new ArrayList<>(); // Initialize empty list to avoid NPE
         }
 
@@ -42,7 +42,7 @@ public class UserHomePageController implements Initializable {
         popularHBox.setSpacing(15);
         popularHBox.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
         
-        // Thêm sách phổ biến vào HBox
+        // Thêm truyện phổ biến vào HBox
         int popularCount = Math.min(popularBooks.size(), MAX_DISPLAYED_BOOKS);
         for (int i = 0; i < popularCount; i++) {
             try {
@@ -57,12 +57,12 @@ public class UserHomePageController implements Initializable {
             }
         }
 
-        // Sử dụng UserService để lấy sách xếp hạng cao
+        // Sử dụng UserService để lấy truyện xếp hạng cao
         UserService highRankBooksService = new UserService("getHighRankBooks", null);
         if (highRankBooksService.processOperation()) {
             highRankBooks = (List<Book>) highRankBooksService.getPayload();
         } else {
-            System.out.println("Lỗi lấy sách xếp hạng cao.");
+            System.out.println("Lỗi lấy truyện xếp hạng cao.");
             highRankBooks = new ArrayList<>(); // Initialize empty list to avoid NPE
         }
 
@@ -70,7 +70,7 @@ public class UserHomePageController implements Initializable {
         highRankHBox.setSpacing(15);
         highRankHBox.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
         
-        // Thêm sách xếp hạng cao vào HBox
+        // Thêm truyện xếp hạng cao vào HBox
         int highRankCount = Math.min(highRankBooks.size(), MAX_DISPLAYED_BOOKS);
         for (int i = 0; i < highRankCount; i++) {
             try {

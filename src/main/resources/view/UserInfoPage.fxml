@@ -161,7 +161,7 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label  text="Tên sách" />
+                                                      <Label  text="Tên truyện" />
                                                    </children>
                                                 </HBox>
                                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">

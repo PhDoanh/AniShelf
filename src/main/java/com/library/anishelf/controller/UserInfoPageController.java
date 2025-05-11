@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.service.AdminService;
 import com.library.anishelf.service.ServiceHandler;
 import com.library.anishelf.dao.BookIssueDAO;
@@ -190,27 +191,27 @@ public class UserInfoPageController extends BaseDetailController<Member> {
     protected boolean validateInput() {
         // Kiểm tra xem tên không được rỗng
         if (memberNameText.getText() == null || memberNameText.getText().isEmpty()) {
-            CustomerAlter.showMessage("Tên không được để trống.");
+            NotificationManagerUtil.showInfo("Tên không được để trống.");
             return false;
         }
 
         // Kiểm tra định dạng email hợp lệ
         String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         if (emailText.getText()== null || !emailText.getText().matches(emailRegex)) {
-            CustomerAlter.showMessage("Email không hợp lệ");
+            NotificationManagerUtil.showInfo("Email không hợp lệ");
             return false;
         }
 
         // Kiểm tra số điện thoại không rỗng và chỉ chứa số
         String phoneRegex = "^[0-9]{10,15}$"; // Ví dụ: chỉ chứa từ 10 đến 15 chữ số
         if (phoneNumberText.getText()== null || !phoneNumberText.getText().matches(phoneRegex)) {
-            CustomerAlter.showMessage("Số điện thoại không hợp lệ.");
+            NotificationManagerUtil.showInfo("Số điện thoại không hợp lệ.");
             return false;
         }
 
         // Kiểm tra giới tính không được rỗng
         if (genderBox.getValue() == null) {
-            CustomerAlter.showMessage("Giới tính không được để trống.");
+            NotificationManagerUtil.showInfo("Giới tính không được để trống.");
             return false;
         }
 
@@ -305,20 +306,21 @@ public class UserInfoPageController extends BaseDetailController<Member> {
 
     @FXML
     void onDeleteButtonAction(ActionEvent event) {
-        boolean confrimYes = CustomerAlter.showAlter("Bạn muốn xóa người dùng này?");
-        if (confrimYes) {
-            ServiceHandler deleteServiceHandler = new AdminService("delete", this.item);
-            serviceInvoker.setServiceHandler(deleteServiceHandler);
-            if (serviceInvoker.invokeService()) {
-                mainController.loadData();
-                loadStartStatus();
-                System.out.println("Đã xóa người dùng");
+        NotificationManagerUtil.showConfirmation("Xóa người dùng này?", confirmed -> {
+            if (confirmed) {
+                ServiceHandler deleteServiceHandler = new AdminService("delete", this.item);
+                serviceInvoker.setServiceHandler(deleteServiceHandler);
+                if (serviceInvoker.invokeService()) {
+                    mainController.loadData();
+                    loadStartStatus();
+                    System.out.println("Đã xóa người dùng");
+                } else {
+                    NotificationManagerUtil.showError("Xóa người dùng thất bại");
+                }
             } else {
-                CustomerAlter.showMessage("Xóa người dùng thất bại");
+                System.out.println("Tiếp tục edit");
             }
-        } else {
-            System.out.println("Tiếp tục edit");
-        }
+        });
     }
 
 

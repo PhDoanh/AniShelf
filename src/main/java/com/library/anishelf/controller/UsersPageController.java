@@ -18,8 +18,6 @@ public class UsersPageController extends BasePageController<Member, UserInfoPage
 
     @FXML
     private AnchorPane userTableLocationPane;
-    @FXML
-    protected Label titlePage;
 
     @Override
     protected String getDetailFXMLPath() {
@@ -48,9 +46,5 @@ public class UsersPageController extends BasePageController<Member, UserInfoPage
     @Override
     public  void startPage() {
 
-    }
-    @Override
-    public void setTitlePage() {
-        titlePage.setText("Quản lý độc giả");
     }
 }

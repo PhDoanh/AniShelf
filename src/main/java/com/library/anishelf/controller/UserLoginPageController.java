@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.service.ServiceHandler;
 import com.library.anishelf.service.AuthenticationService;
 import com.library.anishelf.model.enums.Role;
@@ -15,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import atlantafx.base.controls.ToggleSwitch;
 
 import java.io.IOException;
@@ -81,7 +81,7 @@ public class UserLoginPageController extends BasicController {
             serviceInvoker.invokeService();
 
         } else {
-            CustomerAlter.showMessage("Không được để trống!");
+            NotificationManagerUtil.showInfo("Thông tin đăng nhập không được để trống");
         }
     }
 

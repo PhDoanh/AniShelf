@@ -43,7 +43,7 @@
                      </font>
                   </Label>
                   <ChoiceBox fx:id="genderChoiceBox" prefHeight="31.0" prefWidth="150.0"  />
-                  <Label  text="Ngày/tháng/năm sinh" textFill="#a64f3c">
+                  <Label  text="Ngày sinh" textFill="#a64f3c">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -55,7 +55,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="phoneText"  />
-                  <Label  text="email" textFill="#a64f3c">
+                  <Label  text="Địa chỉ email" textFill="#a64f3c">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -74,8 +74,8 @@
                      </image>
                   </ImageView>
                   <Label fx:id="userIDText"  text="userID" />
-                  <Button mnemonicParsing="false" onAction="#onLoadImageButtonAction"  text="Tải lên ảnh" />
-                  <Button mnemonicParsing="false" onAction="#onSaveButtonAction"  text="Save" />
+                  <Button mnemonicParsing="false" onAction="#onLoadImageButtonAction"  text="Cập nhật ảnh đại diện" />
+                  <Button mnemonicParsing="false" onAction="#onSaveButtonAction"  text="Lưu các thay đổi" />
                </children>
             </VBox>
          </children>

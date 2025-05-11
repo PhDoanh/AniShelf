@@ -26,6 +26,5 @@
             </AnchorPane>
          </children>
       </HBox>
-      <Label fx:id="titlePage" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="594.0" style="-fx-font-size: 26;"   text="Label" AnchorPane.leftAnchor="56.0" AnchorPane.topAnchor="26.0" />
    </children>
 </AnchorPane>

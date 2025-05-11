@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.dao.MemberDAO;
 import com.library.anishelf.model.enums.Gender;
 import com.library.anishelf.util.SceneManagerUtil;
@@ -54,7 +55,7 @@ public class ProfilePageController {
     private Path tempTargetImagePath = null; // Đường dẫn tệp ảnh tạm trong target
 
     public void initialize() {
-        genderChoiceBox.getItems().addAll("nữ", "nam", "bê đê slay");
+        genderChoiceBox.getItems().addAll("Nữ", "Nam", "Khác");
         showInfo();
         
         // Đảm bảo không có ảnh tạm từ phiên trước
@@ -168,7 +169,7 @@ public class ProfilePageController {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                CustomerAlter.showMessage("Lỗi khi xử lý ảnh: " + e.getMessage());
+                NotificationManagerUtil.showError("Lỗi xử lý ảnh tải lên");
             }
         }
     }
@@ -252,16 +253,16 @@ public class ProfilePageController {
             hasUnsavedImage = false;
             
             // Thông báo thành công
-            CustomerAlter.showMessage("Đã lưu thành công");
+            NotificationManagerUtil.showInfo("Cập nhật hồ sơ thành công");
             
         } catch (SQLException e) {
-            CustomerAlter.showMessage("Lỗi khi cập nhật cơ sở dữ liệu: " + e.getMessage());
+            NotificationManagerUtil.showError("Lỗi cập nhật cơ sở dữ liệu: " + e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            CustomerAlter.showMessage("Lỗi khi xử lý tệp: " + e.getMessage());
+            NotificationManagerUtil.showError("Lỗi xử lý tệp: " + e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
-            CustomerAlter.showMessage("Lỗi không xác định: " + e.getMessage());
+            NotificationManagerUtil.showError("Lỗi không xác định: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -292,11 +293,11 @@ public class ProfilePageController {
      */
     private String getGender(String genderEnum) {
         if(genderEnum.equals("MALE")) {
-            return "nam";
+            return "Nam";
         } else if(genderEnum.equals("FEMALE")) {
-            return "nữ";
+            return "Nữ";
         }
-        return "bê đê slay";
+        return "Khác";
     }
 
     /**
@@ -305,9 +306,9 @@ public class ProfilePageController {
      * @return enum
      */
     private Gender getGenderEnum(String gender) {
-        if(gender.equals("nữ")) {
+        if(gender.equals("Nữ")) {
             return Gender.FEMALE;
-        } else if(gender.equals("nam")) {
+        } else if(gender.equals("Nam")) {
             return Gender.MALE;
         }
         return Gender.OTHER;
