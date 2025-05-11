@@ -14,18 +14,6 @@
 
 <VBox fx:id="contentBox" alignment="CENTER" prefHeight="602.0" prefWidth="850.0" spacing="5.0"  xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.ReservedBorrowedHistoryPageController">
    <children>
-      <HBox prefHeight="22.0" prefWidth="750.0" spacing="50.0">
-         <children>
-            <Label  text="Lịch sử mượn/đặt sách" textFill="#a64f3c" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font name="System Bold" size="28.0" />
-               </font>
-            </Label>
-         </children>
-         <padding>
-            <Insets left="10.0" top="10.0" />
-         </padding>
-      </HBox>
       <VBox prefHeight="560.0" prefWidth="850.0" spacing="5.0" VBox.vgrow="ALWAYS">
          <children>
             <HBox prefHeight="253.0" prefWidth="750.0" spacing="20.0" VBox.vgrow="ALWAYS">
@@ -46,7 +34,7 @@
                   </VBox>
                   <VBox prefHeight="232.0" prefWidth="247.0" spacing="5.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label  text="Đã đặt trước" VBox.vgrow="ALWAYS">
+                        <Label  text="Đã đặt trước:" VBox.vgrow="ALWAYS">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -62,7 +50,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="16.0" prefWidth="750.0" spacing="10.0">
                <children>
-                  <Label  text="Bộ sưu tập sách đã mượn:">
+                  <Label  text="Bộ sưu tập của tôi:">
                      <font>
                         <Font size="24.0" />
                      </font>

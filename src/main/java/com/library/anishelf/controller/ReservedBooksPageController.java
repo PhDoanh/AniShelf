@@ -24,9 +24,6 @@ public class ReservedBooksPageController extends BasePageController<BookReservat
     @FXML
     private Button returnButton;
 
-    @FXML
-    private Label titlePage;
-
     @Override
     protected String getDetailFXMLPath() {
         return DETAIL_FXML;
@@ -50,7 +47,7 @@ public class ReservedBooksPageController extends BasePageController<BookReservat
 
     @FXML
     void onReturnButtonAction(ActionEvent event) {
-        while (getTitlePageStack().peek() != "Quản lý đặt trước sách") {
+        while (getTitlePageStack().peek() != "Quản lý đặt trước truyện") {
             getTitlePageStack().pop();
         }
         loadData();
@@ -71,7 +68,6 @@ public class ReservedBooksPageController extends BasePageController<BookReservat
     @Override
     public void startPage() {
         page1 = true;
-        setTitlePage();
         detailPage.setVisible(false);
         tablePage.setVisible(true);
         loadData();

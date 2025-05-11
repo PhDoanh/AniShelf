@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.util.CacheManagerUtil;
 import com.library.anishelf.dao.BookIssueDAO;
 import com.library.anishelf.model.BookItem;
@@ -196,15 +197,15 @@ public class ReservedBookInfoController extends BaseDetailController<BookReserva
     @Override
     protected boolean getNewItemInformation() throws Exception {
         if (member == null) {
-            CustomerAlter.showMessage("Hãy điền bạn đọc vào!");
+            NotificationManagerUtil.showInfo("Vui lòng điền thông tin thành viên!");
             return false;
         }
         if (bookItem == null) {
-            CustomerAlter.showMessage("Hãy điền thông tin sách mượn vào!");
+            NotificationManagerUtil.showInfo("Vui lòng điền thông tin truyện!");
             return false;
         }
         if (borowDateText == null) {
-            CustomerAlter.showMessage("Không được để trống ngày mượn!");
+            NotificationManagerUtil.showInfo("Vui lòng điền ngày mượn!");
             return false;
         }
         String reformattedDate = reformatDate(borowDateText.getText());
@@ -218,7 +219,7 @@ public class ReservedBookInfoController extends BaseDetailController<BookReserva
     }
     @Override
     public String getType() {
-        return "đơn đặt sách";
+        return "đơn đặt truyện";
     }
 
     @FXML

@@ -45,7 +45,7 @@
                                                             <AnchorPane prefHeight="268.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
                                                                <children>
 
-                                                                  <Label layoutX="16.0" layoutY="19.0" style="-fx-font-size: 20;"  text="Người mượn sách" />
+                                                                  <Label layoutX="16.0" layoutY="19.0" style="-fx-font-size: 20;"  text="Người mượn truyện" />
                                                                   <GridPane layoutX="31.0" layoutY="52.0" maxHeight="300.0" prefHeight="203.0" prefWidth="214.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="52.0">
                                                                      <columnConstraints>
                                                                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
@@ -91,7 +91,7 @@
                                                                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
                                                                            <children>
 
-                                                                              <Label prefHeight="22.0" prefWidth="154.0" style="-fx-font-size: 13;"  text="Tổng số sách đang mượn:" />
+                                                                              <Label prefHeight="22.0" prefWidth="154.0" style="-fx-font-size: 13;"  text="Tổng số truyện đang mượn:" />
                                                                               <TextField fx:id="totalOFBorrowText" editable="false" prefHeight="33.0" prefWidth="63.0"  text="01" HBox.hgrow="ALWAYS" />
                                                                            </children>
                                                                         </HBox>
@@ -105,7 +105,7 @@
                                                                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="6">
                                                                            <children>
 
-                                                                              <Label prefHeight="18.0" prefWidth="136.0" style="-fx-font-size: 13;"  text="Tổng số sách làm mất:" />
+                                                                              <Label prefHeight="18.0" prefWidth="136.0" style="-fx-font-size: 13;"  text="Tổng số truyện làm mất:" />
                                                                               <TextField fx:id="totalOfLostText" editable="false" prefHeight="33.0" prefWidth="69.0"  text="02" HBox.hgrow="ALWAYS" />
                                                                            </children>
                                                                         </HBox>
@@ -176,7 +176,7 @@
                                                                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
                                                                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                                                                            <children>
-                                                                              <Label  text="Tên sách:" />
+                                                                              <Label  text="Tên truyện:" />
                                                                               <TextField fx:id="bookNameText" editable="false" prefHeight="33.0" prefWidth="115.0"  text="Lời thì thầm bên dòng sông" HBox.hgrow="ALWAYS" />
                                                                            </children>
                                                                         </HBox>
@@ -194,7 +194,7 @@
                                                                         </HBox>
                                                                      </children>
                                                                   </GridPane>
-                                                                  <Label layoutX="16.0" layoutY="19.0" style="-fx-font-size: 20;"  text="Sách cho mượn" />
+                                                                  <Label layoutX="16.0" layoutY="19.0" style="-fx-font-size: 20;"  text="truyện cho mượn" />
                                                                </children>
                                                             </AnchorPane>
                                                          </children>

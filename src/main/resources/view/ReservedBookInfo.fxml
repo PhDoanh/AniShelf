@@ -82,7 +82,7 @@
                                                                         </HBox>
                                                                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
                                                                            <children>
-                                                                              <Label prefHeight="22.0" prefWidth="154.0" style="-fx-font-size: 13;"  text="Tổng số sách đang mượn:" />
+                                                                              <Label prefHeight="22.0" prefWidth="154.0" style="-fx-font-size: 13;"  text="Tổng số truyện đang mượn:" />
                                                                               <TextField fx:id="totalOFBorrowText" editable="false" prefHeight="33.0" prefWidth="63.0"  text="01" HBox.hgrow="ALWAYS" />
                                                                            </children>
                                                                         </HBox>
@@ -94,7 +94,7 @@
                                                                         </HBox>
                                                                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="6">
                                                                            <children>
-                                                                              <Label prefHeight="18.0" prefWidth="136.0" style="-fx-font-size: 13;"  text="Tổng số sách làm mất:" />
+                                                                              <Label prefHeight="18.0" prefWidth="136.0" style="-fx-font-size: 13;"  text="Tổng số truyện làm mất:" />
                                                                               <TextField fx:id="totalOfLostText" editable="false" prefHeight="33.0" prefWidth="69.0"  text="02" HBox.hgrow="ALWAYS" />
                                                                            </children>
                                                                         </HBox>
@@ -160,7 +160,7 @@
                                                                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
                                                                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                                                                            <children>
-                                                                              <Label  text="Tên sách:" HBox.hgrow="NEVER" />
+                                                                              <Label  text="Tên truyện:" HBox.hgrow="NEVER" />
                                                                               <TextField fx:id="bookNameText" editable="false" prefHeight="33.0" prefWidth="115.0"  text="Lời thì thầm bên dòng sông" HBox.hgrow="ALWAYS" />
                                                                            </children>
                                                                         </HBox>
@@ -178,7 +178,7 @@
                                                                         </HBox>
                                                                      </children>
                                                                   </GridPane>
-                                                                  <Label layoutX="16.0" layoutY="19.0" style="-fx-font-size: 20;"  text="Sách đặt trước" />
+                                                                  <Label layoutX="16.0" layoutY="19.0" style="-fx-font-size: 20;"  text="truyện đặt trước" />
                                                                </children>
                                                             </AnchorPane>
                                                          </children>

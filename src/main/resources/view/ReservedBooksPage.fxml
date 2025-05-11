@@ -25,7 +25,6 @@
                      </children>
                   </AnchorPane>
                   <AnchorPane fx:id="tablePage" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <Label fx:id="titlePage" prefHeight="30.0" prefWidth="594.0" style="-fx-font-size: 26;"   text="Đặt trước sách" AnchorPane.leftAnchor="56.0" AnchorPane.topAnchor="26.0" />
                </children>
             </AnchorPane>
          </children>

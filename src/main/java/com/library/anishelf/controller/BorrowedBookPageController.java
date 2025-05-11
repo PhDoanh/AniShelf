@@ -24,9 +24,6 @@ public class BorrowedBookPageController extends BasePageController<BookIssue, Bo
     @FXML
     private Button returnButton;
 
-    @FXML
-    private Label titlePage;
-
     @Override
     protected String getDetailFXMLPath() {
         return DETAIL_FXML;
@@ -49,7 +46,7 @@ public class BorrowedBookPageController extends BasePageController<BookIssue, Bo
 
     @FXML
     void onReturnButtonAction(ActionEvent event) {
-        while (getTitlePageStack().peek() != "Quản lý mượn sách") {
+        while (getTitlePageStack().peek() != "Quản lý mượn truyện") {
             getTitlePageStack().pop();
         }
         loadData();
@@ -68,7 +65,6 @@ public class BorrowedBookPageController extends BasePageController<BookIssue, Bo
     @Override
     public void startPage() {
         page1 = true;
-        setTitlePage();
         detailPage.setVisible(false);
         tablePage.setVisible(true);
         loadData();

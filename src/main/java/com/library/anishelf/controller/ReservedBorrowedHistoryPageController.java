@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.dao.BookItemDAO;
 import com.library.anishelf.dao.BookReservationDAO;
 import com.library.anishelf.model.BookIssue;
@@ -99,8 +100,8 @@ public class ReservedBorrowedHistoryPageController implements Initializable {
     }
 
     /**
-     * thêm sách đặt trước vào vị trí.
-     * @param bookReservation sách đặt trước
+     * thêm truyện đặt trước vào vị trí.
+     * @param bookReservation truyện đặt trước
      * @throws IOException ném ngoại lệ
      */
     public void addReservedBook(BookReservation bookReservation) throws IOException {
@@ -116,15 +117,17 @@ public class ReservedBorrowedHistoryPageController implements Initializable {
     }
 
     /**
-     * xoá sách đặt trước.
-     * @param bookItem sách
-     * @param vBox hộp chứa sách
+     * xoá truyện đặt trước.
+     * @param bookItem truyện
+     * @param vBox hộp chứa truyện
      * @throws IOException ngoại lệ
      */
     public void deleteBookReserved(BookItem bookItem,VBox vBox) throws IOException {
-        if(!CustomerAlter.showAlter("Bạn huỷ đặt trước sách này?")) {
-            return;
-        }
+        NotificationManagerUtil.showConfirmation("Huỷ đặt trước truyện này?", confirmed -> {
+            if (!confirmed) {
+                return;
+            }
+        });
         Map<String,Object> criteria = new HashMap<>();
         criteria.put("member_ID", NavigationBarController.getMember().getPerson().getId());
         criteria.put("barcode",bookItem.getBookBarcode());
@@ -156,9 +159,9 @@ public class ReservedBorrowedHistoryPageController implements Initializable {
     }
 
     /**
-     * tìm sách theo barCode
+     * tìm truyện theo barCode
      * @param barCode barCode
-     * @return sách
+     * @return truyện
      */
     private int findBookReserved(long barCode) {
         try {

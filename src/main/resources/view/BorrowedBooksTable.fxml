@@ -41,7 +41,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="bookNameFindText" alignment="CENTER" promptText="Tên sách">
+                              <TextField fx:id="bookNameFindText" alignment="CENTER" promptText="Tên truyện">
                               </TextField>
                            </children>
                         </HBox>
@@ -96,7 +96,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label  text="Tên sách">
+                              <Label  text="Tên truyện">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin></Label>
