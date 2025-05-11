@@ -6,6 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
+/**
+ * Controller cho menu thả xuống của avatar
+ */
 public class AvatarDropdownMenuController {
     @FXML
     private VBox avatarDropdownMenu;
@@ -28,10 +31,17 @@ public class AvatarDropdownMenuController {
 
     private NavigationBarController navigationBarController;
 
+    /**
+     * Thiết lập tham chiếu đến NavigationBarController
+     */
     public void setUserMenuController(NavigationBarController controller) {
         this.navigationBarController = controller;
     }
 
+    /**
+     * Xử lý sự kiện khi nhấp vào nút Hồ sơ cá nhân
+     */
+    @FXML
     public void onPersonalInfoButtonAction(ActionEvent event) {
         VBox content = (VBox) SceneManagerUtil.getInstance().loadScene(INFORMATION_FXML);
         if (content != null) {
@@ -42,6 +52,10 @@ public class AvatarDropdownMenuController {
         hideDropdownMenu();
     }
 
+    /**
+     * Xử lý sự kiện khi nhấp vào nút Lịch sử mượn/đặt
+     */
+    @FXML
     public void onHistoryButtonAction(ActionEvent event) {
         VBox content = (VBox) SceneManagerUtil.getInstance().loadScene(HISTORY_FXML);
         if (content != null) {
@@ -52,6 +66,10 @@ public class AvatarDropdownMenuController {
         hideDropdownMenu();
     }
 
+    /**
+     * Xử lý sự kiện khi nhấp vào nút Cài đặt
+     */
+    @FXML
     public void onSettingButtonAction(ActionEvent actionEvent) {
         VBox content = (VBox) SceneManagerUtil.getInstance().loadScene(SETTING_FXML);
         if (content != null) {
@@ -62,6 +80,10 @@ public class AvatarDropdownMenuController {
         hideDropdownMenu();
     }
 
+    /**
+     * Xử lý sự kiện khi nhấp vào nút Đăng xuất
+     */
+    @FXML
     public void onLogoutMenuButtonAction(ActionEvent event) {
         if (navigationBarController != null) {
             navigationBarController.onLogoutButtonAction(event);

@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.dao.AccountDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -82,7 +83,7 @@ public class ForgotPasswordPageController extends BasicController {
     @FXML
     void onSendAgainButton(ActionEvent event) {
         if(checkEmail()) {
-            CustomerAlter.showMessage("Đã gửi lại OTP");
+            NotificationManagerUtil.showInfo("Đã gửi lại mã OTP");
         }
     }
 
@@ -92,7 +93,7 @@ public class ForgotPasswordPageController extends BasicController {
             isStep1 = false;
             isStep2 = false;
             isStep3 = true;
-            CustomerAlter.showMessage("OTP đúng rồi ó");
+            NotificationManagerUtil.showInfo("Xác minh OTP thành công");
             enterEmailHBox.setVisible(false);
             enterVerifyHBox.setVisible(false);
             rePasswordPane.setVisible(true);
@@ -104,10 +105,10 @@ public class ForgotPasswordPageController extends BasicController {
         if(checkPassword()) {
             try {
             AccountDAO.getInstance().changePassword(emailText.getText(),passwordText.getText());
-            CustomerAlter.showMessage("Đổi mật khẩu rồi đó, đừng quên nữa nha");
+            NotificationManagerUtil.showInfo("Đổi mật khẩu thành công");
             openLoginView();
             } catch (Exception e) {
-                CustomerAlter.showMessage("Không đổi được mật khẩu");
+                NotificationManagerUtil.showError("Đổi mật khẩu thất bại");
             }
         }
     }
@@ -116,11 +117,11 @@ public class ForgotPasswordPageController extends BasicController {
         String password1 = passwordText.getText();
         String password2 = rePasswordText.getText();
         if(password1.isEmpty() || password1.equals(" ")) {
-            CustomerAlter.showMessage("Đổi mật khẩu mà trống đổi làm gì");
+            NotificationManagerUtil.showInfo("Mật khẩu không được để trống");
             return false;
         }
         if(!password1.equals(password2)) {
-            CustomerAlter.showMessage("Nhập lại mật khẩu không khớp");
+            NotificationManagerUtil.showInfo("Mật khẩu không khớp");
             return false;
         }
         return true;
@@ -131,7 +132,7 @@ public class ForgotPasswordPageController extends BasicController {
             return AccountDAO.getInstance().initiatePasswordReset(emailText.getText().toString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            CustomerAlter.showMessage("Email không tồn tại");
+            NotificationManagerUtil.showInfo("Email không tồn tại!");
         }
         return false;
     }
@@ -142,7 +143,7 @@ public class ForgotPasswordPageController extends BasicController {
             return AccountDAO.getInstance().validateOTP(emailText.getText(), otp);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            CustomerAlter.showMessage("OTP không hợp lệ");
+            NotificationManagerUtil.showInfo("Mã OTP không hợp lệ");
         }
         return false;
     }

@@ -42,7 +42,7 @@ public class AdvancedSearchController {
      * hàm khởi tạo cho AdvancedSearch
      */
     public void initialize() {
-        categoryChoiceBox.getItems().addAll("title", "category_name", "author_name");
+        categoryChoiceBox.getItems().addAll("Tiêu đề", "Tên thể loại", "Tên tác giả");
         categoryChoiceBox.setValue("title");
         scrollPane1.getStyleClass().add("real-transparent-scrollpane");
         scrollPane2.getStyleClass().add("real-transparent-scrollpane");
@@ -71,8 +71,6 @@ public class AdvancedSearchController {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        // Thay thế AnimationUtil.showMessage bằng CustomerAlter.showMessage
-        CustomerAlter.showMessage("Bạn yêu ơi, vì 1 sách có 1 thể thoi nên nó sẽ tìm thể loại cuối bạn chọn nhé! Mình lười code chỉ được chọn 1 cho bạn yêu quá");
     }
 
     /**
@@ -120,22 +118,29 @@ public class AdvancedSearchController {
     }
 
     /**
-     * tìm sách theo điều kiện
+     * tìm truyện theo điều kiện
      *
-     * @param event tìm sách theo điều kiện
+     * @param event tìm truyện theo điều kiện
      */
     public void onSearchButtonAction(ActionEvent event) {
         String keyword = searchText.getText();
         String category = categoryChoiceBox.getValue();
+        if (category.equals("Tiêu đề")) {
+            category = "title";
+        } else if (category.equals("Tên tác giả")) {
+            category = "author_name";
+        } else if (category.equals("Tên thể loại")) {
+            category = "category_name";
+        }
 
         criteria.put(category, keyword);
         UserService searchService = new UserService("searchBookByCategory", criteria);
 
         if (searchService.processOperation()) {
             findBook = (List<Book>) searchService.getPayload();
-            System.out.println("Tìm thấy " + findBook.size() + " sách");
+            System.out.println("Tìm thấy " + findBook.size() + " truyện");
         } else {
-            System.out.println("Không thấy sách");
+            System.out.println("Không thấy truyện");
         }
         deleteCategoryCriteria(searchText.getText());
         showFindedBook();
@@ -155,7 +160,7 @@ public class AdvancedSearchController {
      *
      * @param start index bắt đầu
      * @param end   index kết thúc
-     * @return vbox đã load sách sau khi tìm
+     * @return vbox đã load truyện sau khi tìm
      */
     private VBox loadBook(int start, int end) {
         row1Box.getChildren().clear();
@@ -176,9 +181,9 @@ public class AdvancedSearchController {
     }
 
     /**
-     * tải lên các sách tìm được.
-     * @param index thứ tự của sách
-     * @param rowBox hàng chứa sách
+     * tải lên các truyện tìm được.
+     * @param index thứ tự của truyện
+     * @param rowBox hàng chứa truyện
      */
     private void loadBookCard(int index, HBox rowBox) {
         try {

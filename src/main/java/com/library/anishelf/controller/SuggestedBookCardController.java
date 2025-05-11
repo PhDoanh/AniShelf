@@ -49,7 +49,7 @@ public class SuggestedBookCardController {
 
     /**
      * thiết lập dữ liệu cho card.
-     * @param otherBook sách
+     * @param otherBook truyện
      */
     public void setData(Book otherBook) {
         this.book = BookService.getInstance().findBookInAllBooks(otherBook);
@@ -80,7 +80,7 @@ public class SuggestedBookCardController {
     }
 
     /**
-     * xem sách.
+     * xem truyện.
      * @param mouseEvent khi  ấn vào
      */
     public void onBookMouseClicked(MouseEvent mouseEvent) {

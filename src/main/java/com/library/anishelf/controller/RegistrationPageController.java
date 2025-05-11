@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.service.RegistrationService;
 import com.library.anishelf.service.ServiceHandler;
 import com.library.anishelf.service.ServiceInvoker;
@@ -110,10 +111,7 @@ public class RegistrationPageController extends BasicController {
     
     @FXML
     void onHaveAccountButtonAction(ActionEvent event) {
-        boolean confirmYes = CustomerAlter.showAlter("Bạn có tài khoản rồi ư, thế đi đăng nhập nha?");
-        if(confirmYes) {
-            openLoginView();
-        }
+        openLoginView();
     }
 
     private void openLoginView() {
@@ -135,32 +133,28 @@ public class RegistrationPageController extends BasicController {
             Gender gender = genderBox.getSelectionModel().getSelectedItem();
             String email = emailText.getText().trim();
 
-            // Kiểm tra tên
             if (firstName.isEmpty()) {
-                CustomerAlter.showMessage("Tên không được để trống.");
+                NotificationManagerUtil.showInfo("Họ không được để trống.");
                 return false;
             }
 
             if (lastName.isEmpty()) {
-                CustomerAlter.showMessage("Họ không được để trống.");
+                NotificationManagerUtil.showInfo("Tên không được để trống.");
                 return false;
             }
 
-            // Kiểm tra ngày sinh
             if (birth.isEmpty()) {
-                CustomerAlter.showMessage("Ngày sinh không được để trống.");
+                NotificationManagerUtil.showInfo("Ngày sinh không được để trống.");
                 return false;
             }
 
-            // Kiểm tra giới tính
             if (gender == null) {
-                CustomerAlter.showMessage("Vui lòng chọn giới tính.");
+                NotificationManagerUtil.showInfo("Vui lòng chọn giới tính.");
                 return false;
             }
 
-            // Kiểm tra email
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) { // Biểu thức chính quy cho email
-                CustomerAlter.showMessage("Email không hợp lệ.");
+                NotificationManagerUtil.showInfo("Email không hợp lệ.");
                 return false;
             }
 
@@ -173,27 +167,23 @@ public class RegistrationPageController extends BasicController {
             String password = passwordText.getText().trim();
             String rePassword = rePasswordText.getText().trim();
 
-            // Kiểm tra tên người dùng
             if (username.isEmpty()) {
-                CustomerAlter.showMessage("Tên người dùng không được để trống.");
+                NotificationManagerUtil.showInfo("Tên người dùng không được để trống.");
                 return false;
             }
 
-            // Kiểm tra số điện thoại
-            if (phoneNumber.isEmpty() || !phoneNumber.matches("\\d{10}")) { // Giả sử số điện thoại có 10 chữ số
-                CustomerAlter.showMessage("Số điện thoại không hợp lệ (cần có 10 chữ số).");
+            if (phoneNumber.isEmpty() || !phoneNumber.matches("\\d{10}")) {
+                NotificationManagerUtil.showInfo("Số điện thoại không hợp lệ (cần 10 chữ số)");
                 return false;
             }
 
-            // Kiểm tra mật khẩu
             if (password.isEmpty()) {
-                CustomerAlter.showMessage("Mật khẩu không được để trống.");
+                NotificationManagerUtil.showInfo("Mật khẩu không được để trống.");
                 return false;
             }
 
-            // Kiểm tra xác nhận mật khẩu
             if (!password.equals(rePassword)) {
-                CustomerAlter.showMessage("Mật khẩu và xác nhận mật khẩu không khớp.");
+                NotificationManagerUtil.showInfo("Mật khẩu không khớp.");
                 return false;
             }
             return true;

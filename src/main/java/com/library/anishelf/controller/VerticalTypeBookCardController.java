@@ -68,7 +68,7 @@ public class VerticalTypeBookCardController {
     }
 
     /**
-     * vào sách.
+     * vào truyện.
      * @param mouseEvent khi chuột ấn vào
      */
     public void onBookMouseClicked(MouseEvent mouseEvent) {
@@ -113,7 +113,7 @@ public class VerticalTypeBookCardController {
     }
 
     /**
-     * xoá sách đã đặt trước.
+     * xoá truyện đã đặt trước.
      * @param actionEvent khi ấn vào nút
      */
     public void onCancelReservedButtonAction(ActionEvent actionEvent) {
@@ -125,9 +125,9 @@ public class VerticalTypeBookCardController {
     }
 
     /**
-     * nếu là sách đã đặt trước thì hển thị nút x ở trên ảnh.
+     * nếu là truyện đã đặt trước thì hển thị nút x ở trên ảnh.
      * @param reservedBorrowedHistoryPageController controller
-     * @param bookItem sách đã đặt trước
+     * @param bookItem truyện đã đặt trước
      */
     public void setReservedBook(ReservedBorrowedHistoryPageController reservedBorrowedHistoryPageController, BookItem bookItem) {
         this.reservedBorrowedHistoryPageController = reservedBorrowedHistoryPageController;

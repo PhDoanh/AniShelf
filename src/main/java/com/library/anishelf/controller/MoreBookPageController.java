@@ -58,10 +58,10 @@ public class MoreBookPageController {
     }
 
     /**
-     * load các sách
-     * @param start chỉ số sách đầu
-     * @param end chỉ số sách cuối
-     * @return VBox chứa tất cả sách
+     * load các truyện
+     * @param start chỉ số truyện đầu
+     * @param end chỉ số truyện cuối
+     * @return VBox chứa tất cả truyện
      */
     public VBox loadBook(int start, int end) {
         row1Box.getChildren().clear();

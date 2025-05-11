@@ -46,7 +46,7 @@ public class HorizontalTypeBookCardController {
 
     /**
      * thiết lập dữ liệu cho book card.
-     * @param book sách truyền vào
+     * @param book truyện truyền vào
      */
     public void setData(Book book) {
         this.book = book;
@@ -72,7 +72,7 @@ public class HorizontalTypeBookCardController {
     }
 
     /**
-     * ấn vào sách.
+     * ấn vào truyện.
      * @param mouseEvent khi chuột trỏ vào
      */
     public void onBookMouseClicked(MouseEvent mouseEvent) {
