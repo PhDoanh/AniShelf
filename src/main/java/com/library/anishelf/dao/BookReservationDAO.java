@@ -74,7 +74,7 @@ public class BookReservationDAO implements GenericDAO<BookReservation> {
 
     @Override
     public void insert(@NotNull BookReservation entity) throws SQLException {
-        logger.debug(TAG, "Thêm đặt chỗ mới cho sách: ISBN=" + entity.getBookItem().getIsbn() + 
+        logger.debug(TAG, "Thêm đặt chỗ mới cho truyện: ISBN=" + entity.getBookItem().getIsbn() + 
                      ", barcode=" + entity.getBookItem().getBookBarcode());
         try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(INSERT_BOOK_RESERVATION, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, entity.getMember().getPerson().getId());
@@ -329,7 +329,7 @@ public class BookReservationDAO implements GenericDAO<BookReservation> {
         BookItem bookItem = bookItemDAO.findFirstAvailableBookItemByISBN(isbn);
         
         if (bookItem == null) {
-            logger.warning(TAG, "Không tìm thấy bản sao nào có sẵn của sách có ISBN: " + isbn);
+            logger.warning(TAG, "Không tìm thấy bản sao nào có sẵn của truyện có ISBN: " + isbn);
             return null;
         }
         
@@ -343,7 +343,7 @@ public class BookReservationDAO implements GenericDAO<BookReservation> {
         bookItem.setBookItemStatus(BookItemStatus.RESERVED);
         bookItemDAO.updateEntity(bookItem);
         
-        logger.info(TAG, "Đã tạo đặt sách thành công với ID: " + reservation.getId() + 
+        logger.info(TAG, "Đã tạo đặt truyện thành công với ID: " + reservation.getId() + 
                    ", barcode: " + bookItem.getBookBarcode());
         
         return reservation;

@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Lớp quản lý việc mượn sách
+ * Lớp quản lý việc mượn truyện
  * Triển khai giao diện GenericDAO cho thao tác CRUD với BookIssue
  */
 public class BookIssueDAO implements GenericDAO<BookIssue> {
@@ -700,22 +700,22 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
     }
 
     /**
-     * Tạo BookIssue mới cho sách có ISBN cụ thể
-     * @param member Thành viên mượn sách
-     * @param isbn ISBN của sách cần mượn
+     * Tạo BookIssue mới cho truyện có ISBN cụ thể
+     * @param member Thành viên mượn truyện
+     * @param isbn ISBN của truyện cần mượn
      * @param issueDate Ngày mượn
      * @param dueDate Ngày hẹn trả
-     * @return BookIssue đã tạo hoặc null nếu không có sách có sẵn
+     * @return BookIssue đã tạo hoặc null nếu không có truyện có sẵn
      * @throws SQLException nếu có lỗi xảy ra khi thao tác database
      */
     public BookIssue createBookIssueByISBN(Member member, long isbn, String issueDate, String dueDate) throws SQLException {
-        logger.debug(TAG, "Tạo mượn sách mới theo ISBN: " + isbn + " cho thành viên: " + member.getPerson().getId());
+        logger.debug(TAG, "Tạo mượn truyện mới theo ISBN: " + isbn + " cho thành viên: " + member.getPerson().getId());
         
         // Tìm BookItem có sẵn đầu tiên với ISBN tương ứng
         BookItem bookItem = bookItemDAO.findFirstAvailableBookItemByISBN(isbn);
         
         if (bookItem == null) {
-            logger.warning(TAG, "Không tìm thấy bản sao nào có sẵn của sách có ISBN: " + isbn);
+            logger.warning(TAG, "Không tìm thấy bản sao nào có sẵn của truyện có ISBN: " + isbn);
             return null;
         }
         
@@ -729,7 +729,7 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
         bookItem.setBookItemStatus(BookItemStatus.LOANED);
         bookItemDAO.updateEntity(bookItem);
         
-        logger.info(TAG, "Đã tạo mượn sách thành công với ID: " + bookIssue.getIssueID() + 
+        logger.info(TAG, "Đã tạo mượn truyện thành công với ID: " + bookIssue.getIssueID() + 
                    ", barcode: " + bookItem.getBookBarcode());
         
         return bookIssue;

@@ -116,7 +116,7 @@ public class BookMarkDAO implements GenericDAO<BookMark> {
     /**
      * Kiểm tra xem bookmark đã tồn tại chưa
      * @param memberId ID của thành viên
-     * @param isbn ISBN của sách
+     * @param isbn ISBN của truyện
      * @return true nếu bookmark đã tồn tại, false nếu chưa
      * @throws SQLException nếu có lỗi SQL
      */

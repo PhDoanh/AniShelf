@@ -476,7 +476,7 @@ public class BookItemDAO implements GenericDAO<BookItem> {
 
     /**
      * Lấy danh sách BookItem theo ISBN
-     * @param isbn ISBN của sách
+     * @param isbn ISBN của truyện
      * @return Danh sách BookItem có ISBN tương ứng
      * @throws SQLException nếu có lỗi xảy ra khi truy vấn
      */
@@ -554,7 +554,7 @@ public class BookItemDAO implements GenericDAO<BookItem> {
     
     /**
      * Tìm kiếm BookItem đầu tiên có sẵn theo ISBN
-     * @param isbn ISBN của sách cần tìm
+     * @param isbn ISBN của truyện cần tìm
      * @return BookItem đầu tiên có sẵn hoặc null nếu không tìm thấy
      * @throws SQLException nếu có lỗi xảy ra khi truy vấn
      */

@@ -148,13 +148,13 @@ public class BookDAO implements GenericDAO<Book> {
     }
 
     private void associateBookWithAuthor(long ISBN, int authorID) throws SQLException {
-        logger.debug(TAG, "Liên kết sách " + ISBN + " với author ID: " + authorID);
+        logger.debug(TAG, "Liên kết truyện " + ISBN + " với author ID: " + authorID);
         try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(INSERT_BOOK_AUTHOR)) {
             preparedStatement.setLong(1, ISBN);
             preparedStatement.setInt(2, authorID);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi liên kết sách với author: ISBN=" + ISBN + ", authorID=" + authorID, e);
+            logger.error(TAG, "Lỗi khi liên kết truyện với author: ISBN=" + ISBN + ", authorID=" + authorID, e);
             throw e;
         }
     }
@@ -202,48 +202,48 @@ public class BookDAO implements GenericDAO<Book> {
     }
 
     private void associateBookWithCategory(long ISBN, int categoryID) throws SQLException {
-        logger.debug(TAG, "Liên kết sách " + ISBN + " với category ID: " + categoryID);
+        logger.debug(TAG, "Liên kết truyện " + ISBN + " với category ID: " + categoryID);
         try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(INSERT_BOOK_CATEGORY)) {
             preparedStatement.setLong(1, ISBN);
             preparedStatement.setInt(2, categoryID);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi liên kết sách với category: ISBN=" + ISBN + ", categoryID=" + categoryID, e);
+            logger.error(TAG, "Lỗi khi liên kết truyện với category: ISBN=" + ISBN + ", categoryID=" + categoryID, e);
             throw e;
         }
     }
 
     private void addBookItems(long ISBN, String placeAt, int quantity) throws SQLException {
-        logger.debug(TAG, "Thêm " + quantity + " bản sao cho sách: " + ISBN);
+        logger.debug(TAG, "Thêm " + quantity + " bản sao cho truyện: " + ISBN);
         try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(INSERT_BOOK_ITEM)) {
             for (int i = 0; i < quantity; i++) {
                 preparedStatement.setLong(1, ISBN);
                 preparedStatement.addBatch();
             }
             int[] results = preparedStatement.executeBatch();
-            logger.debug(TAG, "Đã thêm " + results.length + " bản sao cho sách " + ISBN);
+            logger.debug(TAG, "Đã thêm " + results.length + " bản sao cho truyện " + ISBN);
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi thêm bản sao sách: ISBN=" + ISBN, e);
+            logger.error(TAG, "Lỗi khi thêm bản sao truyện: ISBN=" + ISBN, e);
             throw e;
         }
     }
 
     @Override
     public void insert(@NotNull Book entity) throws SQLException {
-        logger.info(TAG, "Bắt đầu thêm sách mới: " + entity.getTitle() + " (ISBN: " + entity.getIsbn() + ")");
+        logger.info(TAG, "Bắt đầu thêm truyện mới: " + entity.getTitle() + " (ISBN: " + entity.getIsbn() + ")");
 
-        // Kiểm tra sách đã tồn tại
+        // Kiểm tra truyện đã tồn tại
         if (findById(entity.getIsbn()) != null) {
-            logger.warning(TAG, "Sách đã tồn tại: ISBN=" + entity.getIsbn());
+            logger.warning(TAG, "truyện đã tồn tại: ISBN=" + entity.getIsbn());
             throw new SQLException("Book is exist");
         }
 
         databaseConnection.getConnection().setAutoCommit(false);
 
         try {
-            // Thêm thông tin sách cơ bản
+            // Thêm thông tin truyện cơ bản
             insertBook(entity);
-            logger.debug(TAG, "Đã thêm thông tin sách cơ bản: " + entity.getIsbn());
+            logger.debug(TAG, "Đã thêm thông tin truyện cơ bản: " + entity.getIsbn());
 
             // Thêm và liên kết với tác giả
             for (Author author : entity.getAuthors()) {
@@ -259,15 +259,15 @@ public class BookDAO implements GenericDAO<Book> {
             }
             logger.debug(TAG, "Đã thêm và liên kết với " + entity.getCategories().size() + " danh mục");
 
-            // Thêm các bản sao của sách
+            // Thêm các bản sao của truyện
             addBookItems(entity.getIsbn(), entity.getLocation(), entity.getQuantity());
-            logger.debug(TAG, "Đã thêm " + entity.getQuantity() + " bản sao của sách");
+            logger.debug(TAG, "Đã thêm " + entity.getQuantity() + " bản sao của truyện");
 
             databaseConnection.getConnection().commit();
             bookCache.put(entity.getIsbn(), entity);
-            logger.info(TAG, "Thêm sách thành công và lưu vào cache: " + entity.getIsbn());
+            logger.info(TAG, "Thêm truyện thành công và lưu vào cache: " + entity.getIsbn());
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi thêm sách, tiến hành rollback: " + entity.getIsbn(), e);
+            logger.error(TAG, "Lỗi khi thêm truyện, tiến hành rollback: " + entity.getIsbn(), e);
             databaseConnection.getConnection().rollback();
             throw e;
         } finally {
@@ -277,11 +277,11 @@ public class BookDAO implements GenericDAO<Book> {
 
     @Override
     public boolean updateEntity(@NotNull Book entity) throws SQLException {
-        logger.info(TAG, "Bắt đầu cập nhật sách: " + entity.getTitle() + " (ISBN: " + entity.getIsbn() + ")");
+        logger.info(TAG, "Bắt đầu cập nhật truyện: " + entity.getTitle() + " (ISBN: " + entity.getIsbn() + ")");
 
-        // Kiểm tra sách có tồn tại
+        // Kiểm tra truyện có tồn tại
         if (findById(entity.getIsbn()) == null) {
-            logger.warning(TAG, "Sách không tồn tại: ISBN=" + entity.getIsbn());
+            logger.warning(TAG, "truyện không tồn tại: ISBN=" + entity.getIsbn());
             return false;
         }
 
@@ -304,7 +304,7 @@ public class BookDAO implements GenericDAO<Book> {
                 logger.debug(TAG, "Đã xóa " + affected + " liên kết danh mục cũ");
             }
 
-            // Cập nhật thông tin sách
+            // Cập nhật thông tin truyện
             try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(UPDATE_BOOK_DETAILS)) {
                 preparedStatement.setString(1, entity.getTitle());
                 preparedStatement.setString(2, entity.getImagePath());
@@ -313,7 +313,7 @@ public class BookDAO implements GenericDAO<Book> {
                 preparedStatement.setString(5, entity.getstatus().toString());
                 preparedStatement.setLong(6, entity.getIsbn());
                 int affected = preparedStatement.executeUpdate();
-                logger.debug(TAG, "Đã cập nhật thông tin sách, " + affected + " dòng bị ảnh hưởng");
+                logger.debug(TAG, "Đã cập nhật thông tin truyện, " + affected + " dòng bị ảnh hưởng");
 
                 // Thêm liên kết tác giả mới
                 for (Author author : entity.getAuthors()) {
@@ -332,12 +332,12 @@ public class BookDAO implements GenericDAO<Book> {
                 databaseConnection.getConnection().commit();
                 // Cập nhật cache
                 bookCache.put(entity.getIsbn(), entity);
-                logger.info(TAG, "Cập nhật sách thành công và cập nhật cache: " + entity.getIsbn());
+                logger.info(TAG, "Cập nhật truyện thành công và cập nhật cache: " + entity.getIsbn());
                 return affected > 0;
             }
 
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi cập nhật sách, tiến hành rollback: " + entity.getIsbn(), e);
+            logger.error(TAG, "Lỗi khi cập nhật truyện, tiến hành rollback: " + entity.getIsbn(), e);
             databaseConnection.getConnection().rollback();
             throw e;
         } finally {
@@ -347,11 +347,11 @@ public class BookDAO implements GenericDAO<Book> {
 
     @Override
     public boolean deleteEntity(@NotNull Book entity) throws SQLException {
-        logger.info(TAG, "Bắt đầu xóa sách: " + entity.getTitle() + " (ISBN: " + entity.getIsbn() + ")");
+        logger.info(TAG, "Bắt đầu xóa truyện: " + entity.getTitle() + " (ISBN: " + entity.getIsbn() + ")");
 
-        // Kiểm tra sách có tồn tại
+        // Kiểm tra truyện có tồn tại
         if (findById(entity.getIsbn()) == null) {
-            logger.warning(TAG, "Sách không tồn tại: ISBN=" + entity.getIsbn());
+            logger.warning(TAG, "truyện không tồn tại: ISBN=" + entity.getIsbn());
             throw new SQLException("Book does not exist");
         }
 
@@ -374,27 +374,27 @@ public class BookDAO implements GenericDAO<Book> {
                 logger.debug(TAG, "Đã xóa " + affected + " liên kết danh mục");
             }
 
-            // Xóa các bản sao sách
+            // Xóa các bản sao truyện
             try (PreparedStatement stmt = databaseConnection.getConnection().prepareStatement(DELETE_BOOK_ITEMS)) {
                 stmt.setLong(1, isbn);
                 int affected = stmt.executeUpdate();
-                logger.debug(TAG, "Đã xóa " + affected + " bản sao sách");
+                logger.debug(TAG, "Đã xóa " + affected + " bản sao truyện");
             }
 
-            // Xóa thông tin sách chính
+            // Xóa thông tin truyện chính
             try (PreparedStatement stmt = databaseConnection.getConnection().prepareStatement(DELETE_BOOK)) {
                 stmt.setLong(1, isbn);
                 int rowsDeleted = stmt.executeUpdate();
-                logger.debug(TAG, "Đã xóa thông tin sách chính, " + rowsDeleted + " dòng bị ảnh hưởng");
+                logger.debug(TAG, "Đã xóa thông tin truyện chính, " + rowsDeleted + " dòng bị ảnh hưởng");
 
                 databaseConnection.getConnection().commit();
                 // Xóa khỏi cache
                 bookCache.invalidate(entity.getIsbn());
-                logger.info(TAG, "Xóa sách thành công và xóa khỏi cache: " + entity.getIsbn());
+                logger.info(TAG, "Xóa truyện thành công và xóa khỏi cache: " + entity.getIsbn());
                 return rowsDeleted > 0;
             }
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi xóa sách, tiến hành rollback: " + entity.getIsbn(), e);
+            logger.error(TAG, "Lỗi khi xóa truyện, tiến hành rollback: " + entity.getIsbn(), e);
             databaseConnection.getConnection().rollback();
             throw e;
         } finally {
@@ -405,20 +405,20 @@ public class BookDAO implements GenericDAO<Book> {
     @Override
     public Book findById(Number keywords) throws SQLException {
         long isbn = (Long) keywords;
-        logger.debug(TAG, "Tìm sách với ISBN: " + isbn);
+        logger.debug(TAG, "Tìm truyện với ISBN: " + isbn);
 
         // Kiểm tra cache trước
         Book cachedBook = bookCache.getIfPresent(isbn);
         if (cachedBook != null) {
-            logger.debug(TAG, "Tìm thấy sách trong cache: " + isbn);
+            logger.debug(TAG, "Tìm thấy truyện trong cache: " + isbn);
             return cachedBook;
         }
 
-        logger.debug(TAG, "Sách không có trong cache, tìm trong database: " + isbn);
+        logger.debug(TAG, "truyện không có trong cache, tìm trong database: " + isbn);
         List<Author> authorList = new ArrayList<>();
         List<Category> categoryList = new ArrayList<>();
 
-        // Lấy danh sách tác giả
+        // Lấy danh truyện tác giả
         try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(FIND_AUTHORS_BY_BOOK)) {
             preparedStatement.setLong(1, isbn);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -428,11 +428,11 @@ public class BookDAO implements GenericDAO<Book> {
             }
             logger.debug(TAG, "Đã tìm thấy " + authorList.size() + " tác giả cho ISBN: " + isbn);
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi tìm tác giả của sách: " + isbn, e);
+            logger.error(TAG, "Lỗi khi tìm tác giả của truyện: " + isbn, e);
             throw e;
         }
 
-        // Lấy danh sách danh mục
+        // Lấy danh truyện danh mục
         try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(FIND_CATEGORIES_BY_BOOK)) {
             preparedStatement.setLong(1, isbn);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -442,11 +442,11 @@ public class BookDAO implements GenericDAO<Book> {
             }
             logger.debug(TAG, "Đã tìm thấy " + categoryList.size() + " danh mục cho ISBN: " + isbn);
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi tìm danh mục của sách: " + isbn, e);
+            logger.error(TAG, "Lỗi khi tìm danh mục của truyện: " + isbn, e);
             throw e;
         }
 
-        // Lấy thông tin sách chính
+        // Lấy thông tin truyện chính
         try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(FIND_BOOK_BY_ISBN)) {
             preparedStatement.setLong(1, isbn);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -470,15 +470,15 @@ public class BookDAO implements GenericDAO<Book> {
 
                     // Lưu vào cache
                     bookCache.put(isbn, book);
-                    logger.info(TAG, "Đã tìm thấy sách và lưu vào cache: " + isbn);
+                    logger.info(TAG, "Đã tìm thấy truyện và lưu vào cache: " + isbn);
                     return book;
                 } else {
-                    logger.info(TAG, "Không tìm thấy sách với ISBN: " + isbn);
+                    logger.info(TAG, "Không tìm thấy truyện với ISBN: " + isbn);
                     return null;
                 }
             }
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi tìm thông tin sách: " + isbn, e);
+            logger.error(TAG, "Lỗi khi tìm thông tin truyện: " + isbn, e);
             throw e;
         }
     }
@@ -486,11 +486,11 @@ public class BookDAO implements GenericDAO<Book> {
     @Override
     public List<Book> findByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
         if (criteria.isEmpty()) {
-            logger.warning(TAG, "Tìm kiếm với tiêu chí rỗng, trả về danh sách trống");
+            logger.warning(TAG, "Tìm kiếm với tiêu chí rỗng, trả về danh truyện trống");
             return new ArrayList<>();
         }
 
-        logger.info(TAG, "Tìm kiếm sách với tiêu chí: " + generateKeywords(criteria));
+        logger.info(TAG, "Tìm kiếm truyện với tiêu chí: " + generateKeywords(criteria));
 
         StringBuilder findBookByCriteria = new StringBuilder("SELECT DISTINCT (\"Books\".\"ISBN\")\n" +
                 "FROM \"Books\"\n" +
@@ -542,14 +542,14 @@ public class BookDAO implements GenericDAO<Book> {
                 return results;
             }
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi tìm kiếm sách theo tiêu chí", e);
+            logger.error(TAG, "Lỗi khi tìm kiếm truyện theo tiêu chí", e);
             throw e;
         }
     }
 
     @Override
     public List<Book> findAll() throws SQLException {
-        logger.info(TAG, "Lấy tất cả sách");
+        logger.info(TAG, "Lấy tất cả truyện");
         try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(SELECT_ALL_BOOKS)) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<Long> isbnList = new ArrayList<>();
@@ -568,11 +568,11 @@ public class BookDAO implements GenericDAO<Book> {
                     }
                 }
 
-                logger.info(TAG, "Trả về danh sách " + bookList.size() + " sách");
+                logger.info(TAG, "Trả về danh truyện " + bookList.size() + " truyện");
                 return bookList;
             }
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi lấy tất cả sách", e);
+            logger.error(TAG, "Lỗi khi lấy tất cả truyện", e);
             throw e;
         }
     }
@@ -639,7 +639,7 @@ public class BookDAO implements GenericDAO<Book> {
     public void invalidateBookCache(Long isbn) {
         if (isbn != null) {
             bookCache.invalidate(isbn);
-            logger.info(TAG, "Đã xóa sách khỏi cache: " + isbn);
+            logger.info(TAG, "Đã xóa truyện khỏi cache: " + isbn);
         } else {
             logger.warning(TAG, "Không thể xóa cache với ISBN null");
         }
@@ -651,23 +651,23 @@ public class BookDAO implements GenericDAO<Book> {
     public void clearCache() {
         long cacheSize = bookCache.estimatedSize();
         bookCache.invalidateAll();
-        logger.info(TAG, "Đã xóa toàn bộ cache sách (" + cacheSize + " items)");
+        logger.info(TAG, "Đã xóa toàn bộ cache truyện (" + cacheSize + " items)");
     }
 
     /**
-     * Thực hiện batch insert cho nhiều sách cùng lúc
+     * Thực hiện batch insert cho nhiều truyện cùng lúc
      *
-     * @param books Danh sách sách cần thêm
-     * @return Số sách đã thêm thành công
-     * @throws SQLException Nếu có lỗi khi thêm sách
+     * @param books Danh truyện truyện cần thêm
+     * @return Số truyện đã thêm thành công
+     * @throws SQLException Nếu có lỗi khi thêm truyện
      */
     public int batchInsert(List<Book> books) throws SQLException {
         if (books == null || books.isEmpty()) {
-            logger.warning(TAG, "Batch insert với danh sách rỗng");
+            logger.warning(TAG, "Batch insert với danh truyện rỗng");
             return 0;
         }
 
-        logger.info(TAG, "Bắt đầu batch insert cho " + books.size() + " sách");
+        logger.info(TAG, "Bắt đầu batch insert cho " + books.size() + " truyện");
         int successCount = 0;
 
         for (Book book : books) {
@@ -675,12 +675,12 @@ public class BookDAO implements GenericDAO<Book> {
                 insert(book);
                 successCount++;
             } catch (SQLException e) {
-                logger.error(TAG, "Lỗi khi thêm sách trong batch: " + book.getIsbn(), e);
-                // Tiếp tục với sách tiếp theo
+                logger.error(TAG, "Lỗi khi thêm truyện trong batch: " + book.getIsbn(), e);
+                // Tiếp tục với truyện tiếp theo
             }
         }
 
-        logger.info(TAG, "Batch insert hoàn tất: " + successCount + "/" + books.size() + " sách thành công");
+        logger.info(TAG, "Batch insert hoàn tất: " + successCount + "/" + books.size() + " truyện thành công");
         return successCount;
     }
 }
