@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="135.0" prefWidth="313.0"   xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.NotificationPopupController">
+<AnchorPane prefHeight="135.0" prefWidth="313.0"   xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.AlertController">
    <children>
       <Button fx:id="confirmButton" layoutX="37.0" layoutY="84.0" mnemonicParsing="false" onAction="#onConfirmButtonAction" prefHeight="34.0" prefWidth="99.0"   text="Xác nhận" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="48.0" />
       <Label fx:id="alertMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="87.0" layoutY="46.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="58.0" prefWidth="278.0"  text="dioshiodhhisdhihfhidhfhoeahfhdifhiogf" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="16.0" />

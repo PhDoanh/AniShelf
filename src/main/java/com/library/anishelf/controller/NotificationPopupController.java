@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-public class NotificationPopupController {
+public class AlertController {
 
     @FXML
     private Label alertMessageLabel;
