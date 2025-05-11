@@ -24,9 +24,6 @@ public class BookPageController extends BasePageController<Book, BookInfoControl
     @FXML
     private AnchorPane tablePage;
 
-    @FXML
-    private Label titlePage;
-
     private AdminHomePageController adminHomePageController;
 
     @Override
@@ -59,7 +56,7 @@ public class BookPageController extends BasePageController<Book, BookInfoControl
      */
     @FXML
     void onReturnButton(ActionEvent event) {
-        while (getTitlePageStack().peek() != "Quản lý sách") {
+        while (getTitlePageStack().peek() != "Quản lý truyện") {
             getTitlePageStack().pop();
         }
         loadData();
@@ -79,7 +76,6 @@ public class BookPageController extends BasePageController<Book, BookInfoControl
     @Override
     public void startPage() {
         page1 = true;
-        setTitlePage();
         detailPage.setVisible(false);
         tablePage.setVisible(true);
         loadData();

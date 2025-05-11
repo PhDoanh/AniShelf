@@ -46,7 +46,7 @@
                           </rowConstraints>
                            <children>
                               <TextField fx:id="ISBNFindText" alignment="CENTER" prefHeight="33.0" prefWidth="126.0" promptText="ISBN"  />
-                              <TextField fx:id="bookNameFindTExt" alignment="CENTER" prefHeight="33.0" prefWidth="126.0" promptText="Tên sách"  GridPane.columnIndex="1" />
+                              <TextField fx:id="bookNameFindTExt" alignment="CENTER" prefHeight="33.0" prefWidth="126.0" promptText="Tên truyện"  GridPane.columnIndex="1" />
                               <TextField fx:id="authorFindText" alignment="CENTER" prefHeight="33.0" prefWidth="126.0" promptText="Tác giả"  GridPane.columnIndex="2" />
                               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" />
                               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5">
@@ -86,10 +86,10 @@
                                  <children>
                                     <Label  text="Tác giả" GridPane.columnIndex="2" />
                                     <Label  text="ISBN" />
-                                    <Label  text="Tên sách" GridPane.columnIndex="1" />
+                                    <Label  text="Tên truyện" GridPane.columnIndex="1" />
                                     <Label  text="Thể loại" GridPane.columnIndex="3" />
                                     <Label  text="Số lượng" GridPane.columnIndex="4" />
-                                    <Label  text="Nơi để sách" GridPane.columnIndex="5" />
+                                    <Label  text="Nơi để truyện" GridPane.columnIndex="5" />
                                     <Label  text="Trạng thái" GridPane.columnIndex="6" />
                                  </children>
                               </GridPane>
@@ -120,7 +120,7 @@
                                  <children>
                                     <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="" />
                                     <Label fx:id="totalNumberBookLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;"  text="123233" />
-                                    <Label layoutX="16.0" layoutY="67.0"  text="Số sách hiện có" />
+                                    <Label layoutX="16.0" layoutY="67.0"  text="Số truyện hiện có" />
                                  </children>
                                  <HBox.margin>
                                     <Insets right="25.0" />
@@ -134,7 +134,7 @@
                                  <children>
                                     <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="" />
                                     <Label fx:id="totalNumberBorrowLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;"  text="123233" />
-                                    <Label layoutX="16.0" layoutY="67.0"  text="Số sách đang mượn" />
+                                    <Label layoutX="16.0" layoutY="67.0"  text="Số truyện đang mượn" />
                                  </children>
                                  <HBox.margin>
                                     <Insets right="25.0" />
@@ -151,7 +151,7 @@
                                  <children>
                                     <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="" />
                                     <Label fx:id="totalNumberIssueLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;"  text="123233" textFill="RED" />
-                                    <Label layoutX="16.0" layoutY="67.0"  text="Số sách đặt trước" />
+                                    <Label layoutX="16.0" layoutY="67.0"  text="Số truyện đặt trước" />
                                  </children>
                                  <HBox.margin>
                                     <Insets right="25.0" />
@@ -165,7 +165,7 @@
                                  <children>
                                     <AnchorPane layoutX="16.0" layoutY="26.0" prefHeight="38.0" prefWidth="38.0" style="" />
                                     <Label fx:id="totalNumberLostLabel" layoutX="71.0" layoutY="22.0" style="-fx-font-size: 31;"  text="123233" />
-                                    <Label layoutX="16.0" layoutY="67.0"  text="Số sách bị mất" />
+                                    <Label layoutX="16.0" layoutY="67.0"  text="Số truyện bị mất" />
                                  </children>
                               </AnchorPane>
                            </children>

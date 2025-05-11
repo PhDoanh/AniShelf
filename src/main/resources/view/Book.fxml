@@ -18,18 +18,6 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="306.0" prefWidth="711.0" spacing="2.0"  VBox.vgrow="ALWAYS">
          <children>
-            <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="286.0" prefWidth="111.0">
-               <children>
-                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonAction" prefHeight="32.0" prefWidth="35.0" style="" textFill="WHITE">
-                     <graphic>
-                        <FontIcon iconLiteral="fth-arrow-left" iconSize="21" iconColor="#a64f3c" />
-                     </graphic>
-                  </Button>
-               </children>
-               <HBox.margin>
-                  <Insets top="20.0" />
-               </HBox.margin>
-            </VBox>
             <StackPane prefHeight="311.0" prefWidth="159.0" HBox.hgrow="ALWAYS">
                <children>
                   <ImageView fx:id="bookImage" fitHeight="232.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" >
@@ -43,7 +31,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="294.0" spacing="10.0">
                      <children>
-                        <Label fx:id="bookNameLabel" maxWidth="267.0"  text="Tên Sách" textFill="WHITE">
+                        <Label fx:id="bookNameLabel" maxWidth="267.0"  text="Tên truyện" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="29.0" />
                            </font>
@@ -97,7 +85,7 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <Label maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="362.0"  text="Nội dung" VBox.vgrow="ALWAYS" />
+                  <Label maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="362.0"  text="Mô tả truyện" VBox.vgrow="ALWAYS" />
                   <ScrollPane prefHeight="125.0" prefWidth="253.0" >
                      <content>
                         <Text fx:id="contentText" strokeType="OUTSIDE" strokeWidth="0.0"  text="Nội dung" wrappingWidth="368.13671875" />
@@ -115,7 +103,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="8.0" prefWidth="195.0" >
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="212.0" text="Bình luận" HBox.hgrow="ALWAYS" />
+                        <Label maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="212.0" text="Các nhận xét" HBox.hgrow="ALWAYS" />
                         <ChoiceBox fx:id="starChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="67.0" style="" />
                      </children>
                      <padding>

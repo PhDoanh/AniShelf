@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.service.AdminService;
 import com.library.anishelf.util.CacheManagerUtil;
 import com.library.anishelf.service.ServiceHandler;
@@ -226,19 +227,19 @@ public class BookInfoController extends BaseDetailController<Book> {
     protected boolean validateInput() {
         // Validate ISBN
         if (ISBNText.getText().trim().isEmpty()) {
-            CustomerAlter.showMessage("ISBN không được để trống");
+            NotificationManagerUtil.showInfo("Mã định danh ISBN không được để trống");
             return false;
         }
 
         // Validate title
         if (bookNameText.getText().trim().isEmpty()) {
-            CustomerAlter.showMessage("Tên sách không được để trống");
+            NotificationManagerUtil.showInfo("Tiêu đề truyện không được để trống");
             return false;
         }
 
         // Validate location
         if (locationText.getText().trim().isEmpty()) {
-            CustomerAlter.showMessage("Vị trí không được để trống");
+            NotificationManagerUtil.showInfo("Vị trí truyện không được để trống");
             return false;
         }
 
@@ -246,11 +247,11 @@ public class BookInfoController extends BaseDetailController<Book> {
         try {
             int quantity = Integer.parseInt(numberOfBookText.getText().trim());
             if (quantity < 0) {
-                CustomerAlter.showMessage("Số lượng không hợp lệ");
+                NotificationManagerUtil.showInfo("Số lượng truyện không hợp lệ");
                 return false;
             }
         } catch (NumberFormatException e) {
-            CustomerAlter.showMessage("Số lượng phải là số");
+            NotificationManagerUtil.showInfo("Giá trị khồng hợp lệ");
             return false;
         }
 
@@ -281,7 +282,7 @@ public class BookInfoController extends BaseDetailController<Book> {
 
     @Override
     protected String getType() {
-        return "sách";
+        return "truyện";
     }
 
     @FXML
@@ -359,7 +360,7 @@ public class BookInfoController extends BaseDetailController<Book> {
     @FXML
     public void onChoiceImageButtonAction(ActionEvent event) {
         if (ISBNText.getText().isEmpty() || ISBNText.getText().equals("") || ISBNText.getText() == null) {
-            CustomerAlter.showMessage("Vui lòng nhập ISBN cho quyển sách trước");
+            NotificationManagerUtil.showInfo("Vui lòng nhập ISBN cho truyện trước");
         } else {
             item.setIsbn(Long.parseLong(ISBNText.getText().trim()));
             item.setImagePath(getImagePath(item));
@@ -374,23 +375,19 @@ public class BookInfoController extends BaseDetailController<Book> {
 
     @FXML
     void onDeleteButtonAction(ActionEvent event) {
-        boolean confrimYes = CustomerAlter.showAlter("Bạn muốn xóa quyển sách này?");
-        if (confrimYes) {
-            //Xóa sách trong CSDL
-            ServiceHandler deleteServiceHandler = new AdminService("delete", this.item);
-            serviceInvoker.setServiceHandler(deleteServiceHandler);
-            if (serviceInvoker.invokeService()) {
-                mainController.loadData();
-                mainController.alterPage();
-                loadStartStatus();
-                System.out.println("Đã xóa sách");
-            } else {
-                CustomerAlter.showMessage("Xóa sách thất bại");
+        NotificationManagerUtil.showConfirmation("Xóa quyển truyện này?", confirmed -> {
+            if (confirmed) {
+                ServiceHandler deleteServiceHandler = new AdminService("delete", this.item);
+                serviceInvoker.setServiceHandler(deleteServiceHandler);
+                if (serviceInvoker.invokeService()) {
+                    mainController.loadData();
+                    mainController.alterPage();
+                    loadStartStatus();
+                } else {
+                    NotificationManagerUtil.showError("Xóa truyện thất bại");
+                }
             }
-        } else {
-            System.out.println("Tiếp tục edit");
-        }
-
+        });
     }
 
     @FXML

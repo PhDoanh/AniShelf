@@ -25,7 +25,6 @@
                         </Button>
                      </children>
                   </AnchorPane>
-                  <Label fx:id="titlePage" layoutX="56.0" layoutY="27.2" prefHeight="30.0" prefWidth="606.0" style="-fx-font-size: 26;"   text="Label" AnchorPane.leftAnchor="56.0" AnchorPane.topAnchor="26.0" />
                </children>
             </AnchorPane>
          </children>

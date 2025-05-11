@@ -30,7 +30,7 @@
             <Label fx:id="authorNameLabel" text="Nguyen Van C" GridPane.columnIndex="2" />
             <Label fx:id="categoryLabel" text="Thể loại" GridPane.columnIndex="3" />
             <Label fx:id="numberOfBookLabel" text="Số lượng" GridPane.columnIndex="4" />
-            <Label fx:id="locationLabel" text="Nơi để sách" GridPane.columnIndex="5" />
+            <Label fx:id="locationLabel" text="Nơi để truyện" GridPane.columnIndex="5" />
             <Label fx:id="statusLabel" text="Available" GridPane.columnIndex="6" />
          </children>
       </GridPane>

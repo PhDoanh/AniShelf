@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import org.kordamp.ikonli.javafx.FontIcon?>
-<?import java.lang.String?>
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -20,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="515.0" prefWidth="799.0"   xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.BookInfoController">
+<HBox fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="515.0" prefWidth="799.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.BookInfoController">
    <children>
       <StackPane prefHeight="515.0" prefWidth="911.0" HBox.hgrow="ALWAYS">
          <children>
@@ -28,113 +25,107 @@
                <children>
                   <HBox prefHeight="247.0" prefWidth="799.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                        <AnchorPane prefHeight="247.0" prefWidth="537.0" HBox.hgrow="ALWAYS">
+                        <AnchorPane prefHeight="0.0" prefWidth="186.0" style="">
+                           <children>
+                              <ImageView fx:id="bookImage" fitHeight="176.0" fitWidth="142.0" layoutX="22.0" layoutY="56.8" pickOnBounds="true" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="57.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="247.0" prefWidth="1147.0" HBox.hgrow="ALWAYS">
                            <children>
                               <GridPane layoutX="22.0" layoutY="54.0" prefHeight="175.0" prefWidth="510.0" AnchorPane.bottomAnchor="17.599999999999994" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="36.0" AnchorPane.topAnchor="54.0">
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="166.79998779296875" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="190.40000000000003" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="181.6000244140625" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="176.7999755859375" />
                                   <ColumnConstraints hgrow="ALWAYS" maxWidth="200.0" minWidth="10.0" prefWidth="148.8" />
                                 </columnConstraints>
                                 <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="72.79999809265136" minHeight="7.600007915496825" prefHeight="34.79999198913574" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="65.19999017715455" minHeight="0.0" prefHeight="53.19999389648437" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="45.600012207031256" minHeight="10.0" prefHeight="18.00000610351563" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="65.79999999999998" minHeight="10.0" prefHeight="49.199987792968756" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="37.79999389648438" minHeight="3.4000000000000057" prefHeight="27.00000610351563" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="553.0" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS">
                                        <children>
-                                          <Label prefHeight="26.0" prefWidth="121.0" style="-fx-font-size: 20;"  text="Tên sách:" HBox.hgrow="NEVER" />
-                                          <TextField fx:id="bookNameText" editable="false" prefHeight="39.0" prefWidth="467.0" style="-fx-font-size: 20; -fx-font-weight: bold;"  text="Lời thì thầm dòng sông" HBox.hgrow="ALWAYS" />
+                                          <Label prefHeight="30.0" prefWidth="115.0" style="-fx-font-size: 20;" text="Tiêu đề:" HBox.hgrow="NEVER" />
+                                          <TextField fx:id="bookNameText" editable="false" prefHeight="30.0" prefWidth="456.0" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Attack On Titan" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                        <children>
-                                          <Label prefHeight="22.0" prefWidth="80.0"  text="ISBN:">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
+                                          <Label prefHeight="22.0" prefWidth="157.0" text="ISBN:">
                                              <HBox.margin>
                                                 <Insets left="20.0" />
                                              </HBox.margin>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
                                           </Label>
-                                          <TextField fx:id="ISBNText" editable="false" prefHeight="34.0" prefWidth="322.0"  text="903-384-434-233-23" />
+                                          <TextField fx:id="ISBNText" editable="false" prefHeight="30.0" prefWidth="326.0" text="903-384-434-233-23" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <children>
-                                          <Label prefHeight="22.0" prefWidth="74.0"  text="Vị trí:" />
-                                          <TextField fx:id="locationText" editable="false" prefHeight="34.0" prefWidth="150.0"  text="23234" />
+                                          <Label prefHeight="22.0" prefWidth="49.0" text="Vị trí:" />
+                                          <TextField fx:id="locationText" editable="false" prefHeight="30.0" prefWidth="150.0" text="AniList" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="2">
                                        <children>
-                                          <Label prefHeight="22.0" prefWidth="70.0"  text="Tác giả:">
+                                          <Label prefHeight="22.0" prefWidth="93.0" text="Tác giả:">
                                              <HBox.margin>
                                                 <Insets left="20.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField fx:id="authorNameText" editable="false" prefHeight="34.0" prefWidth="434.0"  text="Nguyen Van C" />
+                                          <TextField fx:id="authorNameText" editable="false" prefHeight="30.0" prefWidth="453.0" text="Unknown" />
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="3">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="525.0" GridPane.columnSpan="3" GridPane.rowIndex="3">
                                        <children>
-                                          <Label prefHeight="22.0" prefWidth="66.0"  text="Thể loại:" HBox.hgrow="ALWAYS">
+                                          <Label prefHeight="22.0" prefWidth="87.0" text="Thể loại:" HBox.hgrow="ALWAYS">
                                              <HBox.margin>
                                                 <Insets left="20.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField fx:id="categoryText" prefHeight="34.0" prefWidth="422.0" style=""  text="Lich SU, hoa hoc, toan hoc" />
+                                          <TextField fx:id="categoryText" prefHeight="30.0" prefWidth="449.0" style="" text="Action, Horror, Adventure" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
                                        <children>
-                                          <Label prefHeight="22.0" prefWidth="92.0"  text="Tổng số sách:" HBox.hgrow="ALWAYS" />
-                                          <TextField fx:id="numberOfBookText" editable="false" prefHeight="34.0" prefWidth="54.0"  text="12" HBox.hgrow="ALWAYS" />
+                                          <Label prefHeight="22.0" prefWidth="106.0" text="Số lượng" HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="numberOfBookText" editable="false" prefHeight="30.0" prefWidth="62.0" text="69" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                        <children>
-                                          <Label prefHeight="22.0" prefWidth="142.0"  text="Tổng số đang mượn:" HBox.hgrow="ALWAYS" />
-                                          <TextField fx:id="numberOfBorrowText" editable="false" prefHeight="34.0" prefWidth="34.0"  text="12" HBox.hgrow="ALWAYS" />
+                                          <Label prefHeight="22.0" prefWidth="130.0" text="Đang mượn:" textAlignment="RIGHT" HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="numberOfBorrowText" editable="false" prefHeight="30.0" prefWidth="54.0" text="69" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                                        <children>
-                                          <Label prefHeight="22.0" prefWidth="104.0"  text="Tổng số bị mất:" HBox.hgrow="ALWAYS" />
-                                          <TextField fx:id="numberOfLostText" editable="false" prefHeight="34.0" prefWidth="46.0"  text="12" HBox.hgrow="ALWAYS" />
+                                          <Label prefHeight="22.0" prefWidth="116.0" text="Bị mất:" HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="numberOfLostText" editable="false" prefHeight="30.0" prefWidth="54.0" text="69" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                  </children>
                               </GridPane>
+                              <Button fx:id="ediButton" layoutX="33.0" layoutY="11.0" mnemonicParsing="false" onAction="#onEditButtonAction" prefHeight="20.0" prefWidth="50.0" style=" -fx-background-radius: 0; -fx-font-size: 10.5; -fx-text-fill: FFF;" text="Edit" textFill="WHITE" />
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="SOMETIMES" />
                      </children>
                   </HBox>
-                  <Button fx:id="ediButton" layoutX="183.0" layoutY="15.0" mnemonicParsing="false" onAction="#onEditButtonAction" prefHeight="22.0" prefWidth="33.0" style=" -fx-background-radius: 0; -fx-font-size: 10.5; -fx-text-fill: FFF;"  text="Edit" textFill="WHITE">
-                     <font>
-                        <Font size="10.5" />
-                     </font>
-                  </Button>
-                  <Button fx:id="deleteButton" layoutX="523.0" layoutY="458.0" mnemonicParsing="false" onAction="#onDeleteButtonAction" prefHeight="49.0" prefWidth="122.0"   text="Xóa" visible="false" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="153.80000000000004" />
-                  <Button fx:id="saveButton" layoutX="656.0" layoutY="458.0" mnemonicParsing="false" onAction="#onSaveButtonAction" prefHeight="49.0" prefWidth="122.0"   text="Save" visible="false" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="20.80000000000004" />
-                  <Button fx:id="page2Button" layoutX="51.0" layoutY="251.0" mnemonicParsing="false" onAction="#onPage2ButtonAction" prefHeight="13.0" prefWidth="32.0"  text="2" />
-                  <Button fx:id="page1Button" layoutX="29.0" layoutY="251.0" mnemonicParsing="false" onAction="#onPage1ButtonAction" prefHeight="13.0" prefWidth="32.0" style=""  text="1" />
-                  <Button fx:id="choiceImageButton" layoutX="630.0" layoutY="238.0" mnemonicParsing="false" onAction="#onChoiceImageButtonAction" prefHeight="26.0" prefWidth="68.0"  text="Chọn ảnh" visible="false" AnchorPane.rightAnchor="101.20000000000005" />
-                  <AnchorPane layoutX="584.0" layoutY="43.0" prefHeight="190.0" prefWidth="162.0" style="" AnchorPane.rightAnchor="52.80000000000004" AnchorPane.topAnchor="43.20000000000002">
-                     <children>
-                        <ImageView fx:id="bookImage" fitHeight="190.0" fitWidth="163.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
+                  <Button fx:id="deleteButton" layoutX="523.0" layoutY="458.0" mnemonicParsing="false" onAction="#onDeleteButtonAction" prefHeight="49.0" prefWidth="122.0" text="Xóa" visible="false" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="153.80000000000004" />
+                  <Button fx:id="saveButton" layoutX="656.0" layoutY="458.0" mnemonicParsing="false" onAction="#onSaveButtonAction" prefHeight="49.0" prefWidth="122.0" text="Save" visible="false" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="20.80000000000004" />
+                  <Button fx:id="choiceImageButton" layoutX="630.0" layoutY="246.0" mnemonicParsing="false" onAction="#onChoiceImageButtonAction" prefHeight="30.0" prefWidth="142.0" text="Chọn ảnh" visible="false" AnchorPane.rightAnchor="643.0" />
                   <AnchorPane fx:id="addButtonPane" layoutX="656.0" layoutY="457.0" prefHeight="49.0" prefWidth="122.0" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="20.80000000000004">
                      <children>
-                        <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAddButtonAction" prefHeight="49.0" prefWidth="122.0"   text="Thêm" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAddButtonAction" prefHeight="49.0" prefWidth="122.0" text="Thêm" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
-                  <HBox layoutX="23.0" layoutY="272.0" prefHeight="175.0" prefWidth="756.0" style=""  AnchorPane.bottomAnchor="68.00000000000006" AnchorPane.leftAnchor="23.200000000000045" AnchorPane.rightAnchor="20.200000000000045" AnchorPane.topAnchor="272.00000000000006">
+                  <HBox layoutX="23.0" layoutY="272.0" prefHeight="175.0" prefWidth="756.0" style="" AnchorPane.bottomAnchor="68.00000000000006" AnchorPane.leftAnchor="23.200000000000045" AnchorPane.rightAnchor="20.200000000000045" AnchorPane.topAnchor="272.00000000000006">
                      <children>
                         <StackPane prefHeight="174.0" prefWidth="770.0" HBox.hgrow="ALWAYS">
                            <children>
@@ -142,18 +133,20 @@
                                  <children>
                                     <HBox layoutY="14.0" prefHeight="20.0" prefWidth="752.0" style="" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.3999999999999773">
                                        <children>
-                                          <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                          <AnchorPane prefHeight="22.0" prefWidth="838.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label layoutX="21.0" layoutY="1.0"  text="Nội dung sách">
+                                                <Label layoutY="1.0" prefHeight="20.0" prefWidth="84.0" text="Mô tả truyện">
                                                    <font>
-                                                      <Font size="10.5" />
+                                                      <Font size="14.0" />
                                                    </font>
                                                 </Label>
+                                                <Button fx:id="page2Button" layoutX="722.0" layoutY="-1.0" mnemonicParsing="false" onAction="#onPage2ButtonAction" prefHeight="13.0" prefWidth="32.0" text="2" />
+                                                <Button fx:id="page1Button" layoutX="690.0" layoutY="-2.0" mnemonicParsing="false" onAction="#onPage1ButtonAction" prefHeight="13.0" prefWidth="32.0" style="" text="1" />
                                              </children>
                                           </AnchorPane>
                                        </children>
                                     </HBox>
-                                    <TextArea fx:id="bookContentText" editable="false" layoutX="1.0" layoutY="33.0" prefHeight="136.0" prefWidth="752.0" text="cdsdsiosdhfiohidshfidoifhiodgoifdhgoifiogifdigohdfgoidfgiofdgiohfoigoifhgioiofgiodfhiohdfiogodhfgiohodfhgohfdoghiofdghoidfhgodfgoidfgiohg" wrapText="true" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="35.19999999999999">
+                                    <TextArea fx:id="bookContentText" editable="false" layoutX="1.0" layoutY="35.2" prefHeight="138.0" prefWidth="754.0" text="Mô tả nội dung các kiểu" wrapText="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="35.0">
                                     </TextArea>
                                  </children>
                               </AnchorPane>
@@ -163,7 +156,7 @@
                                        <children>
                                           <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label  text="BarCode">
+                                                <Label text="BarCode">
                                                    <font>
                                                       <Font size="10.5" />
                                                    </font>
@@ -172,7 +165,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label  text="Status">
+                                                <Label text="Status">
                                                    <font>
                                                       <Font size="10.5" />
                                                    </font>
@@ -181,7 +174,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label  text="Note">
+                                                <Label text="Note">
                                                    <font>
                                                       <Font size="10.5" />
                                                    </font>
@@ -202,7 +195,7 @@
                         </StackPane>
                      </children>
                   </HBox>
-                  <Label layoutX="18.0" layoutY="13.0" style="-fx-font-size: 20;"  text="Thông tin chi tiết">
+                  <Label layoutX="18.0" layoutY="13.0" style="-fx-font-size: 20;" text="Thông tin chi tiết">
                      <font>
                         <Font size="15.0" />
                      </font>

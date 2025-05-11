@@ -119,7 +119,7 @@ public class BookTableController extends BaseTableController<Book, BookPageContr
             findCriteria.put("ISBN", ISBNFindText.getText());
         }
 
-        // Kiểm tra và thêm tiêu chí tìm kiếm theo tên sách
+        // Kiểm tra và thêm tiêu chí tìm kiếm theo tên truyện
         if (!bookNameFindTExt.getText().isEmpty()) {
             findCriteria.put("title", bookNameFindTExt.getText());
         }

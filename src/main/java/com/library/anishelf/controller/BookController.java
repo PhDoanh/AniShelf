@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.dao.BookItemDAO;
 import com.library.anishelf.dao.BookMarkDAO;
 import com.library.anishelf.dao.BookReservationDAO;
@@ -39,7 +40,6 @@ import java.util.Map;
 import static com.library.anishelf.controller.SuggestedBookCardController.executor;
 
 public class BookController {
-    private static final String DASHBOARD_FXML = "/view/UserHomePage.fxml";
     private static final String HISTORY_FXML = "/view/ReservedBorrowedHistoryPage.fxml";
     private static final String BOOKMARK_FXML = "/view/Bookmark.fxml";
     private static final String COMMENT_FXML = "/view/Comment.fxml";
@@ -84,7 +84,7 @@ public class BookController {
     }
 
     /**
-     * thiết lập dữ liệu cho sách.
+     * thiết lập dữ liệu cho truyện.
      */
     public void setData() {
         Task<Image> loadImageTask = BookService.getInstance().createLoadImageTask(book);
@@ -171,64 +171,49 @@ public class BookController {
     }
 
     /**
-     * quay về dashboard.
-     * @param event khi ấn vào
-     */
-    public void onBackButtonAction(ActionEvent event) {
-        VBox content = (VBox) SceneManagerUtil.getInstance().loadScene(DASHBOARD_FXML);
-        if (content != null) {
-            if (bookBox.getChildren().contains(content)) {
-                bookBox.getChildren().remove(content);
-            }
-            SceneManagerUtil.getInstance().updateSceneContainer(content);
-            SceneManagerUtil.getInstance().highlightBackButton();
-        }
-    }
-
-    /**
-     * đặt trước sách.
+     * đặt trước truyện.
      * @param actionEvent khi ấn vào
      */
     public void onReserveBookButtonAction(ActionEvent actionEvent) {
-        boolean confirmYes = CustomerAlter.showAlter("Bạn muốn đặt trước sách chứ gì?");
-        if (confirmYes) {
-            try {
-                Map<String, Object> criteria = new HashMap<>();
-                criteria.put("ISBN", book.getIsbn());
-                criteria.put("BookItemStatus", "AVAILABLE");
-                List<BookItem> bookItems = BookItemDAO.getInstance().findByCriteria(criteria);
-                if (bookItems.size() > 0) {
-                    BookItem bookItem = BookItemDAO.getInstance().findById(bookItems.get(0).getBookBarcode());
-                    bookItem.setBookItemStatus(BookItemStatus.RESERVED);
-                    BookItemDAO.getInstance().updateEntity(bookItem);
-                    BookReservation bookReservation = new BookReservation(NavigationBarController.getMember()
-                            , bookItem, LocalDate.now().toString()
-                            , LocalDate.now().plusDays(3).toString());
-                    try {
-                        BookReservationDAO.getInstance().insert(bookReservation);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    ReservedBorrowedHistoryPageController reservedBorrowedHistoryPageController =
-                            SceneManagerUtil.getInstance().getController(HISTORY_FXML);
-                    if (reservedBorrowedHistoryPageController != null) {
-                        reservedBorrowedHistoryPageController.addReservedBook(bookReservation);
-                    }
-                    CustomerAlter.showMessage("Đã ghi nhận, vui lòng mượn trong 3 ngày");
+        NotificationManagerUtil.showConfirmation("Đặt trước truyện?", confirmed -> {
+            if (confirmed) {
+                try {
+                    Map<String, Object> criteria = new HashMap<>();
+                    criteria.put("ISBN", book.getIsbn());
+                    criteria.put("BookItemStatus", "AVAILABLE");
+                    List<BookItem> bookItems = BookItemDAO.getInstance().findByCriteria(criteria);
+                    if (bookItems.size() > 0) {
+                        BookItem bookItem = BookItemDAO.getInstance().findById(bookItems.get(0).getBookBarcode());
+                        bookItem.setBookItemStatus(BookItemStatus.RESERVED);
+                        BookItemDAO.getInstance().updateEntity(bookItem);
+                        BookReservation bookReservation = new BookReservation(NavigationBarController.getMember()
+                                , bookItem, LocalDate.now().toString()
+                                , LocalDate.now().plusDays(3).toString());
+                        try {
+                            BookReservationDAO.getInstance().insert(bookReservation);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        ReservedBorrowedHistoryPageController reservedBorrowedHistoryPageController =
+                                SceneManagerUtil.getInstance().getController(HISTORY_FXML);
+                        if (reservedBorrowedHistoryPageController != null) {
+                            reservedBorrowedHistoryPageController.addReservedBook(bookReservation);
+                        }
+                        NotificationManagerUtil.showInfo("Mượn truyện thành công, vui lòng mượn trong 3 ngày");
 
-                } else {
-                    CustomerAlter.showMessage("Hết mất sách cho cậu mượn rùi T.T");
+                    } else {
+                        NotificationManagerUtil.showInfo("Hết truyện để mượn, vui lòng thử lại sau");
+                    }
+                } catch (RuntimeException | IOException | SQLException e) {
+                    e.printStackTrace();
+                    NotificationManagerUtil.showError("Lỗi không xác định");
                 }
-            } catch (RuntimeException | IOException | SQLException e) {
-                e.printStackTrace();
-                CustomerAlter.showMessage("Lỗi :v");
             }
-        }
-
+        });
     }
 
     /**
-     * đánh dấu sách.
+     * đánh dấu truyện.
      * @param actionEvent khi ấn vào
      */
     public void onBookmarkButtonAction(ActionEvent actionEvent) {
@@ -243,63 +228,65 @@ public class BookController {
      * huỷ đánh dấu.
      */
     private void cancelMarkedBook() {
-        boolean confirmYes = CustomerAlter.showAlter("Bạn muốn huỷ đánh dấu sách này à?");
-        if (confirmYes) {
-            try {
-                BookmarkController bookmarkController =
-                        SceneManagerUtil.getInstance().getController(BOOKMARK_FXML);
-                if (bookmarkController != null) {
-                    bookmarkController.deleteBookmark(this.book);
-                }
-                Map<String, Object> criteria = new HashMap<>();
-                criteria.put("ISBN", book.getIsbn());
-                List<BookItem> bookItem = BookItemDAO.getInstance().findByCriteria(criteria);
-                BookMark bookMark = new BookMark(NavigationBarController.getMember()
-                        , bookItem.getFirst());
+        NotificationManagerUtil.showConfirmation("Huỷ đánh dấu truyện này?", confirmed -> {
+            if (confirmed) {
                 try {
-                    BookMarkDAO.getInstance().deleteEntity(bookMark);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                    BookmarkController bookmarkController =
+                            SceneManagerUtil.getInstance().getController(BOOKMARK_FXML);
+                    if (bookmarkController != null) {
+                        bookmarkController.deleteBookmark(this.book);
+                    }
+                    Map<String, Object> criteria = new HashMap<>();
+                    criteria.put("ISBN", book.getIsbn());
+                    List<BookItem> bookItem = BookItemDAO.getInstance().findByCriteria(criteria);
+                    BookMark bookMark = new BookMark(NavigationBarController.getMember()
+                            , bookItem.getFirst());
+                    try {
+                        BookMarkDAO.getInstance().deleteEntity(bookMark);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    BookService.getInstance().removeMarkedBook(bookMark);
+                    bookmarkButton.setText("Đánh dấu");
+                    NotificationManagerUtil.showInfo("Hủy đánh dấu truyện thành công");
+                } catch (RuntimeException | IOException | SQLException e) {
+                    e.printStackTrace();
                 }
-                BookService.getInstance().removeMarkedBook(bookMark);
-                bookmarkButton.setText("Đánh dấu");
-                CustomerAlter.showMessage("Đã huỷ đánh dấu sách nè");
-            } catch (RuntimeException | IOException | SQLException e) {
-                e.printStackTrace();
             }
-        }
+        });
     }
 
     /**
-     * đánh dấu sách.
+     * đánh dấu truyện.
      */
     private void markedBook() {
-        boolean confirmYes = CustomerAlter.showAlter("Bạn muốn đánh dấu sách này à?");
-        if (confirmYes) {
-            try {
-                BookmarkController bookmarkController =
-                        SceneManagerUtil.getInstance().getController(BOOKMARK_FXML);
-                if (bookmarkController != null) {
-                    bookmarkController.addBookmark(this.book);
-                }
-                Map<String, Object> criteria = new HashMap<>();
-                criteria.put("ISBN", book.getIsbn());
-                List<BookItem> bookItem = BookItemDAO.getInstance().findByCriteria(criteria);
-                BookMark bookMark = new BookMark(NavigationBarController.getMember()
-                        , bookItem.getFirst());
-                bookMark.getBook().setRate(book.getRate());
+        NotificationManagerUtil.showConfirmation("Đánh dấu truyện này?", confirm -> {
+            if (confirm) {
                 try {
-                    BookMarkDAO.getInstance().insert(bookMark);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                    BookmarkController bookmarkController =
+                            SceneManagerUtil.getInstance().getController(BOOKMARK_FXML);
+                    if (bookmarkController != null) {
+                        bookmarkController.addBookmark(this.book);
+                    }
+                    Map<String, Object> criteria = new HashMap<>();
+                    criteria.put("ISBN", book.getIsbn());
+                    List<BookItem> bookItem = BookItemDAO.getInstance().findByCriteria(criteria);
+                    BookMark bookMark = new BookMark(NavigationBarController.getMember()
+                            , bookItem.getFirst());
+                    bookMark.getBook().setRate(book.getRate());
+                    try {
+                        BookMarkDAO.getInstance().insert(bookMark);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    BookService.getInstance().addMarkedBook(bookMark);
+                    bookmarkButton.setText("Huỷ đánh dấu");
+                    NotificationManagerUtil.showInfo("Đánh dấu truyện thành công");
+                } catch (RuntimeException | IOException | SQLException e) {
+                    e.printStackTrace();
                 }
-                BookService.getInstance().addMarkedBook(bookMark);
-                bookmarkButton.setText("Huỷ đánh dấu");
-                CustomerAlter.showMessage("Đã thêm vô đánh dấu sách nè");
-            } catch (RuntimeException | IOException | SQLException e) {
-                e.printStackTrace();
             }
-        }
+        });
     }
 
     /**
@@ -318,8 +305,8 @@ public class BookController {
     }
 
     /**
-     * trả về sách.
-     * @return sách
+     * trả về truyện.
+     * @return truyện
      */
     public Book getBook() {
         return book;
@@ -351,7 +338,7 @@ public class BookController {
         try {
             // Kiểm tra URL có null hoặc rỗng không
             if (book.getPreview() == null || book.getPreview().trim().isEmpty()) {
-                CustomerAlter.showMessage("Không có preview của sách này");
+                NotificationManagerUtil.showInfo("Bản xem trước không có sẵn");
                 logger.debug(TAG, "URL preview trống hoặc null");
                 return;
             }
@@ -366,51 +353,15 @@ public class BookController {
                     logger.info(TAG, "Đang mở liên kết: " + book.getPreview());
                 } else {
                     logger.warning(TAG, "Desktop không hỗ trợ mở trình duyệt.");
-                    CustomerAlter.showMessage("Trình duyệt không được hỗ trợ trên hệ thống này");
+                    NotificationManagerUtil.showWarning("Desktop không hỗ trợ mở trình duyệt.");
                 }
             } else {
                 logger.warning(TAG, "Desktop API không được hỗ trợ trên hệ thống này.");
-                CustomerAlter.showMessage("Không thể mở trình duyệt trên hệ thống này");
+                NotificationManagerUtil.showWarning("Desktop API không được hỗ trợ trên hệ thống này.");
             }
         } catch (Exception e) {
             logger.error(TAG, "Lỗi khi mở liên kết: " + (book.getPreview() != null ? book.getPreview() : "null"), e);
-            CustomerAlter.showMessage("Không có preview của sách này hoặc liên kết không hợp lệ");
+            NotificationManagerUtil.showError("Bản xem trước không có sẵn này hoặc liên kết không hợp lệ");
         }
     }
-
-    /**
-     * mở web .
-     * @param url link
-     */
-    private void openWebLink(String url) {
-        try {
-            // Kiểm tra URL có null hoặc rỗng không
-            if (url == null || url.trim().isEmpty()) {
-                CustomerAlter.showMessage("Không có preview của sách này");
-                logger.debug(TAG, "URL preview trống hoặc null");
-                return;
-            }
-            
-            // Kiểm tra nếu hệ thống hỗ trợ Desktop API
-            if (Desktop.isDesktopSupported()) {
-                Desktop desktop = Desktop.getDesktop();
-                if (desktop.isSupported(Desktop.Action.BROWSE)) {
-                    // Kiểm tra URL hợp lệ
-                    URI uri = new URI(url);
-                    desktop.browse(uri); // Mở trình duyệt với URL
-                    logger.info(TAG, "Đang mở liên kết: " + url);
-                } else {
-                    logger.warning(TAG, "Desktop không hỗ trợ mở trình duyệt.");
-                    CustomerAlter.showMessage("Trình duyệt không được hỗ trợ trên hệ thống này");
-                }
-            } else {
-                logger.warning(TAG, "Desktop API không được hỗ trợ trên hệ thống này.");
-                CustomerAlter.showMessage("Không thể mở trình duyệt trên hệ thống này");
-            }
-        } catch (Exception e) {
-            logger.error(TAG, "Lỗi khi mở liên kết: " + url, e);
-            CustomerAlter.showMessage("Không có preview của sách này hoặc liên kết không hợp lệ");
-        }
-    }
-
 }

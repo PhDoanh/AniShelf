@@ -47,7 +47,7 @@ public class BookRankingCardController {
 
     /**
      * thiết lập dữ liệu cho card.
-     * @param book sách
+     * @param book truyện
      * @param rank hạng
      */
     public void setData(Book book,String rank) {
@@ -76,7 +76,7 @@ public class BookRankingCardController {
     }
 
     /**
-     * chọn đọc sách.
+     * chọn đọc truyện.
      * @param actionEvent khi ấn vào
      */
     public void onReadButtonAction(ActionEvent actionEvent) {

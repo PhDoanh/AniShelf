@@ -65,8 +65,8 @@ public class BookmarkController implements Initializable {
     }
 
     /**
-     * thêm sách đánh dấu.
-     * @param book sách
+     * thêm truyện đánh dấu.
+     * @param book truyện
      * @throws IOException ném ngoại lệ
      */
     public void addBookmark(Book book) throws IOException {
@@ -79,8 +79,8 @@ public class BookmarkController implements Initializable {
     }
 
     /**
-     * xoá sách đánh dấu.
-     * @param book sách
+     * xoá truyện đánh dấu.
+     * @param book truyện
      * @throws IOException ném ngoại lệ
      */
     public void deleteBookmark(Book book) throws IOException {
@@ -91,9 +91,9 @@ public class BookmarkController implements Initializable {
     }
 
     /**
-     * tìm sách.
+     * tìm truyện.
      * @param ISBN isbn
-     * @return sách cần tìm
+     * @return truyện cần tìm
      */
     private int findBookMark(long ISBN) {
         for (int i = 0;i<bookMarkList.size();i++) {
