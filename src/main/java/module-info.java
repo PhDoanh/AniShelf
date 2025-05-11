@@ -35,6 +35,7 @@ module com.library.anishelf {
     requires org.apache.httpcomponents.httpcore;
     requires atlantafx.base;
     requires com.github.benmanes.caffeine;
+    requires net.dv8tion.jda;
 
     opens com.library.anishelf.controller to javafx.fxml;
     opens com.library.anishelf to javafx.fxml;

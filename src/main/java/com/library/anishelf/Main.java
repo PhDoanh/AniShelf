@@ -1,6 +1,7 @@
 package com.library.anishelf;
 
 import atlantafx.base.theme.NordDark;
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.util.RuntimeDebugUtil;
 import javafx.application.Application;
 import javafx.scene.text.Font;
@@ -74,8 +75,8 @@ public class Main extends Application {
             logger.debug(TAG, "Đã thêm custom CSS");
 
             // Thiết lập kích thước tối thiểu cho cửa sổ
-            stage.setMinWidth(800);
-            stage.setMinHeight(600);
+            stage.setMinWidth(1024);
+            stage.setMinHeight(768);
 
             //stage.setResizable(false);
             stage.setOnCloseRequest(event -> {
@@ -87,6 +88,10 @@ public class Main extends Application {
             });
             stage.setTitle("AniShelf");
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/image/app_icon.png")));
+
+            // Initialize notification manager with the main stage
+            NotificationManagerUtil.setOwnerWindow(stage);
+            logger.debug(TAG, "Đã khởi tạo hệ thống thông báo");
 
             stage.setScene(scene);
             stage.show();
