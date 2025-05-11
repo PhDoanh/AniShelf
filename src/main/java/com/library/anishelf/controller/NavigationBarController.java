@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.util.AnimationUtil;
 import com.library.anishelf.service.BookAPIService;
 import com.library.anishelf.dao.MemberDAO;
@@ -9,6 +10,8 @@ import com.library.anishelf.util.SceneManagerUtil;
 import com.library.anishelf.util.config.UsrInfo;
 import com.library.anishelf.util.config.UsrConfigUtil;
 import com.library.anishelf.util.ThemeManagerUtil;
+import com.library.anishelf.util.NavHistoryManagerUtil;
+
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +24,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToolBar;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -33,7 +38,7 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.util.Duration;
 import javafx.concurrent.Task;
-
+import org.controlsfx.control.ToggleSwitch;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,6 +63,12 @@ public class NavigationBarController {
     private HBox navigationBar;
     
     @FXML
+    private ToolBar navToolBar;
+    
+    @FXML
+    private ToolBar rightToolBar;
+    
+    @FXML
     private ScrollPane contentScrollPane;
 
     @FXML
@@ -70,7 +81,10 @@ public class NavigationBarController {
     AnchorPane suggestionContainer;
 
     @FXML
-    Button dashboardButton, bookmarkButton, bookRankingButton;
+    Button dashboardButton, bookmarkButton, bookRankingButton, backButton, nextButton, forumButton;
+    
+    @FXML
+    private ToggleSwitch themeToggle;
 
     @FXML
     private ListView<HBox> suggestionList;
@@ -83,6 +97,9 @@ public class NavigationBarController {
     private ObservableList<HBox> filteredSuggestions;
     private boolean isAtTop = true;
     private static final double SCROLL_THRESHOLD = 10.0;
+    
+    // Manager lịch sử điều hướng
+    private NavHistoryManagerUtil historyManager = NavHistoryManagerUtil.getInstance();
 
     private static UsrInfo usrInfo;
     private int memberID;
@@ -105,6 +122,7 @@ public class NavigationBarController {
     public void setInfo() {
         setupScrollHandler();
         initializeAvatarDropdownMenu();
+        setupThemeToggle();
         // Không gọi configureAvatarClip() vì đã xử lý trong FXML
 
         usrInfo = UsrConfigUtil.getInstance().findUserById(Integer.toString(memberID));
@@ -116,23 +134,135 @@ public class NavigationBarController {
 
         sceneManagerUtil = SceneManagerUtil.getInstance(contentBox);
         sceneManagerUtil.addUserMenuController(this);
+        
+        // Khởi tạo trang Dashboard và thêm vào lịch sử
         VBox content = (VBox) sceneManagerUtil.loadScene(DASHBOARD_FXML);
         if (content != null) {
             sceneManagerUtil.updateSceneContainer(content);
             contentBox.getChildren().clear();
             contentBox.getChildren().add(content);
+            historyManager.addToHistory(DASHBOARD_FXML);
         }
 
         ThemeManagerUtil.getInstance().addPane(stackPane);
 
         searchBookSuggestion();
 
-        // Cập nhật mảng buttons - bỏ đi các nút đã xóa trong FXML
+        // Cập nhật mảng buttons - thêm nút back và next
         buttons = new Button[]{dashboardButton, bookmarkButton, bookRankingButton};
         ThemeManagerUtil.getInstance().changeMenuBarButtonColor(buttons, dashboardButton);
         
         // Thiết lập xử lý sự kiện cho avatar
         setupAvatarEvents();
+        
+        // Cập nhật trạng thái ban đầu cho nút back và next
+        updateBackNextButtonState();
+    }
+    
+    /**
+     * Cập nhật trạng thái của nút back và next dựa trên lịch sử
+     */
+    private void updateBackNextButtonState() {
+        backButton.setDisable(!historyManager.canGoBack());
+        nextButton.setDisable(!historyManager.canGoForward());
+    }
+    
+    /**
+     * Xử lý sự kiện khi nhấn nút Back (Quay lại trang trước)
+     */
+    @FXML
+    public void onBackButtonAction(ActionEvent event) {
+        if (historyManager.canGoBack()) {
+            String previousPage = historyManager.goBack();
+            navigateToPage(previousPage);
+            updateBackNextButtonState();
+        }
+    }
+    
+    /**
+     * Xử lý sự kiện khi nhấn nút Next (Đi đến trang kế tiếp)
+     */
+    @FXML
+    public void onNextButtonAction(ActionEvent event) {
+        if (historyManager.canGoForward()) {
+            String nextPage = historyManager.goForward();
+            navigateToPage(nextPage);
+            updateBackNextButtonState();
+        }
+    }
+    
+    /**
+     * Điều hướng đến một trang cụ thể
+     * @param pagePath Đường dẫn đến trang
+     */
+    private void navigateToPage(String pagePath) {
+        VBox content = (VBox) sceneManagerUtil.loadScene(pagePath);
+        if (content != null) {
+            sceneManagerUtil.updateSceneContainer(content);
+            
+            // Cập nhật highlight cho các nút trong thanh điều hướng nếu cần
+            if (pagePath.equals(DASHBOARD_FXML)) {
+                ThemeManagerUtil.getInstance().changeMenuBarButtonColor(buttons, dashboardButton);
+            } else if (pagePath.equals(BOOKMARK_FXML)) {
+                ThemeManagerUtil.getInstance().changeMenuBarButtonColor(buttons, bookmarkButton);
+            } else if (pagePath.equals(BOOK_RANKING_FXML)) {
+                ThemeManagerUtil.getInstance().changeMenuBarButtonColor(buttons, bookRankingButton);
+            } else {
+                // Nếu không phải các trang chủ, bỏ highlight tất cả nút
+                for (Button button : buttons) {
+                    button.getStyleClass().remove("active-nav-button");
+                    button.getStyleClass().add("nav-button");
+                }
+            }
+        }
+    }
+    
+    /**
+     * Thiết lập ToggleSwitch cho chế độ sáng/tối
+     */
+    private void setupThemeToggle() {
+        // Kiểm tra theme hiện tại và thiết lập trạng thái ban đầu cho ToggleSwitch
+        String currentTheme = ThemeManagerUtil.getInstance().getCurrentThemeName();
+        boolean isDarkTheme = currentTheme.contains("dark") || currentTheme.equals("dracula");
+        themeToggle.setSelected(isDarkTheme);
+        
+        // Thiết lập tooltip cho themeToggle
+        Tooltip tooltip = new Tooltip(isDarkTheme ? "Chuyển sang chế độ sáng" : "Chuyển sang chế độ tối");
+        Tooltip.install(themeToggle, tooltip);
+    }
+    
+    /**
+     * Xử lý sự kiện khi người dùng thay đổi chế độ sáng/tối
+     */
+    @FXML
+    public void onThemeToggleAction(MouseEvent event) {
+        boolean isDarkMode = themeToggle.isSelected();
+        String currentTheme = ThemeManagerUtil.getInstance().getCurrentThemeName();
+        String newTheme;
+        
+        // Chuyển đổi giữa các theme tương ứng
+        if (currentTheme.contains("primer")) {
+            newTheme = isDarkMode ? "primer-dark" : "primer-light";
+        } else if (currentTheme.contains("cupertino")) {
+            newTheme = isDarkMode ? "cupertino-dark" : "cupertino-light";
+        } else if (currentTheme.contains("nord")) {
+            newTheme = isDarkMode ? "nord-dark" : "nord-light";
+        } else if (currentTheme.equals("dracula")) {
+            newTheme = "primer-light"; // Từ dracula chuyển về light mặc định
+        } else {
+            newTheme = isDarkMode ? "primer-dark" : "primer-light"; // Mặc định
+        }
+        
+        // Cập nhật theme và lưu cài đặt
+        ThemeManagerUtil.getInstance().changeTheme(newTheme);
+        if (usrInfo != null) {
+            usrInfo.setColor(newTheme);
+            UsrConfigUtil.getInstance().writeUserInfoToFile(Integer.toString(memberID), newTheme);
+        }
+        
+        // Cập nhật tooltip
+        Tooltip tooltip = new Tooltip(isDarkMode ? "Chuyển sang chế độ sáng" : "Chuyển sang chế độ tối");
+        Tooltip.install(themeToggle, tooltip);
     }
     
     /**
@@ -236,14 +366,24 @@ public class NavigationBarController {
         });
     }
 
+    /**
+     * Xử lý sự kiện khi người dùng nhấn vào nút Dashboard
+     */
     public void onDashboardButtonAction(ActionEvent event) {
         VBox content = (VBox) sceneManagerUtil.loadScene(DASHBOARD_FXML);
         if (content != null) {
             sceneManagerUtil.updateSceneContainer(content);
             ThemeManagerUtil.getInstance().changeMenuBarButtonColor(buttons, dashboardButton);
+            
+            // Thêm vào lịch sử điều hướng
+            historyManager.addToHistory(DASHBOARD_FXML);
+            updateBackNextButtonState();
         }
     }
 
+    /**
+     * Xử lý sự kiện khi người dùng nhấn vào nút tìm kiếm nâng cao
+     */
     public void onAdvancedSearchButtonAction(ActionEvent event) {
         VBox content = (VBox) sceneManagerUtil.loadScene(ADVANCED_SEARCH_FXML);
         if (content != null) {
@@ -254,23 +394,42 @@ public class NavigationBarController {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            
+            // Thêm vào lịch sử điều hướng
+            historyManager.addToHistory(ADVANCED_SEARCH_FXML);
+            updateBackNextButtonState();
+            
             clearSuggestions();
         }
     }
 
+    /**
+     * Xử lý sự kiện khi người dùng nhấn vào nút Bookmark
+     */
     public void onBookmarkButtonAction(ActionEvent event) {
         VBox content = (VBox) sceneManagerUtil.loadScene(BOOKMARK_FXML);
         if (content != null) {
             sceneManagerUtil.updateSceneContainer(content);
             ThemeManagerUtil.getInstance().changeMenuBarButtonColor(buttons, bookmarkButton);
+            
+            // Thêm vào lịch sử điều hướng
+            historyManager.addToHistory(BOOKMARK_FXML);
+            updateBackNextButtonState();
         }
     }
 
+    /**
+     * Xử lý sự kiện khi người dùng nhấn vào nút Book Ranking
+     */
     public void onBookRankingButtonAction(ActionEvent actionEvent) {
         VBox content = (VBox) sceneManagerUtil.loadScene(BOOK_RANKING_FXML);
         if (content != null) {
             sceneManagerUtil.updateSceneContainer(content);
             ThemeManagerUtil.getInstance().changeMenuBarButtonColor(buttons, bookRankingButton);
+            
+            // Thêm vào lịch sử điều hướng
+            historyManager.addToHistory(BOOK_RANKING_FXML);
+            updateBackNextButtonState();
         }
     }
 
@@ -278,19 +437,21 @@ public class NavigationBarController {
      * Xử lý đăng xuất - được gọi từ menu thả xuống
      */
     public void onLogoutButtonAction(ActionEvent event) {
-        boolean confirmYes = CustomerAlter.showAlter("Anh bỏ em à");
-        if (confirmYes) {
-            try {
-                sceneManagerUtil.clearAllCaches();
-                Stage stage = (Stage) stackPane.getScene().getWindow();
-                Parent root = FXMLLoader.load(getClass().getResource(USER_LOGIN_FXML));
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
-            } catch (Exception e) {
-                e.printStackTrace();
+        NotificationManagerUtil.showConfirmation("Đăng xuất?", confirmed -> {
+            if (confirmed) {
+                try {
+                    sceneManagerUtil.clearAllCaches();
+                    historyManager.clearHistory(); // Xóa lịch sử điều hướng
+                    Stage stage = (Stage) stackPane.getScene().getWindow();
+                    Parent root = FXMLLoader.load(getClass().getResource(USER_LOGIN_FXML));
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }                
             }
-        }
+        });
     }
 
     /**
@@ -359,7 +520,7 @@ public class NavigationBarController {
     }
 
     /**
-     * tìm sách ở api.
+     * tìm truyện ở api.
      *
      * @param keyword
      * @param filteredSuggestions
@@ -416,11 +577,18 @@ public class NavigationBarController {
         searchText.clear();
     }
 
+    /**
+     * Xử lý sự kiện khi người dùng nhấn vào logo
+     */
     public void onDashBoardMouseClicked(javafx.scene.input.MouseEvent mouseEvent) {
         VBox content = (VBox) sceneManagerUtil.loadScene(DASHBOARD_FXML);
         if (content != null) {
             sceneManagerUtil.updateSceneContainer(content);
             ThemeManagerUtil.getInstance().changeMenuBarButtonColor(buttons, dashboardButton);
+            
+            // Thêm vào lịch sử điều hướng
+            historyManager.addToHistory(DASHBOARD_FXML);
+            updateBackNextButtonState();
         }
     }
 
@@ -448,11 +616,64 @@ public class NavigationBarController {
         return member;
     }
 
+    /**
+     * Phương thức này được gọi từ SceneManagerUtil để cập nhật trạng thái của nút back/next
+     * và cập nhật màu nút trang chủ khi quay về từ một trang khác
+     */
     public void changeColorButtonBack() {
         ThemeManagerUtil.getInstance().changeMenuBarButtonColor(buttons, dashboardButton);
+        updateBackNextButtonState(); // Cập nhật trạng thái của nút back/next
+    }
+
+    /**
+     * Thêm một trang vào lịch sử điều hướng
+     * Phương thức này sẽ được gọi từ SceneManagerUtil khi tải một trang mới
+     * @param pagePath Đường dẫn đến trang
+     */
+    public void addPageToHistory(String pagePath) {
+        historyManager.addToHistory(pagePath);
+        updateBackNextButtonState();
     }
 
     public static UsrInfo getUserInfo() {
         return usrInfo;
+    }
+    
+    /**
+     * Getter cho các nút điều hướng - cần thiết cho việc cập nhật trạng thái
+     */
+    public Button getDashboardButton() {
+        return dashboardButton;
+    }
+    
+    public Button getBookmarkButton() {
+        return bookmarkButton;
+    }
+    
+    public Button getBookRankingButton() {
+        return bookRankingButton;
+    }
+    
+    /**
+     * Xử lý sự kiện khi người dùng nhấn vào nút Forum
+     */
+    @FXML
+    public void onForumButtonAction(ActionEvent event) {
+        VBox content = (VBox) sceneManagerUtil.loadScene("/view/ForumPage.fxml");
+        if (content != null) {
+            sceneManagerUtil.updateSceneContainer(content);
+            // Xóa highlight trên tất cả các nút chính
+            for (Button button : buttons) {
+                button.getStyleClass().remove("active-nav-button");
+                button.getStyleClass().add("nav-button");
+            }
+            // Highlight nút forum
+            forumButton.getStyleClass().remove("nav-button");
+            forumButton.getStyleClass().add("active-nav-button");
+            
+            // Thêm vào lịch sử điều hướng
+            historyManager.addToHistory("/view/ForumPage.fxml");
+            updateBackNextButtonState();
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -8,9 +9,6 @@ import javafx.scene.control.Label;
 public abstract class BasePageController<T, D extends BaseDetailController<T>,
         TB extends BaseTableController<T, ? extends BasePageController, ? extends BaseRowController>>
         extends BasicController {
-
-    @FXML
-    protected Label titlePage;
 
     protected FXMLLoader detailLoader;
     protected FXMLLoader tableLoader;
@@ -64,10 +62,11 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
      */
     public void loadDetail(T item) {
         if (detailController.hasUnsavedChanges()) {
-            boolean confirmYes = CustomerAlter.showAlter("Thông tin bạn đang thêm/sửa sẽ bị mất");
-            if (confirmYes) {
-                loadDetailItem(item);
-            }
+            NotificationManagerUtil.showConfirmation("Thông tin đang thêm/sửa sẽ bị mất", confirmed -> {
+                if (confirmed) {
+                    loadDetailItem(item);
+                }
+            });
         } else {
             loadDetailItem(item);
         }
@@ -87,10 +86,11 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
     public void loadAddPane() {
         getTitlePageStack().push("Add");
         if (detailController.hasUnsavedChanges()) {
-            boolean confirmYes = CustomerAlter.showAlter("Thông tin bạn đang thêm/sửa sẽ bị mất");
-            if (confirmYes) {
-                loadAddNewItem();
-            }
+            NotificationManagerUtil.showConfirmation("Thông tin đang thêm/sửa sẽ bị mất", confirmed -> {
+                if (confirmed) {
+                    loadAddNewItem();
+                } 
+            });
         } else {
             loadAddNewItem();
         }
@@ -108,15 +108,7 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
      * Load lại Data trong Table và đặt lại tiêu đề cho trang.
      */
     public void loadData() {
-        setTitlePage();
         tableController.loadData();
-    }
-
-    /**
-     * Set tiêu đề cho Page.
-     */
-    protected void setTitlePage() {
-        titlePage.setText(String.join(" / ", getTitlePageStack()));
     }
 
     public abstract void alterPage();

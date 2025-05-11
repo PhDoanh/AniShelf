@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.service.ServiceInvoker;
 import com.library.anishelf.model.*;
 import javafx.fxml.FXMLLoader;
@@ -372,12 +373,12 @@ public class BasicController {
 
             // Kiểm tra ngày không phải là ngày trong tương lai
             if (date.after(new Date())) {
-                CustomerAlter.showMessage("Ngày tháng không được là ngày trong tương lai.");
+                NotificationManagerUtil.showInfo("Ngày không được lớn hơn ngày hiện tại");
                 return false;
             }
         } catch (ParseException e) {
             // Xảy ra ngoại lệ nếu định dạng ngày không hợp lệ
-            CustomerAlter.showMessage("Ngày tháng định dạng không hợp lệ phải định dạng dd/MM/yyyy");
+            NotificationManagerUtil.showInfo("Định dạng ngày không hợp lệ");
             return false;
         }
         return true;
@@ -411,8 +412,4 @@ public class BasicController {
             return null;
         }
     }
-
-
-
 }
-

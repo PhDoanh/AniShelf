@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.service.AdminService;
 import com.library.anishelf.service.ServiceHandler;
 
@@ -21,7 +22,6 @@ public abstract class BaseDetailController<T> extends BasicController {
     public void setItem(T item) {
         this.item = item;
         loadItemDetails();
-        mainController.setTitlePage();
     }
 
     protected abstract void loadItemDetails();
@@ -34,7 +34,6 @@ public abstract class BaseDetailController<T> extends BasicController {
     public void setAddMode(boolean isAdd) {
         this.addMode = isAdd;
         updateAddModeUI();
-        mainController.setTitlePage();
     }
 
     protected abstract void updateAddModeUI();
@@ -47,7 +46,6 @@ public abstract class BaseDetailController<T> extends BasicController {
     public void setEditMode(boolean enable) {
         this.editMode = enable;
         updateEditModeUI();
-        mainController.setTitlePage();
     }
 
     protected abstract void updateEditModeUI();
@@ -59,40 +57,42 @@ public abstract class BaseDetailController<T> extends BasicController {
         try {
             if (addMode) {
                 if (validateInput() && getNewItemInformation()) {
-                    boolean confirmYes = CustomerAlter.showAlter("Thêm " + getType() + " mới?");
-                    if (confirmYes) {
-                        ServiceHandler addServiceHandler = new AdminService("add", this.item);
-                        serviceInvoker.setServiceHandler(addServiceHandler);
-                        if (serviceInvoker.invokeService()) {
-                            getTitlePageStack().pop();
-                            mainController.loadData();
-                            setAddMode(false);
-                            System.out.println("Đã lưu thay đổi");
+                    NotificationManagerUtil.showConfirmation("Thêm " + getType() + " mới?", confirmed -> {
+                        if (confirmed) {
+                            // thêm truyện vào CSDL
+                            ServiceHandler addServiceHandler = new AdminService("add", this.item);
+                            serviceInvoker.setServiceHandler(addServiceHandler);
+                            if (serviceInvoker.invokeService()) {
+                                getTitlePageStack().pop();
+                                mainController.loadData();
+                                setAddMode(false);
+                                System.out.println("Đã lưu thay đổi");
+                            }
                         }
-                    }
+                    });
                 }
             } else {
                 if (validateInput() && getNewItemInformation()) {
-                    boolean confirmYes = CustomerAlter.showAlter("Bạn có muốn lưu thay đổi " + getType() + " này hay không?");
-                    if (confirmYes) {
-                        // sửa sách trong CSDL
-                        ServiceHandler editServiceHandler = new AdminService("edit", this.item);
-                        serviceInvoker.setServiceHandler(editServiceHandler);
-                        if (serviceInvoker.invokeService()) {
-                            getTitlePageStack().pop();
-                            mainController.loadData();
-                            loadItemDetails();
-                            setEditMode(false);
-                            System.out.println("Đã lưu thay đổi");
+                    NotificationManagerUtil.showConfirmation("Lưu thay đổi " + getType() + " này?", confirmed -> {
+                        if (confirmed) {
+                            // sửa truyện trong CSDL
+                            ServiceHandler editServiceHandler = new AdminService("edit", this.item);
+                            serviceInvoker.setServiceHandler(editServiceHandler);
+                            if (serviceInvoker.invokeService()) {
+                                getTitlePageStack().pop();
+                                mainController.loadData();
+                                loadItemDetails();
+                                setEditMode(false);
+                                System.out.println("Đã lưu thay đổi");
+                            }
                         }
-
-                    }
+                    });
                 } else {
                     System.out.println("Tiếp tục edit");
                 }
             }
         } catch (Exception e) {
-            CustomerAlter.showMessage(e.getMessage());
+            NotificationManagerUtil.showInfo(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -102,21 +102,22 @@ public abstract class BaseDetailController<T> extends BasicController {
      */
     protected void deleteChanges() {
         try {
-            boolean confirmYes = CustomerAlter.showAlter("Bạn có chắc muốn xóa " + getType() + " này chứ?");
-            if (confirmYes) {
-                ServiceHandler deleteServiceHandler = new AdminService("delete", this.item);
-                serviceInvoker.setServiceHandler(deleteServiceHandler);
-                if (serviceInvoker.invokeService()) {
-                    getTitlePageStack().pop();
-                    getTitlePageStack().pop();
-                    mainController.loadData();
-                    mainController.alterPage();
-                    setEditMode(false);
-                    System.out.println("Đã lưu thay đổi");
+            NotificationManagerUtil.showConfirmation("Xóa " + getType() + " này?", confirmed -> {
+                if (confirmed) {
+                    // xóa item trong CSDL
+                    ServiceHandler deleteServiceHandler = new AdminService("delete", this.item);
+                    serviceInvoker.setServiceHandler(deleteServiceHandler);
+                    if (serviceInvoker.invokeService()) {
+                        getTitlePageStack().pop();
+                        // getTitlePageStack().pop();
+                        mainController.loadData();
+                        setEditMode(false);
+                        System.out.println("Đã lưu thay đổi");
+                    }
                 }
-            }
+            });
         } catch (Exception e) {
-            CustomerAlter.showMessage(e.getMessage());
+            NotificationManagerUtil.showInfo(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -150,7 +151,7 @@ public abstract class BaseDetailController<T> extends BasicController {
     protected abstract boolean getNewItemInformation() throws Exception;
 
     /**
-     * Lấy thể loại của trang nay là gì (Đơn muon sách, Đơn đặt sách,...)
+     * Lấy thể loại của trang nay là gì (Đơn muon truyện, Đơn đặt truyện,...)
      *
      * @return
      */
