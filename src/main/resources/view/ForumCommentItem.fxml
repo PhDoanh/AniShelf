@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<HBox fx:id="commentContainer" alignment="TOP_LEFT" maxWidth="910.0" prefWidth="910.0" spacing="10.0" styleClass="comment-item" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.ForumCommentController">
+   <children>
+      <!-- Avatar author -->
+      <StackPane alignment="TOP_CENTER" prefHeight="40.0" prefWidth="40.0">
+         <children>
+            <ImageView fx:id="authorAvatar" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+         <clip>
+            <Circle radius="17.5" />
+         </clip>
+      </StackPane>
+      
+      <!-- Comment content -->
+      <VBox prefWidth="850.0" spacing="5.0" HBox.hgrow="ALWAYS">
+         <children>
+            <!-- Author name and time -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Label fx:id="authorNameLabel" styleClass="comment-author-name" text="Tên người bình luận" />
+                  <Label fx:id="timeLabel" styleClass="comment-time" text="2 giờ trước" />
+               </children>
+            </HBox>
+            
+            <!-- Comment content -->
+            <Label fx:id="contentLabel" prefWidth="830.0" styleClass="comment-content" text="Nội dung bình luận..." wrapText="true" />
+            
+            <!-- Interaction buttons -->
+            <HBox alignment="CENTER_LEFT" spacing="15.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <Button fx:id="likeButton" mnemonicParsing="false" onAction="#onLikeButtonClicked" styleClass="comment-interaction-button">
+                           <graphic>
+                              <FontIcon fx:id="likeIcon" iconLiteral="fth-thumbs-up" iconSize="14" />
+                           </graphic>
+                        </Button>
+                        <Label fx:id="likeCountLabel" styleClass="comment-like-count" text="5" />
+                     </children>
+                  </HBox>
+                  <Button fx:id="replyButton" mnemonicParsing="false" onAction="#onReplyButtonClicked" styleClass="comment-interaction-button" text="Trả lời">
+                     <graphic>
+                        <FontIcon iconLiteral="fth-corner-up-left" iconSize="14" />
+                     </graphic>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+   </padding>
+</HBox>
