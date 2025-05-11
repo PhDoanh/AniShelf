@@ -48,7 +48,7 @@
                               <Label layoutX="24.0" layoutY="53.0"  text="Có vấn đề, liên lạc với chúng tớ ngay" />
                               <Button fx:id="contactButton" layoutX="25.0" layoutY="83.0" mnemonicParsing="false" onAction="#onContactButtonAction" prefHeight="36.0" text="Support" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0">
                               </Button>
-                              <Label fx:id="ibLabel" alignment="CENTER" layoutX="56.0" layoutY="494.0" prefHeight="18.0" prefWidth="273.0"  text="Muốn ít lỗi thì nạp Vip nhé &lt;3" textOverrun="CLIP" visible="false" />
+                              <Label fx:id="ibLabel" alignment="CENTER" layoutX="56.0" layoutY="494.0" prefHeight="18.0" prefWidth="273.0"  text="" textOverrun="CLIP" visible="false" />
                            </children></AnchorPane>
                      </children>
                   </AnchorPane>

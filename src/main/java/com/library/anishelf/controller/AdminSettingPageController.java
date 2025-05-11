@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.util.config.AppConfigUtil;
 import com.library.anishelf.util.config.AppInfo;
 import javafx.animation.PauseTransition;
@@ -60,7 +61,7 @@ public class AdminSettingPageController {
 
         themeBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.equals("Normal")) {
-                CustomerAlter.showMessage("Muốn sử dụng chức năng này thì hãy nạp Vip nhé");
+                NotificationManagerUtil.showInfo("Chức năng này hiện chưa khả dụng");
                 themeBox.setValue("Normal");
             }
         });
@@ -109,7 +110,7 @@ public class AdminSettingPageController {
 
     @FXML
     void onChangePasswordButtonAction(ActionEvent event) {
-        CustomerAlter.showMessage("Oh no lỗi rồi. Hãy vào mục support để bọn tớ trợ giúp cậu nhé!");
+        NotificationManagerUtil.showInfo("Chức năng này hiện chưa khả dụng");
     }
 
     @FXML

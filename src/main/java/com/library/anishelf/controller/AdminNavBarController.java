@@ -1,5 +1,9 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
+import com.library.anishelf.util.ThemeManagerUtil;
+import com.library.anishelf.util.NavHistoryManagerUtil;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +11,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -18,87 +25,78 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.io.IOException;
 
 public class AdminNavBarController extends BasicController {
-    @FXML
-    private Button addButton;
-
-    @FXML
-    private Button addNewBookButton;
-
-    @FXML
-    private Button addNewBorrowButtonAction;
-
-    @FXML
-    private Button addNewMemberButton;
-
-    @FXML
-    private Button addNewReservationButton;
-
-    @FXML
-    private AnchorPane addTablePane;
-
-    @FXML
-    private Button bookManagementButton;
-
-    @FXML
-    private ImageView bookManagementLogo;
-
-    @FXML
-    private BorderPane borderPane;
-
-    @FXML
-    private Button borrowButton;
-
-    @FXML
-    private ImageView borrowLogo;
-
+    // Regular navigation buttons
     @FXML
     private Button dashboardButton;
-
-    @FXML
-    private ImageView dashboardLogo;
-
-    @FXML
-    private HBox hBoxMain;
-
-    @FXML
-    private Button logoutButton;
     
     @FXML
-    private FontIcon logoutIcon;
-
-    @FXML
-    private ImageView logo;
-
-    @FXML
-    private AnchorPane mainPane;
-
-    @FXML
-    private VBox menuBar;
-
-    @FXML
-    private FontIcon openMenuIcon;
-
+    private Button bookManagementButton;
+    
     @FXML
     private Button readerManagementButton;
-
+    
     @FXML
-    private ImageView readerManagementlogo;
-
+    private Button borrowButton;
+    
     @FXML
     private Button reservationButton;
-
+    
     @FXML
     private Button settingButton;
     
     @FXML
+    private Button logoutButton;
+    
+    // Back và Next buttons
+    @FXML
+    private Button backButton;
+    
+    @FXML
+    private Button nextButton;
+    
+    // Add dropdown menu button and its menu items
+    @FXML
+    private MenuButton addButton;
+    
+    @FXML
+    private MenuItem addNewBookMenuItem;
+    
+    @FXML
+    private MenuItem addNewMemberMenuItem;
+    
+    @FXML
+    private MenuItem addNewBorrowMenuItem;
+    
+    @FXML
+    private MenuItem addNewReservationMenuItem;
+    
+    // Icons
+    @FXML
     private FontIcon settingIcon;
+    
+    @FXML
+    private FontIcon logoutIcon;
 
+    // Other UI components
+    @FXML
+    private Label titleLabel;
+    
+    @FXML
+    private ImageView logo;
+    
+    @FXML
+    private BorderPane borderPane;
+    
+    @FXML
+    private AnchorPane mainPane;
+    
+    @FXML
+    private HBox navigationBar;
+    
     @FXML
     private AnchorPane overlay;
 
-
-    private boolean isMenuExpanded = false;
-
+    // Controllers for different pages
     private AdminHomePageController adminHomePageController;
     private BookPageController bookPageController;
     private UsersPageController usersPageController;
@@ -106,69 +104,145 @@ public class AdminNavBarController extends BasicController {
     private ReservedBooksPageController reservedBooksPageController;
 
     private int AdminID;
-
+    
+    // Array of navigation buttons for highlighting active section
+    private Button[] navButtons;
+    
+    // Manager lịch sử điều hướng
+    private NavHistoryManagerUtil historyManager = NavHistoryManagerUtil.getInstance();
+    
+    // Các đường dẫn FXML
+    private static final String DASHBOARD_FXML = "/view/AdminHomePage.fxml";
+    private static final String BOOK_MANAGEMENT_FXML = "/view/BookPage.fxml";
+    private static final String USER_MANAGEMENT_FXML = "/view/UsersPage.fxml";
+    private static final String BORROW_MANAGEMENT_FXML = "/view/BorrowedBookPage.fxml";
+    private static final String RESERVATION_MANAGEMENT_FXML = "/view/ReservedBooksPage.fxml";
+    
     public void setAdminID(int AdminID) {
         this.AdminID = AdminID;
     }
 
-    private Button currentActiveButton = null;
-
     public void initialize() throws IOException {
-       // titlePageStack.push("Dashboard");
-        setTitleLabel();
+        // Load page controllers
         bookPageController = bookPagePaneLoader.getController();
         usersPageController = userPagePaneLoader.getController();
         borrowedBookPageController = borrowPagePaneLoader.getController();
         reservedBooksPageController = reservationPagePaneLoader.getController();
         adminHomePageController = dashboardLoader.getController();
         adminHomePageController.setAdminMenuController(this);
-
+        
+        // Initialize navigation buttons array for active button highlighting
+        navButtons = new Button[]{dashboardButton, bookManagementButton, readerManagementButton, 
+                                 borrowButton, reservationButton};
+        
+        // Set title and open dashboard by default
+        while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
+        getTitlePageStack().push("Dashboard");
+        setTitleLabel();
         openPage(dashboardPane);
-        hideButtonTexts();
-        openMenuIcon.setOnMouseClicked(event -> toggleMenu());
-        hanleAddTablePaneClose();
+        setActiveButton(dashboardButton);
+        
+        // Set logo click handler
         logo.setOnMouseClicked(event -> {onDashboardButtonAction(new ActionEvent());});
+        
+        // Apply theme to navigation buttons
+        ThemeManagerUtil.getInstance().addPane(borderPane);
+        
+        // Thêm trang dashboard vào lịch sử điều hướng
+        historyManager.addToHistory(DASHBOARD_FXML);
+        
+        // Cập nhật trạng thái ban đầu cho nút back và next
+        updateBackNextButtonState();
     }
 
-    private void hanleAddTablePaneClose() {
-        // Lắng nghe sự thay đổi của Scene
-        borderPane.sceneProperty().addListener((observable, oldScene, newScene) -> {
-            newScene.setOnMouseClicked(event -> {
-                if(addTablePane.isVisible()) {
-                    javafx.geometry.Bounds bounds = addTablePane.localToScene(addTablePane.getBoundsInLocal());
-
-                    if (!bounds.contains(event.getSceneX(), event.getSceneY())) {
-                        // Ẩn addTablePane nếu click ngoài
-                        addTablePane.setVisible(false);
-                    }
-                }
-            });
-        });
+    /**
+     * Cập nhật trạng thái của nút back và next dựa trên lịch sử
+     */
+    private void updateBackNextButtonState() {
+        backButton.setDisable(!historyManager.canGoBack());
+        nextButton.setDisable(!historyManager.canGoForward());
+    }
+    
+    /**
+     * Xử lý sự kiện khi nhấn nút Back (Quay lại trang trước)
+     */
+    @FXML
+    void onBackButtonAction(ActionEvent event) {
+        if (historyManager.canGoBack()) {
+            String previousPage = historyManager.goBack();
+            navigateToPage(previousPage);
+            updateBackNextButtonState();
+        }
+    }
+    
+    /**
+     * Xử lý sự kiện khi nhấn nút Next (Đi đến trang kế tiếp)
+     */
+    @FXML
+    void onNextButtonAction(ActionEvent event) {
+        if (historyManager.canGoForward()) {
+            String nextPage = historyManager.goForward();
+            navigateToPage(nextPage);
+            updateBackNextButtonState();
+        }
+    }
+    
+    /**
+     * Điều hướng đến một trang cụ thể
+     * @param pagePath Đường dẫn đến trang
+     */
+    private void navigateToPage(String pagePath) {
+        if (pagePath.equals(DASHBOARD_FXML)) {
+            openPage(dashboardPane);
+            setActiveButton(dashboardButton);
+        } else if (pagePath.equals(BOOK_MANAGEMENT_FXML)) {
+            bookPageController.startPage();
+            openPage(bookPagePane);
+            setActiveButton(bookManagementButton);
+        } else if (pagePath.equals(USER_MANAGEMENT_FXML)) {
+            usersPageController.loadData();
+            openPage(userPagePane);
+            setActiveButton(readerManagementButton);
+        } else if (pagePath.equals(BORROW_MANAGEMENT_FXML)) {
+            borrowedBookPageController.startPage();
+            openPage(borrowPagePane);
+            setActiveButton(borrowButton);
+        } else if (pagePath.equals(RESERVATION_MANAGEMENT_FXML)) {
+            reservedBooksPageController.startPage();
+            openPage(reservationPagePane);
+            setActiveButton(reservationButton);
+        }
     }
 
     @FXML
     void onLogoAction(MouseEvent event) {
+        onDashboardButtonAction(new ActionEvent());
     }
-
 
     @FXML
     void onAddNewBookButtonAction(ActionEvent event) {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
-        getTitlePageStack().push("Quản lý sách");
+        getTitlePageStack().push("Quản lý truyện");
         openPage(bookPagePane);
         setActiveButton(bookManagementButton);
         bookPageController.loadAddPane();
-        addTablePane.setVisible(false);
+        
+        // Thêm vào lịch sử điều hướng
+        historyManager.addToHistory(BOOK_MANAGEMENT_FXML);
+        updateBackNextButtonState();
     }
 
     @FXML
     void onAddNewBorrowButtonAction(ActionEvent event) {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
-        getTitlePageStack().push("Quản lý mượn sách");
+        getTitlePageStack().push("Quản lý mượn truyện");
         openPage(borrowPagePane);
         setActiveButton(borrowButton);
         borrowedBookPageController.loadAddPane();
-        addTablePane.setVisible(false);
+        
+        // Thêm vào lịch sử điều hướng
+        historyManager.addToHistory(BORROW_MANAGEMENT_FXML);
+        updateBackNextButtonState();
     }
 
     @FXML
@@ -178,99 +252,111 @@ public class AdminNavBarController extends BasicController {
         openPage(userPagePane);
         setActiveButton(readerManagementButton);
         usersPageController.loadAddPane();
-        addTablePane.setVisible(false);
+        
+        // Thêm vào lịch sử điều hướng
+        historyManager.addToHistory(USER_MANAGEMENT_FXML);
+        updateBackNextButtonState();
     }
+    
     @FXML
     void onAddNewReservationButtonAction(ActionEvent event) {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
-        getTitlePageStack().push("Quản lý đặt trước sách");
+        getTitlePageStack().push("Quản lý đặt trước truyện");
         openPage(reservationPagePane);
         setActiveButton(reservationButton);
         reservedBooksPageController.loadAddPane();
-        addTablePane.setVisible(false);
+        
+        // Thêm vào lịch sử điều hướng
+        historyManager.addToHistory(RESERVATION_MANAGEMENT_FXML);
+        updateBackNextButtonState();
     }
 
     @FXML
-     void onDashboardButtonAction(ActionEvent event) {
+    void onDashboardButtonAction(ActionEvent event) {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
         getTitlePageStack().push("Dashboard");
-        if(addTablePane.isVisible()) {
-            addTablePane.setVisible(false);
-        }
         setActiveButton(dashboardButton);
-
         openPage(dashboardPane);
+        
+        // Thêm vào lịch sử điều hướng
+        historyManager.addToHistory(DASHBOARD_FXML);
+        updateBackNextButtonState();
     }
 
     @FXML
     void onBorrowButtonAction(ActionEvent event) {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
-        getTitlePageStack().push("Quản lý mượn sách");
-        if(addTablePane.isVisible()) {
-            addTablePane.setVisible(false);
-        }
+        getTitlePageStack().push("Quản lý mượn truyện");
         setActiveButton(borrowButton);
         borrowedBookPageController.startPage();
         openPage(borrowPagePane);
+        
+        // Thêm vào lịch sử điều hướng
+        historyManager.addToHistory(BORROW_MANAGEMENT_FXML);
+        updateBackNextButtonState();
     }
+    
     @FXML
     void onReservationButtonAction(ActionEvent event) {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
-        getTitlePageStack().push("Quản lý đặt trước sách");
-        if(addTablePane.isVisible()) {
-            addTablePane.setVisible(false);
-        }
+        getTitlePageStack().push("Quản lý đặt trước truyện");
         setActiveButton(reservationButton);
         reservedBooksPageController.startPage();
         openPage(reservationPagePane);
+        
+        // Thêm vào lịch sử điều hướng
+        historyManager.addToHistory(RESERVATION_MANAGEMENT_FXML);
+        updateBackNextButtonState();
     }
 
     @FXML
     void onBookManagmentButtonAction(ActionEvent event) {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
-        getTitlePageStack().push("Quản lý sách");
-        if(addTablePane.isVisible()) {
-            addTablePane.setVisible(false);
-        }
+        getTitlePageStack().push("Quản lý truyện");
         setActiveButton(bookManagementButton);
         bookPageController.startPage();
         openPage(bookPagePane);
+        
+        // Thêm vào lịch sử điều hướng
+        historyManager.addToHistory(BOOK_MANAGEMENT_FXML);
+        updateBackNextButtonState();
     }
 
     @FXML
     void onReaderManagementButtonAction(ActionEvent event) {
         while (!getTitlePageStack().isEmpty()) getTitlePageStack().pop();
         getTitlePageStack().push("Quản lý độc giả");
-        if(addTablePane.isVisible()) {
-            addTablePane.setVisible(false);
-        }
         setActiveButton(readerManagementButton);
         usersPageController.loadData();
         openPage(userPagePane);
+        
+        // Thêm vào lịch sử điều hướng
+        historyManager.addToHistory(USER_MANAGEMENT_FXML);
+        updateBackNextButtonState();
     }
 
     @FXML
     void onLogoutButtonAction(ActionEvent event) {
-        boolean confirmYes = CustomerAlter.showAlter("Bạn muốn thoát à?");
-        if (confirmYes) {
-            try {
-                Stage stage = (Stage) mainPane.getScene().getWindow();
-                Parent root = FXMLLoader.load(getClass().getResource("/view/UserLoginPage.fxml"));
-                stage.setWidth(stage.getWidth());
-                stage.setHeight(stage.getHeight());
-                stage.setScene(new Scene(root));
-            } catch (IOException e) {
-                e.printStackTrace();
+        NotificationManagerUtil.showConfirmation("Bạn có chắc muốn đăng xuất?", confirmed -> {
+            if (confirmed) {
+                try {
+                    // Xóa lịch sử điều hướng khi đăng xuất
+                    historyManager.clearHistory();
+                    
+                    Stage stage = (Stage) mainPane.getScene().getWindow();
+                    Parent root = FXMLLoader.load(getClass().getResource("/view/UserLoginPage.fxml"));
+                    stage.setWidth(stage.getWidth());
+                    stage.setHeight(stage.getHeight());
+                    stage.setScene(new Scene(root));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-
+        });
     }
 
     @FXML
     void onSettingButtonAction(ActionEvent event) {
-        if(addTablePane.isVisible()) {
-            addTablePane.setVisible(false);
-        }
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(SETTING_FXML));
             Parent root = loader.load();
@@ -278,7 +364,7 @@ public class AdminNavBarController extends BasicController {
             controller.reset();
             controller.setAdminID(this.AdminID);
             Stage stage = new Stage();
-            stage.setTitle("AppInfo");
+            stage.setTitle("Cài đặt");
             stage.setResizable(false);
             stage.setScene(new Scene(root));
             stage.initStyle(StageStyle.TRANSPARENT);
@@ -291,79 +377,44 @@ public class AdminNavBarController extends BasicController {
         }
     }
 
-    @FXML
-    void onAddButtonAction(ActionEvent event) {
-        addTablePane.setVisible(!addTablePane.isVisible());
-    }
-
-    private void toggleMenu() {
-        if (!isMenuExpanded) {
-            menuBar.setMinWidth(238);
-            menuBar.setMaxWidth(238);
-            addButton.setMaxWidth(100);
-            addButton.setMinWidth(100);
-            
-            // Thay đổi icon thành minimize
-            openMenuIcon.setIconLiteral("fth-minimize");
-            
-            showButtonTexts();
-        } else {
-            menuBar.setMinWidth(62);
-            menuBar.setMaxWidth(62);
-            addButton.setMinWidth(54);
-            addButton.setMaxWidth(54);
-
-            // Thay đổi icon thành maximize
-            openMenuIcon.setIconLiteral("fth-maximize");
-            
-            hideButtonTexts();
-        }
-        isMenuExpanded = !isMenuExpanded;
-    }
-
-    private void showButtonTexts() {
-        addButton.setText("New");
-        dashboardButton.setText("Dashboard");
-        bookManagementButton.setText("Quản lý sách");
-        reservationButton.setText("Đặt sách");
-        borrowButton.setText("Mượn trả");
-        readerManagementButton.setText("Quản lý độc giả");
-        settingButton.setText("Cài đặt");
-        logoutButton.setText("Đăng xuất");
-    }
-
-    private void hideButtonTexts() {
-        addButton.setText("");
-        dashboardButton.setText("");
-        bookManagementButton.setText("");
-        borrowButton.setText("");
-        readerManagementButton.setText("");
-        reservationButton.setText("");
-        settingButton.setText("");
-        logoutButton.setText("");
-    }
-
     private void openPage(Node e) {
         mainPane.getChildren().clear();
         mainPane.getChildren().add(e);
     }
 
     public void setTitleLabel() {
-      //  titleLabel.setText(getAllTitles());
-    }
-
-    private void setActiveButton(Button button) {
-        if (currentActiveButton != null) {
-            // Reset lại kiểu dáng của nút trước đó
-            currentActiveButton.setStyle("");
+        if (!getTitlePageStack().isEmpty()) {
+            titleLabel.setText(getTitlePageStack().peek());
+        } else {
+            titleLabel.setText("Dashboard");
         }
-
-        // Gán nút hiện tại vào trạng thái đang hoạt động
-        currentActiveButton = button;
-
-        // Đặt kiểu dáng in đậm màu cho nút đang được chọn
-        currentActiveButton.setStyle("-fx-font-weight: bold; -fx-background-color: #E0E0E0;"); // Kiểu CSS
     }
 
-
+    /**
+     * Thiết lập nút điều hướng đang active
+     * @param button Nút sẽ được đánh dấu là active
+     */
+    private void setActiveButton(Button button) {
+        // Reset tất cả các nút về trạng thái bình thường
+        for (Button navButton : navButtons) {
+            navButton.getStyleClass().remove("active-nav-button");
+            navButton.getStyleClass().add("nav-button");
+        }
+        
+        // Đánh dấu nút được chọn
+        button.getStyleClass().remove("nav-button");
+        button.getStyleClass().add("active-nav-button");
+        
+        // Cập nhật tiêu đề tương ứng
+        setTitleLabel();
+    }
+    
+    /**
+     * Cho AdminDashboardBookCardController và các controller khác gọi để thêm trang vào lịch sử
+     * @param pagePath Đường dẫn đến trang
+     */
+    public void addPageToHistory(String pagePath) {
+        historyManager.addToHistory(pagePath);
+        updateBackNextButtonState();
+    }
 }

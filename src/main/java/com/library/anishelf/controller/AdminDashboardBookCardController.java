@@ -38,6 +38,8 @@ public class AdminDashboardBookCardController {
     private AdminNavBarController adminNavBarController;
 
     private Book book;
+    
+    private static final String BOOK_MANAGEMENT_FXML = "/view/BookPage.fxml";
 
     public void setItem(Book book) {
         this.book = book;
@@ -83,9 +85,8 @@ public class AdminDashboardBookCardController {
         });
 
         executor.submit(loadImageTask);
-
-
     }
+    
     private Image starImage(int numOfStar) {
         String imagePath = "/image/general/" + numOfStar + "star.png";
         if (getClass().getResourceAsStream(imagePath) == null) {
@@ -106,6 +107,9 @@ public class AdminDashboardBookCardController {
     protected void handleRowClick() {
         this.adminNavBarController.onBookManagmentButtonAction(new ActionEvent());
         mainController.loadDetail(this.book);
+        
+        // Thêm vào lịch sử điều hướng
+        adminNavBarController.addPageToHistory(BOOK_MANAGEMENT_FXML);
     }
 
     public void setMainController(BookPageController mainController) {
@@ -115,5 +119,4 @@ public class AdminDashboardBookCardController {
     public void setAdminMenuController(AdminNavBarController adminNavBarController) {
         this.adminNavBarController = adminNavBarController;
     }
-
 }

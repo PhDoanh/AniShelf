@@ -135,7 +135,7 @@ public class AdminHomePageController extends BasicController {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
-            // Tính toán số lượng sách mượn cho từng ngày trong tháng đã chọn
+            // Tính toán số lượng truyện mượn cho từng ngày trong tháng đã chọn
             try {
                 Map<String, Object> findCriteria = new HashMap<>();
                 // Lấy số ngày tối đa trong tháng đã chọn
@@ -157,9 +157,9 @@ public class AdminHomePageController extends BasicController {
             }
 
             lineChart.getData().add(series1); // Thêm chuỗi dữ liệu vào biểu đồ
-            lineChart.setTitle("Số lượng sách mượn trong tháng " + selectedMonth);
+            lineChart.setTitle("Số lượng truyện mượn trong tháng " + selectedMonth);
             lineChart.getXAxis().setLabel("Ngày trong tháng");
-            lineChart.getYAxis().setLabel("Số lượng sách mượn");
+            lineChart.getYAxis().setLabel("Số lượng truyện mượn");
         }
     }
 

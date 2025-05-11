@@ -1,197 +1,191 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import org.kordamp.ikonli.javafx.FontIcon?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="950.0"  xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.AdminNavBarController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.anishelf.controller.AdminNavBarController">
    <children>
       <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0">
          <top>
-            <HBox prefHeight="70.0" prefWidth="950.0" style="" BorderPane.alignment="CENTER">
+            <HBox fx:id="navigationBar" alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="950.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="70.0" prefWidth="286.0">
+                  <!-- Logo ứng dụng -->
+                  <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="80.0">
                      <children>
-                        <AnchorPane prefHeight="90.0" prefWidth="474.0" HBox.hgrow="NEVER">
-                           <children>
-                              <ImageView fx:id="logo" fitHeight="51.0" fitWidth="67.0" layoutX="29.7" layoutY="9.24" onDragDetected="#onLogoAction" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../image/app_logo.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </AnchorPane>
+                        <ImageView fx:id="logo" fitHeight="36.0" fitWidth="144.0" onMouseClicked="#onLogoAction" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/app_logo.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
+                  
+                  <!-- Toolbar chứa các nút điều hướng chính -->
+                  <ToolBar fx:id="navToolBar" prefHeight="38.0" prefWidth="210.0" styleClass="nav-toolbar" HBox.hgrow="NEVER">
+                     <items>
+                        <!-- Nút Back (Quay lại trang trước) -->
+                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonAction" styleClass="nav-button">
+                           <graphic>
+                              <FontIcon iconColor="#734e38" iconLiteral="fth-arrow-left" iconSize="20" />
+                           </graphic>
+                           <tooltip>
+                               <Tooltip text="Quay lại trang trước" />
+                           </tooltip>
+                        </Button>
+                        
+                        <!-- Nút Next (Chuyển đến trang kế tiếp) -->
+                        <Button fx:id="nextButton" mnemonicParsing="false" onAction="#onNextButtonAction" styleClass="nav-button">
+                           <graphic>
+                              <FontIcon iconColor="#734e38" iconLiteral="fth-arrow-right" iconSize="20" />
+                           </graphic>
+                           <tooltip>
+                               <Tooltip text="Chuyển đến trang kế tiếp" />
+                           </tooltip>
+                        </Button>
+                        
+                        <!-- Nút Trang chủ (Dashboard) -->
+                        <Button fx:id="dashboardButton" mnemonicParsing="false" onAction="#onDashboardButtonAction" styleClass="nav-button">
+                           <graphic>
+                              <FontIcon iconColor="#734e38" iconLiteral="fth-home" iconSize="20" />
+                           </graphic>
+                           <tooltip>
+                               <Tooltip text="Trang chủ" />
+                           </tooltip>
+                        </Button>
+                        
+                        <!-- Nút Quản lý truyện -->
+                        <Button fx:id="bookManagementButton" mnemonicParsing="false" onAction="#onBookManagmentButtonAction" styleClass="nav-button">
+                           <graphic>
+                              <FontIcon iconColor="#734e38" iconLiteral="fth-book" iconSize="20" />
+                           </graphic>
+                           <tooltip>
+                               <Tooltip text="Quản lý truyện" />
+                           </tooltip>
+                        </Button>
+                        
+                        <!-- Nút Quản lý độc giả -->
+                        <Button fx:id="readerManagementButton" mnemonicParsing="false" onAction="#onReaderManagementButtonAction" styleClass="nav-button">
+                           <graphic>
+                              <FontIcon iconColor="#734e38" iconLiteral="fth-users" iconSize="20" />
+                           </graphic>
+                           <tooltip>
+                               <Tooltip text="Quản lý độc giả" />
+                           </tooltip>
+                        </Button>
+                     </items>
+                  </ToolBar>
+                  
+                  <!-- Separator phân cách -->
+                  <Separator orientation="VERTICAL" prefHeight="54.0" prefWidth="10.0" />
+                  
+                  <!-- Phần giữa (có thể để trống hoặc thêm tiêu đề) -->
+                  <HBox alignment="CENTER" prefHeight="54.0" prefWidth="345.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="titleLabel" styleClass="nav-title" text="Dashboard" />
                      </children>
                   </HBox>
-                  <HBox prefHeight="90.0" prefWidth="564.0" HBox.hgrow="ALWAYS" />
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <AnchorPane prefHeight="90.0" prefWidth="209.0" HBox.hgrow="NEVER" />
-                     </children>
-                  </HBox>
+                  
+                  <!-- Separator phân cách -->
+                  <Separator orientation="VERTICAL" prefHeight="54.0" prefWidth="10.0" />
+                  
+                  <!-- Các nút chức năng bên phải -->
+                  <ToolBar fx:id="rightToolBar" prefHeight="38.0" prefWidth="254.0" styleClass="nav-toolbar" HBox.hgrow="NEVER">
+                     <items>
+                        <!-- Nút Quản lý mượn trả -->
+                        <Button fx:id="borrowButton" mnemonicParsing="false" onAction="#onBorrowButtonAction" styleClass="nav-button">
+                           <graphic>
+                              <FontIcon iconColor="#734e38" iconLiteral="fth-shopping-cart" iconSize="20" />
+                           </graphic>
+                           <tooltip>
+                               <Tooltip text="Quản lý mượn trả" />
+                           </tooltip>
+                        </Button>
+                        
+                        <!-- Nút Quản lý đặt trước -->
+                        <Button fx:id="reservationButton" mnemonicParsing="false" onAction="#onReservationButtonAction" styleClass="nav-button">
+                           <graphic>
+                              <FontIcon iconColor="#734e38" iconLiteral="fth-calendar" iconSize="20" />
+                           </graphic>
+                           <tooltip>
+                               <Tooltip text="Quản lý đặt trước" />
+                           </tooltip>
+                        </Button>
+                        
+                        <!-- Nút Thêm mới với menu thả xuống -->
+                        <MenuButton fx:id="addButton" mnemonicParsing="false" styleClass="nav-button">
+                           <graphic>
+                              <FontIcon iconColor="#734e38" iconLiteral="fth-plus-circle" iconSize="20" />
+                           </graphic>
+                           <tooltip>
+                               <Tooltip text="Thêm mới" />
+                           </tooltip>
+                           <items>
+                              <MenuItem fx:id="addNewBookMenuItem" mnemonicParsing="false" onAction="#onAddNewBookButtonAction" text="Thêm truyện">
+                                 <graphic>
+                                    <FontIcon iconColor="#734e38" iconLiteral="fth-book" iconSize="16" />
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem fx:id="addNewMemberMenuItem" mnemonicParsing="false" onAction="#onAddNewMemberButtonAction" text="Thêm người dùng">
+                                 <graphic>
+                                    <FontIcon iconColor="#734e38" iconLiteral="fth-user-plus" iconSize="16" />
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem fx:id="addNewBorrowMenuItem" mnemonicParsing="false" onAction="#onAddNewBorrowButtonAction" text="Thêm đơn mượn">
+                                 <graphic>
+                                    <FontIcon iconColor="#734e38" iconLiteral="fth-shopping-cart" iconSize="16" />
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem fx:id="addNewReservationMenuItem" mnemonicParsing="false" onAction="#onAddNewReservationButtonAction" text="Thêm đơn đặt trước">
+                                 <graphic>
+                                    <FontIcon iconColor="#734e38" iconLiteral="fth-calendar" iconSize="16" />
+                                 </graphic>
+                              </MenuItem>
+                           </items>
+                        </MenuButton>
+                        <!-- Nút Cài đặt -->
+                        <Button fx:id="settingButton" mnemonicParsing="false" onAction="#onSettingButtonAction" styleClass="nav-button">
+                           <graphic>
+                              <FontIcon fx:id="settingIcon" iconColor="#734e38" iconLiteral="fth-settings" iconSize="20" />
+                           </graphic>
+                           <tooltip>
+                               <Tooltip text="Cài đặt" />
+                           </tooltip>
+                        </Button>
+                        
+                        <!-- Nút Đăng xuất -->
+                        <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#onLogoutButtonAction" styleClass="nav-button">
+                           <graphic>
+                              <FontIcon fx:id="logoutIcon" iconColor="#734e38" iconLiteral="fth-log-out" iconSize="20" />
+                           </graphic>
+                           <tooltip>
+                               <Tooltip text="Đăng xuất" />
+                           </tooltip>
+                        </Button>
+                     </items>
+                  </ToolBar>
                </children>
             </HBox>
          </top>
          <center>
-            <HBox nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" style="" BorderPane.alignment="CENTER">
+            <HBox prefHeight="606.0" prefWidth="950.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox fx:id="menuBar" maxWidth="62.0" minWidth="62.0" prefHeight="605.0" prefWidth="62.0" style=""  HBox.hgrow="ALWAYS">
-                     <children>
-                        <VBox>
-                           <children>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                 <children>
-                                    <FontIcon fx:id="openMenuIcon" iconLiteral="fth-maximize" iconSize="16" iconColor="#734e38" layoutX="48.0" layoutY="6.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                    <Button fx:id="addButton" alignment="BOTTOM_LEFT" layoutY="60.0" mnemonicParsing="false" onAction="#onAddButtonAction" prefHeight="45.0" prefWidth="56.0" style="-fx-font-size: 20; "  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
-                                       <graphic>
-                                          <FontIcon iconLiteral="fth-plus-circle" iconSize="22" iconColor="#734e38"/>
-                                       </graphic>
-                                    </Button>
-                                    <Button fx:id="dashboardButton" alignment="BASELINE_LEFT" layoutY="102.0" mnemonicParsing="false" onAction="#onDashboardButtonAction" prefHeight="50.0" prefWidth="60.0" style="-fx-font-size: 20; "  textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="83.0">
-                                       <graphic>
-                                          <FontIcon iconLiteral="fth-home" iconSize="22" iconColor="#734e38"/>
-                                       </graphic>
-                                    </Button>
-                                    <Button fx:id="bookManagementButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onBookManagmentButtonAction" prefHeight="44.0" prefWidth="65.0" style="-fx-font-size: 20; " textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="133.0">
-                                       <graphic>
-                                          <FontIcon iconLiteral="fth-book" iconSize="22" iconColor="#734e38"/>
-                                       </graphic>
-                                       <padding>
-                                          <Insets left="14.0" />
-                                       </padding>
-                                    </Button>
-                                    <Button fx:id="borrowButton" alignment="BASELINE_LEFT" layoutY="153.0" mnemonicParsing="false" onAction="#onBorrowButtonAction" prefHeight="45.0" prefWidth="74.0" style="-fx-font-family: Cabin; -fx-font-size: 20; " textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="223.0">
-                                       <graphic>
-                                          <FontIcon iconLiteral="fth-shopping-cart" iconSize="22" iconColor="#734e38"/>
-                                       </graphic>
-                                    </Button>
-                                    <Button fx:id="readerManagementButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onReaderManagementButtonAction" prefHeight="42.0" prefWidth="42.0" style="-fx-font-size: 20; " textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="179.0">
-                                       <graphic>
-                                          <FontIcon iconLiteral="fth-users" iconSize="22" iconColor="#734e38"/>
-                                       </graphic>
-                                       <padding>
-                                          <Insets left="14.0" />
-                                       </padding>
-                                    </Button>
-                                    <Button fx:id="reservationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onReservationButtonAction" prefHeight="43.0" prefWidth="69.0" style="-fx-font-size: 20; " textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="269.0">
-                                       <graphic>
-                                          <FontIcon iconLiteral="fth-calendar" iconSize="22" iconColor="#734e38"/>
-                                       </graphic>
-                                       <padding>
-                                          <Insets left="14.0" />
-                                       </padding>
-                                    </Button>
-                                 </children>
-                              </AnchorPane>
-                           </children>
-                        </VBox>
-                        <HBox VBox.vgrow="ALWAYS">
-                           <children>
-                              <AnchorPane layoutX="60.8" layoutY="60.8" prefHeight="185.0" prefWidth="46.0" style="" HBox.hgrow="SOMETIMES" />
-                           </children>
-                        </HBox>
-                        <VBox>
-                           <children>
-                              <HBox prefHeight="87.0" prefWidth="57.0" VBox.vgrow="NEVER">
-                                 <children>
-                                    <AnchorPane style="" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Button fx:id="settingButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onSettingButtonAction" prefHeight="43.0" prefWidth="50.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500;"  textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                             <graphic>
-                                                <FontIcon fx:id="settingIcon" iconLiteral="fth-settings" iconSize="22" iconColor="#734e38"/>
-                                             </graphic>
-                                          </Button>
-                                          <Button fx:id="logoutButton" alignment="BASELINE_LEFT" layoutY="44.0" mnemonicParsing="false" onAction="#onLogoutButtonAction" prefHeight="43.0" prefWidth="11.0" style="-fx-font-family: Cabin; -fx-font-size: 20.4; -fx-text-fill: #734E38; -fx-font-weight: 500;"  textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                             <graphic>
-                                                <FontIcon fx:id="logoutIcon" iconLiteral="fth-log-out" iconSize="22" iconColor="#734e38"/>
-                                             </graphic>
-                                          </Button>
-                                       </children>
-                                    </AnchorPane>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </VBox>
-                  <HBox fx:id="hBoxMain" prefHeight="606.0" prefWidth="861.0" style="" HBox.hgrow="SOMETIMES">
-                     <children>
-                        <AnchorPane prefHeight="606.0" prefWidth="867.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <AnchorPane fx:id="mainPane" prefHeight="606.0" prefWidth="887.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                              <AnchorPane fx:id="addTablePane" layoutY="80.0" prefHeight="245.0" prefWidth="325.0" style=" -fx-background-radius: 8;" visible="false" AnchorPane.leftAnchor="3.0">
-                                 <children>
-                                    <Label layoutX="85.0" layoutY="14.0" text="Bạn muốn thêm cái gì" />
-                                    <Button fx:id="addNewBorrowButtonAction" alignment="BASELINE_LEFT" layoutX="47.0" layoutY="50.0" mnemonicParsing="false" onAction="#onAddNewBorrowButtonAction" prefHeight="44.0" prefWidth="324.0"  text="Thêm đơn mượn sách mới" textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                       <graphic>
-                                          <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../image/general/aqua.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                       <padding>
-                                          <Insets left="30.0" />
-                                       </padding>
-                                    </Button>
-                                    <Button fx:id="addNewMemberButton" alignment="BASELINE_LEFT" layoutY="94.0" mnemonicParsing="false" onAction="#onAddNewMemberButtonAction" prefHeight="44.0" prefWidth="324.0"  text="Thêm bạn đọc mới" textOverrun="CLIP">
-                                       <graphic>
-                                          <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../image/general/blue.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                       <padding>
-                                          <Insets left="30.0" />
-                                       </padding>
-                                    </Button>
-                                    <Button fx:id="addNewBookButton" alignment="BASELINE_LEFT" layoutY="141.0" mnemonicParsing="false" onAction="#onAddNewBookButtonAction" prefHeight="44.0" prefWidth="324.0"  text="Thêm sách mới" textOverrun="CLIP">
-                                       <graphic>
-                                          <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../image/general/purple.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                       <padding>
-                                          <Insets left="30.0" />
-                                       </padding>
-                                    </Button>
-                                    <Button fx:id="addNewReservationButton" alignment="BASELINE_LEFT" layoutY="188.0" mnemonicParsing="false" onAction="#onAddNewReservationButtonAction" prefHeight="44.0" prefWidth="324.0"  text="Thêm đơn đặt trước" textOverrun="CLIP" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                       <graphic>
-                                          <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../image/general/light_gray.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                       <padding>
-                                          <Insets left="30.0" />
-                                       </padding>
-                                    </Button>
-                                    <Line endX="223.5" layoutX="145.0" layoutY="140.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" />
-                                    <Line endX="223.5" fill="#969696" layoutX="115.0" layoutY="46.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                                    <Line endX="223.5" layoutX="125.0" layoutY="93.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" />
-                                    <Line endX="223.5" layoutX="135.0" layoutY="187.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" />
-                                    <Line endX="223.5" layoutX="108.0" layoutY="232.0" startX="-100.0" stroke="#969696" strokeWidth="0.6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                                 </children>
-                              </AnchorPane>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </HBox>
+                  <AnchorPane fx:id="mainPane" prefHeight="606.0" prefWidth="950.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </center>

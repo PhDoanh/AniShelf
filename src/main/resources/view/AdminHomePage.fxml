@@ -17,14 +17,6 @@
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="64.0" prefWidth="891.0" VBox.vgrow="NEVER">
-               <children>
-                  <Label fx:id="titlePage" prefHeight="30.0" prefWidth="594.0" style="-fx-font-size: 26;"   text="Dashboard">
-                     <HBox.margin>
-                        <Insets left="56.0" top="26.0" />
-                     </HBox.margin>
-                  </Label>
-               </children></HBox>
             <HBox maxHeight="300.0" prefHeight="162.0" prefWidth="891.0" VBox.vgrow="NEVER">
                <children>
                   <AnchorPane prefHeight="206.0" prefWidth="854.0" HBox.hgrow="ALWAYS">
@@ -45,14 +37,14 @@
                         </AnchorPane>
                         <AnchorPane layoutX="273.0" prefHeight="94.0" prefWidth="215.0"  AnchorPane.topAnchor="0.0">
                            <children>
-                              <Label layoutX="15.0" layoutY="62.0"  text="Tổng số sách" />
+                              <Label layoutX="15.0" layoutY="62.0"  text="Tổng số truyện" />
                               <Label fx:id="totalBookLabel" layoutX="59.0" layoutY="21.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-font-size: 25;"  text="2" AnchorPane.leftAnchor="59.0" AnchorPane.rightAnchor="26.400000000000006" />
                               <Rectangle fill="#6a38d4" height="30.0" layoutX="15.0" layoutY="21.0" stroke="TRANSPARENT" strokeType="INSIDE" width="30.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="273.0" layoutY="111.0" prefHeight="94.0" prefWidth="215.0"  AnchorPane.topAnchor="111.0">
                            <children>
-                              <Label layoutX="15.0" layoutY="62.0"  text="Số sách đang cho mượn" />
+                              <Label layoutX="15.0" layoutY="62.0"  text="Số truyện đang cho mượn" />
                               <Label fx:id="totalBorrowLabel" layoutX="59.0" layoutY="21.0" style="-fx-font-size: 25;"  text="39" AnchorPane.leftAnchor="59.2" AnchorPane.rightAnchor="26.400000000000006" />
                               <Rectangle fill="#07b2bf" height="30.0" layoutX="15.0" layoutY="21.0" stroke="TRANSPARENT" strokeType="INSIDE" width="30.0" />
                            </children>
@@ -84,7 +76,7 @@
                            <children>
                               <AnchorPane layoutX="39.2" prefHeight="277.0" prefWidth="800.0"  AnchorPane.bottomAnchor="26.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Label layoutX="14.0" layoutY="14.0"  text="Biểu đồ sách cho mượn" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                                    <Label layoutX="14.0" layoutY="14.0"  text="Biểu đồ truyện cho mượn" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
                                     <LineChart fx:id="lineChart" layoutX="-6.0" layoutY="38.0" prefHeight="228.0" prefWidth="790.0" AnchorPane.bottomAnchor="3.9999999999999716" AnchorPane.leftAnchor="-6.0" AnchorPane.rightAnchor="4.800000000000068" AnchorPane.topAnchor="38.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" />

@@ -1,5 +1,6 @@
 package com.library.anishelf.controller;
 
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.service.ServiceHandler;
 import com.library.anishelf.service.EmailService;
 import com.library.anishelf.util.EmailUtil;
@@ -41,12 +42,12 @@ public class AdminEmailMessageController extends BasicController {
     private boolean checkEmail(String toEmail,String detail) {
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         if (toEmail== null || !toEmail.matches(emailRegex)) {
-            CustomerAlter.showMessage("Email không hợp lệ");
+            NotificationManagerUtil.showInfo("Email không hợp lệ");
             return false;
         }
 
         if(detail == null || detail.isEmpty()) {
-            CustomerAlter.showMessage("Email không có nội dung");
+            NotificationManagerUtil.showInfo("Nội dung mail không được để trống");
             return false;
         }
 
