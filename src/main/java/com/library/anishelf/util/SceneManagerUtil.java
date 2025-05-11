@@ -22,6 +22,8 @@ public class SceneManagerUtil {
     private static final String RANKING_FXML = "/view/BookRanking.fxml";
     private static final String HISTORY_FXML = "/view/ReservedBorrowedHistoryPage.fxml";
     private static final String MORE_BOOK_FXML = "/view/MoreBookPage.fxml";
+    private static final String BOOK_FXML = "/view/Book.fxml";
+    private static final String ADVANCED_SEARCH_FXML = "/view/AdvancedSearchPage.fxml";
     
 
     private static SceneManagerUtil instance = null;
@@ -74,6 +76,15 @@ public class SceneManagerUtil {
             controllerCache.put(fxmlPath, fxmlLoader.getController());
             fxmlCache.put(fxmlPath, newContent);
             ThemeManagerUtil.getInstance().addPane(newContent);
+            
+            // Thêm trang vào lịch sử điều hướng nếu cần
+            try {
+                NavigationBarController navigationBarController = getController(USER_MENU_FXML);
+                navigationBarController.addPageToHistory(fxmlPath);
+            } catch (IOException e) {
+                // Bỏ qua nếu không thể lấy controller
+            }
+            
             return newContent;
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,6 +141,8 @@ public class SceneManagerUtil {
         fxmlCache.remove(HISTORY_FXML);
         fxmlCache.remove(RANKING_FXML);
         fxmlCache.remove(MORE_BOOK_FXML);
+        fxmlCache.remove(BOOK_FXML);
+        fxmlCache.remove(ADVANCED_SEARCH_FXML);
     }
 
     public void highlightBackButton() {
@@ -138,6 +151,32 @@ public class SceneManagerUtil {
             navigationBarController.changeColorButtonBack();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+    
+    /**
+     * Điều hướng đến một trang cụ thể và lưu vào lịch sử
+     * @param fxmlPath Đường dẫn đến trang
+     */
+    public void navigateToPage(String fxmlPath) {
+        VBox content = (VBox) loadScene(fxmlPath);
+        if (content != null) {
+            updateSceneContainer(content);
+            try {
+                NavigationBarController navigationBarController = getController(USER_MENU_FXML);
+                navigationBarController.addPageToHistory(fxmlPath);
+                
+                // Cập nhật highlight cho nút tương ứng
+                if (fxmlPath.equals(DASHBOARD_FXML)) {
+                    navigationBarController.updateMenuButtonHighlight(navigationBarController.getDashboardButton());
+                } else if (fxmlPath.equals(BOOKMARK_FXML)) {
+                    navigationBarController.updateMenuButtonHighlight(navigationBarController.getBookmarkButton());
+                } else if (fxmlPath.equals(RANKING_FXML)) {
+                    navigationBarController.updateMenuButtonHighlight(navigationBarController.getBookRankingButton());
+                }
+            } catch (IOException e) {
+                // Bỏ qua nếu không thể lấy controller
+            }
         }
     }
 }
