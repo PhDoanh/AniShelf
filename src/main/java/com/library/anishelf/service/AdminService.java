@@ -1,6 +1,6 @@
 package com.library.anishelf.service;
 
-import com.library.anishelf.controller.CustomerAlter;
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.dao.*;
 import com.library.anishelf.model.*;
 import com.library.anishelf.model.enums.*;
@@ -66,7 +66,7 @@ public class AdminService implements ServiceHandler {
                                 BookIssueDAO.getInstance().insert((BookIssue) payload);
                                 return true;
                             } else {
-                                CustomerAlter.showMessage("Đã hết sách :<");
+                                NotificationManagerUtil.showInfo("Không có sẵn truyện để mượn.");
                                 return false;
                             }
                     }
@@ -141,7 +141,6 @@ public class AdminService implements ServiceHandler {
         } catch (
                 SQLException e) {
             System.out.println("Lỗi AdminService:" + e.getMessage());
-            CustomerAlter.showAlter(e.getMessage());
             return false; 
         }
     }

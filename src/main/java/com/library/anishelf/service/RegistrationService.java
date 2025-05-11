@@ -1,6 +1,6 @@
 package com.library.anishelf.service;
 
-import com.library.anishelf.controller.CustomerAlter;
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.dao.AccountDAO;
 import com.library.anishelf.model.Person;
 import javafx.stage.Stage;
@@ -35,11 +35,11 @@ public class RegistrationService implements ServiceHandler {
     public boolean handleRequest() {
         try {
             if (AccountDAO.getInstance().registerNewMember(person, username, password)) {
-                CustomerAlter.showMessage("Đăng ký tài khoản thành công.");
+                NotificationManagerUtil.showInfo("Đăng ký tài khoản thành công.");
                 return true;
             }
         } catch (SQLException e) {
-            CustomerAlter.showMessage(e.getMessage());
+            NotificationManagerUtil.showError("Email bạn dùng đã được đăng ký trước đó.");
         }
         return false;
     }

@@ -1,6 +1,6 @@
 package com.library.anishelf.service;
 
-import com.library.anishelf.controller.CustomerAlter;
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.util.EmailUtil;
 
 /**
@@ -27,7 +27,7 @@ public class EmailService implements ServiceHandler {
     @Override
     public boolean handleRequest() {
         EmailUtil.sendEmailAsync(recipientEmail, subject, emailBody);
-        CustomerAlter.showMessage("Đã gửi mail tới: " + recipientEmail);
+        NotificationManagerUtil.showInfo("Email đã được gửi tới " + recipientEmail);
         return true;
     }
 

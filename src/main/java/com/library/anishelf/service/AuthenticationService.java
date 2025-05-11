@@ -1,6 +1,6 @@
 package com.library.anishelf.service;
 
-import com.library.anishelf.controller.CustomerAlter;
+import com.library.anishelf.util.NotificationManagerUtil;
 import com.library.anishelf.controller.AdminNavBarController;
 import com.library.anishelf.controller.BasicController;
 import com.library.anishelf.dao.AccountDAO;
@@ -50,22 +50,22 @@ public class AuthenticationService extends BasicController implements ServiceHan
         if (role.equals(Role.NONE)) {
             if(AccountDAO.getInstance().validateUserLogin(username, password) != 0) {
                 this.memberId = AccountDAO.getInstance().validateUserLogin(username,password);
-               return CustomerAlter.showAlter("Hế lô chào mừng bạn tới với chúng tớ nhé");
-
+                NotificationManagerUtil.showInfo("Đăng nhập thành công với tư cách người dùng");
+                return true;
             }
         } else if (role.equals(Role.ADMIN)) {
             if (AccountDAO.getInstance().validateAdminLogin(username, password)!=0) {
                 this.adminId = AccountDAO.getInstance().validateAdminLogin(username,password);
-                return CustomerAlter.showAlter("Hế lô chào mừng bạn tới với chúng tớ nhé");
+                NotificationManagerUtil.showInfo("Đăng nhập thành công với tư cách quản trị viên");
+                return true;
             }
         }
-        CustomerAlter.showAlter("Thông tin đăng nhập sai rồi ó.");
+        NotificationManagerUtil.showInfo("Thông tin đăng nhập bị sai");
         return false;
     }
 
     private void navigateToMenu() {
-        // role.equals(Role.ADMIN)
-        if (true) {
+        if (role.equals(Role.ADMIN)) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/AdminNavBar.fxml"));
                 Parent root = fxmlLoader.load();

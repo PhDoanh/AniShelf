@@ -37,12 +37,12 @@ public class BookService {
 
     private BookService() {
         try {
-            logger.debug(TAG, "Khởi tạo BookService và tải danh sách sách");
+            logger.debug(TAG, "Khởi tạo BookService và tải danh sách truyện");
             allAvailableBooks = BookDAO.getInstance().findAll();
-            logger.info(TAG, "Đã tải " + allAvailableBooks.size() + " sách từ cơ sở dữ liệu");
+            logger.info(TAG, "Đã tải " + allAvailableBooks.size() + " truyện từ cơ sở dữ liệu");
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi truy vấn dữ liệu sách từ cơ sở dữ liệu", e);
-            throw new RuntimeException("Lỗi khi truy vấn dữ liệu sách từ cơ sở dữ liệu", e);
+            logger.error(TAG, "Lỗi khi truy vấn dữ liệu truyện từ cơ sở dữ liệu", e);
+            throw new RuntimeException("Lỗi khi truy vấn dữ liệu truyện từ cơ sở dữ liệu", e);
         }
     }
 
@@ -116,77 +116,77 @@ public class BookService {
     }
 
     private void sortBooks(List<Book> books, Comparator<Book> comparator) {
-        logger.debug(TAG, "Sắp xếp danh sách " + books.size() + " sách");
+        logger.debug(TAG, "Sắp xếp danh sách " + books.size() + " truyện");
         Collections.sort(books, comparator);
     }
 
     public Book findBookInAllBooks(Book book) {
-        logger.debug(TAG, "Tìm sách trong danh sách với ISBN: " + book.getIsbn());
+        logger.debug(TAG, "Tìm truyện trong danh sách với ISBN: " + book.getIsbn());
         Book findBook;
         try {
             findBook = BookDAO.getInstance().findById(book.getIsbn());
             if (findBook != null) {
-                logger.debug(TAG, "Tìm thấy sách: " + findBook.getTitle());
+                logger.debug(TAG, "Tìm thấy truyện: " + findBook.getTitle());
             } else {
-                logger.debug(TAG, "Không tìm thấy sách với ISBN: " + book.getIsbn());
+                logger.debug(TAG, "Không tìm thấy truyện với ISBN: " + book.getIsbn());
             }
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi tìm sách với ISBN: " + book.getIsbn(), e);
-            throw new RuntimeException("Lỗi khi tìm sách trong cơ sở dữ liệu", e);
+            logger.error(TAG, "Lỗi khi tìm truyện với ISBN: " + book.getIsbn(), e);
+            throw new RuntimeException("Lỗi khi tìm truyện trong cơ sở dữ liệu", e);
         }
         return findBook;
     }
 
     public int getReservedBooksCount() {
         try {
-            logger.debug(TAG, "Đếm số sách đã đặt trước");
+            logger.debug(TAG, "Đếm số truyện đã đặt trước");
             getPendingReservedBooks();
             return pendingReservedBooks.size();
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi đếm số sách đã đặt trước", e);
-            throw new RuntimeException("Lỗi khi lấy số lượng sách đã đặt trước", e);
+            logger.error(TAG, "Lỗi khi đếm số truyện đã đặt trước", e);
+            throw new RuntimeException("Lỗi khi lấy số lượng truyện đã đặt trước", e);
         }
     }
 
     public int getBorrowingBooksCount() {
         try {
-            logger.debug(TAG, "Đếm số sách đang mượn");
+            logger.debug(TAG, "Đếm số truyện đang mượn");
             getCurrentlyBorrowedBooks();
             return currentlyBorrowedBooks.size();
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi đếm số sách đang mượn", e);
-            throw new RuntimeException("Lỗi khi lấy số lượng sách đang mượn", e);
+            logger.error(TAG, "Lỗi khi đếm số truyện đang mượn", e);
+            throw new RuntimeException("Lỗi khi lấy số lượng truyện đang mượn", e);
         }
     }
 
     public void addReservedBook(BookReservation bookReservation) {
-        logger.debug(TAG, "Thêm sách đặt trước: " + bookReservation.getBookItem().getTitle());
+        logger.debug(TAG, "Thêm truyện đặt trước: " + bookReservation.getBookItem().getTitle());
         try {
             if (pendingReservedBooks == null) {
                 getPendingReservedBooks();
             }
             pendingReservedBooks.add(bookReservation);
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi thêm sách đặt trước", e);
-            throw new RuntimeException("Lỗi khi thêm sách đặt trước", e);
+            logger.error(TAG, "Lỗi khi thêm truyện đặt trước", e);
+            throw new RuntimeException("Lỗi khi thêm truyện đặt trước", e);
         }
     }
 
     public void removeReservedBook(BookReservation bookReservation) {
-        logger.debug(TAG, "Xóa sách đặt trước: " + bookReservation.getBookItem().getTitle());
+        logger.debug(TAG, "Xóa truyện đặt trước: " + bookReservation.getBookItem().getTitle());
         int index = findReservedBookIndex(bookReservation.getBookItem().getIsbn());
 
         if(index != -1) {
             pendingReservedBooks.remove(index);
-            logger.debug(TAG, "Đã xóa sách đặt trước thành công");
+            logger.debug(TAG, "Đã xóa truyện đặt trước thành công");
         } else {
-            logger.warning(TAG, "Không tìm thấy sách đặt trước để xóa với ISBN: " + 
+            logger.warning(TAG, "Không tìm thấy truyện đặt trước để xóa với ISBN: " + 
                     bookReservation.getBookItem().getIsbn());
         }
     }
 
     private int findReservedBookIndex(long isbn) {
-        logger.debug(TAG, "Tìm vị trí sách đặt trước với ISBN: " + isbn);
+        logger.debug(TAG, "Tìm vị trí truyện đặt trước với ISBN: " + isbn);
         try {
             if (pendingReservedBooks == null) {
                 pendingReservedBooks = BookService.getInstance().getPendingReservedBooks();
@@ -194,39 +194,39 @@ public class BookService {
             
             for (int i = 0; i < pendingReservedBooks.size(); i++) {
                 if (pendingReservedBooks.get(i).getBookItem().getIsbn() == isbn) {
-                    logger.debug(TAG, "Tìm thấy sách đặt trước tại vị trí: " + i);
+                    logger.debug(TAG, "Tìm thấy truyện đặt trước tại vị trí: " + i);
                     return i;
                 }
             }
-            logger.debug(TAG, "Không tìm thấy sách đặt trước với ISBN: " + isbn);
+            logger.debug(TAG, "Không tìm thấy truyện đặt trước với ISBN: " + isbn);
             return -1;
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi tìm vị trí sách đặt trước với ISBN: " + isbn, e);
-            throw new RuntimeException("Lỗi khi tìm sách đặt trước", e);
+            logger.error(TAG, "Lỗi khi tìm vị trí truyện đặt trước với ISBN: " + isbn, e);
+            throw new RuntimeException("Lỗi khi tìm truyện đặt trước", e);
         }
     }
 
     public void addMarkedBook(BookMark bookMark) {
-        logger.debug(TAG, "Thêm bookmark cho sách: " + bookMark.getBook().getTitle());
+        logger.debug(TAG, "Thêm bookmark cho truyện: " + bookMark.getBook().getTitle());
         try {
             if (bookmarks == null) {
                 getBookmarks();
             }
-            // Kiểm tra xem đã có bookmark cho sách này chưa trước khi thêm
+            // Kiểm tra xem đã có bookmark cho truyện này chưa trước khi thêm
             if (findMarkedBookIndex(bookMark.getBook().getIsbn()) == -1) {
                 bookmarks.add(bookMark);
                 logger.debug(TAG, "Đã thêm bookmark thành công");
             } else {
-                logger.debug(TAG, "Sách này đã được bookmark trước đó");
+                logger.debug(TAG, "truyện này đã được bookmark trước đó");
             }
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi thêm bookmark cho sách", e);
-            throw new RuntimeException("Lỗi khi thêm sách vào bookmarks", e);
+            logger.error(TAG, "Lỗi khi thêm bookmark cho truyện", e);
+            throw new RuntimeException("Lỗi khi thêm truyện vào bookmarks", e);
         }
     }
 
     public void removeMarkedBook(BookMark bookMark) {
-        logger.debug(TAG, "Xóa bookmark cho sách: " + bookMark.getBook().getTitle());
+        logger.debug(TAG, "Xóa bookmark cho truyện: " + bookMark.getBook().getTitle());
         try {
             if (bookmarks == null) {
                 getBookmarks();
@@ -236,11 +236,11 @@ public class BookService {
                 bookmarks.remove(index);
                 logger.debug(TAG, "Đã xóa bookmark thành công");
             } else {
-                logger.warning(TAG, "Không tìm thấy bookmark để xóa cho sách: " + bookMark.getBook().getTitle());
+                logger.warning(TAG, "Không tìm thấy bookmark để xóa cho truyện: " + bookMark.getBook().getTitle());
             }
         } catch (SQLException e) {
             logger.error(TAG, "Lỗi khi xóa bookmark", e);
-            throw new RuntimeException("Lỗi khi xóa sách khỏi bookmarks", e);
+            throw new RuntimeException("Lỗi khi xóa truyện khỏi bookmarks", e);
         }
     }
 
@@ -269,7 +269,7 @@ public class BookService {
             @Override
             protected Image call() throws Exception {
                 String imagePath = book.getImagePath();
-                logger.debug(TAG, "Tạo task tải hình ảnh cho sách: " + book.getTitle() + ", đường dẫn: " + imagePath);
+                logger.debug(TAG, "Tạo task tải hình ảnh cho truyện: " + book.getTitle() + ", đường dẫn: " + imagePath);
 
                 // Kiểm tra cache trước khi tải
                 Image cachedImage = BOOK_IMAGE_CACHE.getIfPresent(imagePath);
@@ -310,22 +310,22 @@ public class BookService {
         logger.debug(TAG, "Xóa cache hình ảnh, kích thước cache trước khi xóa: " + BOOK_IMAGE_CACHE.estimatedSize());
         BOOK_IMAGE_CACHE.invalidateAll();
         
-        // Xóa các danh sách cache
-        logger.debug(TAG, "Xóa danh sách sách, số lượng trước khi xóa: " + allAvailableBooks.size());
+        // Xóa các danh truyện cache
+        logger.debug(TAG, "Xóa danh sách truyện, số lượng trước khi xóa: " + allAvailableBooks.size());
         allAvailableBooks.clear();
         
         if (mostPopularBooks != null) {
-            logger.debug(TAG, "Xóa danh sách sách phổ biến, số lượng: " + mostPopularBooks.size());
+            logger.debug(TAG, "Xóa danh sách truyện phổ biến, số lượng: " + mostPopularBooks.size());
             mostPopularBooks.clear();
         }
         
         if (highestRatedBooks != null) {
-            logger.debug(TAG, "Xóa danh sách sách đánh giá cao, số lượng: " + highestRatedBooks.size());
+            logger.debug(TAG, "Xóa danh sách truyện đánh giá cao, số lượng: " + highestRatedBooks.size());
             highestRatedBooks.clear();
         }
         
         if (pendingReservedBooks != null) {
-            logger.debug(TAG, "Xóa danh sách sách đặt trước, số lượng: " + pendingReservedBooks.size());
+            logger.debug(TAG, "Xóa danh sách truyện đặt trước, số lượng: " + pendingReservedBooks.size());
             pendingReservedBooks.clear();
         }
         
@@ -335,12 +335,12 @@ public class BookService {
         }
         
         if (returnedBooks != null) {
-            logger.debug(TAG, "Xóa danh sách sách đã trả, số lượng: " + returnedBooks.size());
+            logger.debug(TAG, "Xóa danh sách truyện đã trả, số lượng: " + returnedBooks.size());
             returnedBooks.clear();
         }
         
         if (currentlyBorrowedBooks != null) {
-            logger.debug(TAG, "Xóa danh sách sách đang mượn, số lượng: " + currentlyBorrowedBooks.size());
+            logger.debug(TAG, "Xóa danh sách truyện đang mượn, số lượng: " + currentlyBorrowedBooks.size());
             currentlyBorrowedBooks.clear();
         }
         
@@ -348,7 +348,7 @@ public class BookService {
     }
 
     public boolean isBookMarked(Long ISBN) {
-        logger.debug(TAG, "Kiểm tra xem sách có ISBN: " + ISBN + " đã được bookmark chưa");
+        logger.debug(TAG, "Kiểm tra xem truyện có ISBN: " + ISBN + " đã được bookmark chưa");
         try {
             if (bookmarks == null) {
                 getBookmarks();
@@ -359,7 +359,7 @@ public class BookService {
             logger.debug(TAG, "Kết quả kiểm tra bookmark: " + (result ? "Đã bookmark" : "Chưa bookmark"));
             return result;
         } catch (SQLException e) {
-            logger.error(TAG, "Lỗi khi kiểm tra bookmark cho sách với ISBN: " + ISBN, e);
+            logger.error(TAG, "Lỗi khi kiểm tra bookmark cho truyện với ISBN: " + ISBN, e);
             throw new RuntimeException("Lỗi khi kiểm tra bookmark", e);
         }
     }

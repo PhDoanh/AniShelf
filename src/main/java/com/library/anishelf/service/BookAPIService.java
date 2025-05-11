@@ -208,7 +208,7 @@ public class BookAPIService {
             // Lưu kết quả vào cache
             if (!books.isEmpty()) {
                 bookCache.put(title, books);
-                logger.info("BookAPIService", "Đã lưu " + books.size() + " sách vào cache cho từ khóa: " + title);
+                logger.info("BookAPIService", "Đã lưu " + books.size() + " truyện vào cache cho từ khóa: " + title);
             }
             
             // Gọi callback nếu được cung cấp
@@ -340,7 +340,7 @@ public class BookAPIService {
                         List<Book> cacheList = new ArrayList<>();
                         cacheList.add(book);
                         bookCache.put(id, cacheList);
-                        logger.info("BookAPIService", "Đã lưu sách vào cache cho ID: " + id);
+                        logger.info("BookAPIService", "Đã lưu truyện vào cache cho ID: " + id);
                     }
                 } catch (Exception e) {
                     logger.error("BookAPIService", "Lỗi khi xử lý kết quả: " + e.getMessage(), e);
@@ -354,7 +354,7 @@ public class BookAPIService {
             
             return book;
         }).exceptionally(ex -> {
-            logger.error("BookAPIService", "Lỗi khi tìm kiếm sách theo ID: " + ex.getMessage(), ex);
+            logger.error("BookAPIService", "Lỗi khi tìm kiếm truyện theo ID: " + ex.getMessage(), ex);
             if (callback != null) {
                 callback.accept(null);
             }
@@ -373,7 +373,7 @@ public class BookAPIService {
             // Gọi phương thức bất đồng bộ và đợi kết quả
             return searchBookByISBNAsync(id, null).get();
         } catch (Exception e) {
-            logger.error("BookAPIService", "Lỗi khi tìm kiếm sách theo ID đồng bộ: " + e.getMessage(), e);
+            logger.error("BookAPIService", "Lỗi khi tìm kiếm truyện theo ID đồng bộ: " + e.getMessage(), e);
             return null;
         }
     }
@@ -512,11 +512,11 @@ public class BookAPIService {
             String siteUrl = manga.optString("siteUrl", "");
             book.setPreview(siteUrl);
             
-            logger.debug("BookAPIService", "Đã chuyển đổi manga thành sách: " + bookTitle);
+            logger.debug("BookAPIService", "Đã chuyển đổi manga thành truyện: " + bookTitle);
             return book;
             
         } catch (Exception e) {
-            logger.error("BookAPIService", "Lỗi khi chuyển đội manga thành sách: " + e.getMessage(), e);
+            logger.error("BookAPIService", "Lỗi khi chuyển đội manga thành truyện: " + e.getMessage(), e);
             return null;
         }
     }
@@ -609,7 +609,7 @@ public class BookAPIService {
     public static void main(String[] args) {
         // Thử tìm kiếm bất đồng bộ
         searchBooksByKeywordAsync("One Piece", books -> {
-            System.out.println("Tìm thấy " + books.size() + " sách với từ khóa 'One Piece'");
+            System.out.println("Tìm thấy " + books.size() + " truyện với từ khóa 'One Piece'");
             for (Book book : books) {
                 System.out.println(book.getIsbn() + " " + book.getTitle());
                 book.setQuantity(10);
@@ -618,7 +618,7 @@ public class BookAPIService {
                         BookDAO.getInstance().insert(book);
                     }
                 } catch (Exception e) {
-                    logger.error("BookAPIService", "Lỗi khi thêm sách vào CSDL: " + e.getMessage(), e);
+                    logger.error("BookAPIService", "Lỗi khi thêm truyện vào CSDL: " + e.getMessage(), e);
                 }
             }
         });

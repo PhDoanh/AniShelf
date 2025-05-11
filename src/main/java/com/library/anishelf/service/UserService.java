@@ -1,6 +1,5 @@
 package com.library.anishelf.service;
 
-import com.library.anishelf.controller.CustomerAlter;
 import com.library.anishelf.dao.BookDAO;
 import com.library.anishelf.dao.BookItemDAO;
 import com.library.anishelf.dao.CommentDAO;
@@ -65,7 +64,7 @@ public class UserService {
                     return false;
             }
         } catch (SQLException e) {
-            CustomerAlter.showAlter(e.getMessage());
+            System.out.println("Lỗi trong quá trình thực hiện yêu cầu: " + e.getMessage());
             return false; // Thất bại
         }
     }
