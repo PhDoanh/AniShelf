@@ -94,7 +94,7 @@ public class UserAppReportController {
             fxmlLoader.setLocation(getClass().getResource(REPORT_CARD_FXML_VIEW));
             HBox cardBox = fxmlLoader.load();
             userCurrentReportCardController = fxmlLoader.getController();
-            userCurrentReportCardController.setData(currentUserReport);
+            userCurrentReportCardController.initializeData(currentUserReport);
             reportsBoxContainer.getChildren().add(cardBox);
         } catch (IOException e) {
             e.printStackTrace();
@@ -141,7 +141,7 @@ public class UserAppReportController {
             fxmlLoader.setLocation(getClass().getResource(REPORT_CARD_FXML_VIEW));
             HBox cardBox = fxmlLoader.load();
             UserReportCardController cardController = fxmlLoader.getController();
-            cardController.setData(report);
+            cardController.initializeData(report);
             reportsBoxContainer.getChildren().add(cardBox);
         } catch (IOException e) {
             e.printStackTrace();
@@ -164,7 +164,7 @@ public class UserAppReportController {
         try {
             currentUserReport.setContent(reportContentTextArea.getText());
             currentUserReport.setTitle(reportTitleTextField.getText());
-            userCurrentReportCardController.editReport(currentUserReport);
+            userCurrentReportCardController.editUserReport(currentUserReport);
             ReportDAO.getInstance().update(currentUserReport);
             CustomerAlterApp.showAlertMessage("Mình lưu cho bạn rùi nhá :)");
         } catch (SQLException e) {
@@ -180,7 +180,7 @@ public class UserAppReportController {
         try {
             currentUserReport.setContent(reportContentTextArea.getText());
             currentUserReport.setTitle(reportTitleTextField.getText());
-            userCurrentReportCardController.editReport(currentUserReport);
+            userCurrentReportCardController.editUserReport(currentUserReport);
             ReportDAO.getInstance().add(currentUserReport);
             CustomerAlterApp.showAlertMessage("Mình lưu cho bạn rùi nhá :)");
         } catch (SQLException e) {
