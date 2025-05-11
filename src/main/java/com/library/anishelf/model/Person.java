@@ -136,6 +136,9 @@ public class Person {
         return lastName;
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 
     /**
      * Gets image path.
