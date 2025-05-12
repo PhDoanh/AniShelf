@@ -7,11 +7,11 @@ import java.util.List;
  * Quản lý lịch sử điều hướng để hỗ trợ chức năng Back/Next
  */
 public class NavHistoryManagerUtil {
-    
+
     private static NavHistoryManagerUtil instance;
     private List<String> history;
     private int currentIndex;
-    
+
     /**
      * Khởi tạo lịch sử điều hướng
      */
@@ -19,9 +19,10 @@ public class NavHistoryManagerUtil {
         history = new ArrayList<>();
         currentIndex = -1;
     }
-    
+
     /**
      * Lấy đối tượng quản lý lịch sử điều hướng (Singleton)
+     *
      * @return Đối tượng NavHistoryManagerUtil
      */
     public static NavHistoryManagerUtil getInstance() {
@@ -30,9 +31,10 @@ public class NavHistoryManagerUtil {
         }
         return instance;
     }
-    
+
     /**
      * Thêm một trang vào lịch sử điều hướng
+     *
      * @param pagePath Đường dẫn đến trang
      */
     public void addToHistory(String pagePath) {
@@ -40,34 +42,37 @@ public class NavHistoryManagerUtil {
         if (currentIndex < history.size() - 1) {
             history = new ArrayList<>(history.subList(0, currentIndex + 1));
         }
-        
+
         // Nếu trang hiện tại giống trang cuối cùng trong lịch sử, không thêm vào
         if (!history.isEmpty() && history.get(currentIndex).equals(pagePath)) {
             return;
         }
-        
+
         history.add(pagePath);
         currentIndex = history.size() - 1;
     }
-    
+
     /**
      * Kiểm tra xem có thể di chuyển lùi không
+     *
      * @return true nếu có thể lùi, false nếu không
      */
     public boolean canGoBack() {
         return currentIndex > 0;
     }
-    
+
     /**
      * Kiểm tra xem có thể di chuyển tiến không
+     *
      * @return true nếu có thể tiến, false nếu không
      */
     public boolean canGoForward() {
         return currentIndex < history.size() - 1;
     }
-    
+
     /**
      * Di chuyển lùi một trang
+     *
      * @return Đường dẫn đến trang trước
      */
     public String goBack() {
@@ -77,9 +82,10 @@ public class NavHistoryManagerUtil {
         }
         return null;
     }
-    
+
     /**
      * Di chuyển tiến một trang
+     *
      * @return Đường dẫn đến trang kế tiếp
      */
     public String goForward() {
@@ -89,7 +95,7 @@ public class NavHistoryManagerUtil {
         }
         return null;
     }
-    
+
     /**
      * Xóa lịch sử điều hướng
      */
@@ -97,9 +103,10 @@ public class NavHistoryManagerUtil {
         history.clear();
         currentIndex = -1;
     }
-    
+
     /**
      * Lấy trang hiện tại
+     *
      * @return Đường dẫn đến trang hiện tại
      */
     public String getCurrentPage() {
@@ -108,9 +115,10 @@ public class NavHistoryManagerUtil {
         }
         return null;
     }
-    
+
     /**
      * Lấy toàn bộ lịch sử điều hướng
+     *
      * @return Danh sách các trang đã điều hướng
      */
     public List<String> getHistory() {

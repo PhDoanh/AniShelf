@@ -14,8 +14,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
+/**
+ * The type Registration page controller.
+ */
 public class RegistrationPageController extends BasicController {
 
     @FXML
@@ -66,28 +70,41 @@ public class RegistrationPageController extends BasicController {
     private boolean isStep1;
     private ServiceInvoker serviceInvoker = new ServiceInvoker();
 
+    /**
+     * Initialize.
+     */
     @FXML
     public void initialize() {
         isStep1 = true;
-        
+
         // Apply AtlantaFX styling to buttons
         continueButton.getStyleClass().add("accent");
         resignButton.getStyleClass().add("accent");
-        
+
         // Initialize gender combo box
         genderBox.getItems().addAll(Gender.MALE, Gender.FEMALE, Gender.OTHER);
         genderBox.getStyleClass().add("rounded");
     }
 
+    /**
+     * On back step action.
+     *
+     * @param event the event
+     */
     @FXML
     void onBackStepAction(ActionEvent event) {
         isStep1 = true;
         switchToStep1();
     }
 
+    /**
+     * On continue button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onContinueButtonAction(ActionEvent event) {
-        if(checkInformation()) {
+        if (checkInformation()) {
             isStep1 = false;
             switchToStep2();
         }
@@ -103,12 +120,17 @@ public class RegistrationPageController extends BasicController {
             Stage stage = (Stage) resignButton.getScene().getWindow();
             ServiceHandler resignServiceHandler = new RegistrationService(stage, person, username, password);
             serviceInvoker.setServiceHandler(resignServiceHandler);
-            if(serviceInvoker.invokeService()) {
+            if (serviceInvoker.invokeService()) {
                 openLoginView();
             }
         }
     }
-    
+
+    /**
+     * On have account button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onHaveAccountButtonAction(ActionEvent event) {
         openLoginView();
@@ -125,7 +147,7 @@ public class RegistrationPageController extends BasicController {
     }
 
     private boolean checkInformation() {
-        if(isStep1) {
+        if (isStep1) {
             // Bước 1: Kiểm tra thông tin cá nhân
             String firstName = firstNameText.getText().trim();
             String lastName = lastNameText.getText().trim();

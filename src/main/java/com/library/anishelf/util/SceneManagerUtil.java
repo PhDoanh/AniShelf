@@ -14,6 +14,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Scene manager util.
+ */
 public class SceneManagerUtil {
 
     private static final String USER_MENU_FXML = "/view/NavigationBar.fxml";
@@ -24,7 +27,7 @@ public class SceneManagerUtil {
     private static final String MORE_BOOK_FXML = "/view/MoreBookPage.fxml";
     private static final String BOOK_FXML = "/view/Book.fxml";
     private static final String ADVANCED_SEARCH_FXML = "/view/AdvancedSearchPage.fxml";
-    
+
 
     private static SceneManagerUtil instance = null;
     private Map<String, Pane> fxmlCache = new HashMap<>();
@@ -38,23 +41,42 @@ public class SceneManagerUtil {
         this.container = container;
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static SceneManagerUtil getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new SceneManagerUtil();
         }
         return instance;
     }
 
+    /**
+     * Gets instance.
+     *
+     * @param container the container
+     * @return the instance
+     */
     public static SceneManagerUtil getInstance(VBox container) {
         if (instance == null) {
             instance = new SceneManagerUtil(container);
         } else {
-            instance.container = container;  
+            instance.container = container;
         }
         return instance;
     }
 
 
+    /**
+     * Load and get controller t.
+     *
+     * @param <T>      the type parameter
+     * @param fxmlPath the fxml path
+     * @return the t
+     * @throws IOException the io exception
+     */
     public static <T> T loadAndGetController(String fxmlPath) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL resource = SceneManagerUtil.class.getResource(fxmlPath);
@@ -63,7 +85,13 @@ public class SceneManagerUtil {
         return fxmlLoader.getController();
     }
 
-    
+
+    /**
+     * Load scene pane.
+     *
+     * @param fxmlPath the fxml path
+     * @return the pane
+     */
     public Pane loadScene(String fxmlPath) {
         try {
             if (fxmlCache.containsKey(fxmlPath)) {
@@ -76,7 +104,7 @@ public class SceneManagerUtil {
             controllerCache.put(fxmlPath, fxmlLoader.getController());
             fxmlCache.put(fxmlPath, newContent);
             ThemeManagerUtil.getInstance().addPane(newContent);
-            
+
             // Thêm trang vào lịch sử điều hướng nếu cần
             try {
                 NavigationBarController navigationBarController = getController(USER_MENU_FXML);
@@ -84,7 +112,7 @@ public class SceneManagerUtil {
             } catch (IOException e) {
                 // Bỏ qua nếu không thể lấy controller
             }
-            
+
             return newContent;
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,41 +121,67 @@ public class SceneManagerUtil {
     }
 
 
+    /**
+     * Gets container.
+     *
+     * @return the container
+     */
     public VBox getContainer() {
         return container;
     }
 
+    /**
+     * Update scene container.
+     *
+     * @param content the content
+     */
     public void updateSceneContainer(VBox content) {
-        
+
         try {
-            
+
             Object infoController = controllerCache.get("/view/ProfilePage.fxml");
             if (infoController != null && infoController instanceof ProfilePageController) {
                 ProfilePageController controller =
-                    (ProfilePageController) infoController;
-                
-                
+                        (ProfilePageController) infoController;
+
+
                 controller.restoreOriginalImageIfNeeded();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        
+
+
         container.setPadding(Insets.EMPTY);
         container.getChildren().clear();
         VBox.setVgrow(content, Priority.ALWAYS);
         container.getChildren().add(content);
     }
 
+    /**
+     * Gets controller.
+     *
+     * @param <T>      the type parameter
+     * @param fxmlPath the fxml path
+     * @return the controller
+     * @throws IOException the io exception
+     */
     public <T> T getController(String fxmlPath) throws IOException {
-        return (T) controllerCache.get(fxmlPath); 
+        return (T) controllerCache.get(fxmlPath);
     }
 
+    /**
+     * Add user menu controller.
+     *
+     * @param navigationBarController the navigation bar controller
+     */
     public void addUserMenuController(NavigationBarController navigationBarController) {
         controllerCache.put(USER_MENU_FXML, navigationBarController);
     }
 
+    /**
+     * Clear all caches.
+     */
     public void clearAllCaches() {
         controllerCache.clear();
         fxmlCache.clear();
@@ -135,6 +189,9 @@ public class SceneManagerUtil {
         BookService.getInstance().clearCache();
     }
 
+    /**
+     * Refresh book scenes.
+     */
     public void refreshBookScenes() {
         fxmlCache.remove(DASHBOARD_FXML);
         fxmlCache.remove(BOOKMARK_FXML);
@@ -145,6 +202,9 @@ public class SceneManagerUtil {
         fxmlCache.remove(ADVANCED_SEARCH_FXML);
     }
 
+    /**
+     * Highlight back button.
+     */
     public void highlightBackButton() {
         try {
             NavigationBarController navigationBarController = getController(USER_MENU_FXML);
@@ -153,9 +213,10 @@ public class SceneManagerUtil {
             throw new RuntimeException(e);
         }
     }
-    
+
     /**
      * Điều hướng đến một trang cụ thể và lưu vào lịch sử
+     *
      * @param fxmlPath Đường dẫn đến trang
      */
     public void navigateToPage(String fxmlPath) {
@@ -165,7 +226,7 @@ public class SceneManagerUtil {
             try {
                 NavigationBarController navigationBarController = getController(USER_MENU_FXML);
                 navigationBarController.addPageToHistory(fxmlPath);
-                
+
                 // Cập nhật highlight cho nút tương ứng
                 if (fxmlPath.equals(DASHBOARD_FXML)) {
                     navigationBarController.updateMenuButtonHighlight(navigationBarController.getDashboardButton());

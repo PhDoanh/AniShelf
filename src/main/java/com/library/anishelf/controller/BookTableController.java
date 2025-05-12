@@ -20,6 +20,9 @@ import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * The type Book table controller.
+ */
 public class BookTableController extends BaseTableController<Book, BookPageController, BookTableRowController> {
 
     @FXML
@@ -80,6 +83,9 @@ public class BookTableController extends BaseTableController<Book, BookPageContr
     private int totalNumberBook;
     private int totalNumberLost;
 
+    /**
+     * Initialize.
+     */
     @FXML
     protected void initialize() {
         setCategoryFindList();
@@ -154,16 +160,29 @@ public class BookTableController extends BaseTableController<Book, BookPageContr
         loadRows();
     }
 
+    /**
+     * On find button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onFindButtonAction(ActionEvent event) {
         searchCriteria();
     }
 
+    /**
+     * On add button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onAddButtonAction(ActionEvent event) {
         mainController.loadAddPane();
     }
 
+    /**
+     * Sets text.
+     */
     protected void setText() {
         try {
             totalNumberBook = 0;
@@ -174,7 +193,7 @@ public class BookTableController extends BaseTableController<Book, BookPageContr
                 totalNumberBook += book.getQuantity();
                 totalNumberLost += book.getLostBooksCount();
             }
-            totalNumberBookLabel.setText(String.valueOf(this.totalNumberBook-this.totalNumberLost));
+            totalNumberBookLabel.setText(String.valueOf(this.totalNumberBook - this.totalNumberLost));
             totalNumberLostLabel.setText(String.valueOf(this.totalNumberLost));
         } catch (Exception e) {
             e.printStackTrace();
@@ -195,6 +214,9 @@ public class BookTableController extends BaseTableController<Book, BookPageContr
         }
     }
 
+    /**
+     * Sets category find list.
+     */
     protected void setCategoryFindList() {
         try {
             categoryChoiceBox.getItems().add("None");

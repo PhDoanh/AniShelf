@@ -17,6 +17,9 @@ import java.util.List;
 
 import static com.library.anishelf.controller.SuggestedBookCardController.executor;
 
+/**
+ * The type Admin dashboard book card controller.
+ */
 public class AdminDashboardBookCardController {
 
     @FXML
@@ -38,20 +41,25 @@ public class AdminDashboardBookCardController {
     private AdminNavBarController adminNavBarController;
 
     private Book book;
-    
+
     private static final String BOOK_MANAGEMENT_FXML = "/view/BookPage.fxml";
 
+    /**
+     * Sets item.
+     *
+     * @param book the book
+     */
     public void setItem(Book book) {
         this.book = book;
         setupRowClickHandler();
         bookNameLabel.setText(book.getTitle());
         String author = "";
         List<Author> authorList = book.getAuthors();
-        for(int i = 0;i<authorList.size();i++) {
+        for (int i = 0; i < authorList.size(); i++) {
             author += authorList.get(i).getName() + ",";
         }
         authorNameLabel.setText(author);
-        if(book.getRate() == 0) {
+        if (book.getRate() == 0) {
             book.setRate(BookService.getInstance().findBookInAllBooks(book).getRate());
         }
         starImage.setImage(starImage(book.getRate()));
@@ -62,7 +70,7 @@ public class AdminDashboardBookCardController {
             protected Image call() throws Exception {
                 try {
                     Image image = CacheManagerUtil.getImageFromCache(book.getImagePath());
-                    if(image != null) {
+                    if (image != null) {
                         return image;
                     } else {
                         Image image1 = new Image(book.getImagePath(), true);
@@ -86,7 +94,7 @@ public class AdminDashboardBookCardController {
 
         executor.submit(loadImageTask);
     }
-    
+
     private Image starImage(int numOfStar) {
         String imagePath = "/image/general/" + numOfStar + "star.png";
         if (getClass().getResourceAsStream(imagePath) == null) {
@@ -104,18 +112,31 @@ public class AdminDashboardBookCardController {
         });
     }
 
+    /**
+     * Handle row click.
+     */
     protected void handleRowClick() {
         this.adminNavBarController.onBookManagmentButtonAction(new ActionEvent());
         mainController.loadDetail(this.book);
-        
+
         // Thêm vào lịch sử điều hướng
         adminNavBarController.addPageToHistory(BOOK_MANAGEMENT_FXML);
     }
 
+    /**
+     * Sets main controller.
+     *
+     * @param mainController the main controller
+     */
     public void setMainController(BookPageController mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * Sets admin menu controller.
+     *
+     * @param adminNavBarController the admin nav bar controller
+     */
     public void setAdminMenuController(AdminNavBarController adminNavBarController) {
         this.adminNavBarController = adminNavBarController;
     }

@@ -12,7 +12,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+
 import com.library.anishelf.controller.NavigationBarController;
+
+/**
+ * The type Authentication service.
+ */
 public class AuthenticationService extends BasicController implements ServiceHandler {
     private Role role;
     private String password;
@@ -21,6 +26,14 @@ public class AuthenticationService extends BasicController implements ServiceHan
     private int memberId;
     private int adminId;
 
+    /**
+     * Instantiates a new Authentication service.
+     *
+     * @param stage    the stage
+     * @param role     the role
+     * @param username the username
+     * @param password the password
+     */
     public AuthenticationService(Stage stage, Role role, String username, String password) {
         this.role = role;
         this.username = username;
@@ -48,14 +61,14 @@ public class AuthenticationService extends BasicController implements ServiceHan
 
     private boolean validateCredentials() throws SQLException {
         if (role.equals(Role.NONE)) {
-            if(AccountDAO.getInstance().validateUserLogin(username, password) != 0) {
-                this.memberId = AccountDAO.getInstance().validateUserLogin(username,password);
+            if (AccountDAO.getInstance().validateUserLogin(username, password) != 0) {
+                this.memberId = AccountDAO.getInstance().validateUserLogin(username, password);
                 NotificationManagerUtil.showInfo("Đăng nhập thành công với tư cách người dùng");
                 return true;
             }
         } else if (role.equals(Role.ADMIN)) {
-            if (AccountDAO.getInstance().validateAdminLogin(username, password)!=0) {
-                this.adminId = AccountDAO.getInstance().validateAdminLogin(username,password);
+            if (AccountDAO.getInstance().validateAdminLogin(username, password) != 0) {
+                this.adminId = AccountDAO.getInstance().validateAdminLogin(username, password);
                 NotificationManagerUtil.showInfo("Đăng nhập thành công với tư cách quản trị viên");
                 return true;
             }

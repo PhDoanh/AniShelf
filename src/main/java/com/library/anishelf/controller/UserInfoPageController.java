@@ -29,6 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type User info page controller.
+ */
 public class UserInfoPageController extends BaseDetailController<Member> {
     @FXML
     private TextField birthText;
@@ -136,6 +139,7 @@ public class UserInfoPageController extends BaseDetailController<Member> {
 
         loadHistoryUser();
     }
+
     @Override
     protected void updateAddModeUI() {
         // Xử lý ẩn hiện các nút
@@ -169,6 +173,7 @@ public class UserInfoPageController extends BaseDetailController<Member> {
             statusBox.setValue(AccountStatus.ACTIVE);
         }
     }
+
     @Override
     protected void updateEditModeUI() {
         //Xử lý các nút ẩn hiện
@@ -187,6 +192,7 @@ public class UserInfoPageController extends BaseDetailController<Member> {
         birthText.setEditable(editMode);
         statusBox.setMouseTransparent(!editMode);
     }
+
     @Override
     protected boolean validateInput() {
         // Kiểm tra xem tên không được rỗng
@@ -197,14 +203,14 @@ public class UserInfoPageController extends BaseDetailController<Member> {
 
         // Kiểm tra định dạng email hợp lệ
         String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        if (emailText.getText()== null || !emailText.getText().matches(emailRegex)) {
+        if (emailText.getText() == null || !emailText.getText().matches(emailRegex)) {
             NotificationManagerUtil.showInfo("Email không hợp lệ");
             return false;
         }
 
         // Kiểm tra số điện thoại không rỗng và chỉ chứa số
         String phoneRegex = "^[0-9]{10,15}$"; // Ví dụ: chỉ chứa từ 10 đến 15 chữ số
-        if (phoneNumberText.getText()== null || !phoneNumberText.getText().matches(phoneRegex)) {
+        if (phoneNumberText.getText() == null || !phoneNumberText.getText().matches(phoneRegex)) {
             NotificationManagerUtil.showInfo("Số điện thoại không hợp lệ.");
             return false;
         }
@@ -223,6 +229,7 @@ public class UserInfoPageController extends BaseDetailController<Member> {
         // Nếu tất cả kiểm tra đều đạt, trả về true
         return true;
     }
+
     @Override
     protected boolean getNewItemInformation() throws Exception {
         // Xử lý firstName và lastName
@@ -231,7 +238,7 @@ public class UserInfoPageController extends BaseDetailController<Member> {
             String[] nameParts = memberName.trim().split("\\s+");
             item.getPerson().setLastName(nameParts[0]); // Tên đầu tiên
             StringBuilder firstName = new StringBuilder();
-            for(int i = 1; i < nameParts.length; i++) {
+            for (int i = 1; i < nameParts.length; i++) {
                 firstName.append(nameParts[i]).append(" ");
             }
             item.getPerson().setFirstName(firstName.toString().trim());
@@ -266,6 +273,9 @@ public class UserInfoPageController extends BaseDetailController<Member> {
         return "độc giả";
     }
 
+    /**
+     * Initialize.
+     */
     @FXML
     void initialize() {
         genderBox.getItems().addAll(Gender.values());
@@ -274,7 +284,12 @@ public class UserInfoPageController extends BaseDetailController<Member> {
     }
 
 
-    //Nút chọn ảnh
+    /**
+     * On choice image button action.
+     *
+     * @param event the event
+     */
+//Nút chọn ảnh
     @FXML
     void onChoiceImageButtonAction(ActionEvent event) {
         item.getPerson().setImagePath(getImagePath(item));
@@ -286,6 +301,11 @@ public class UserInfoPageController extends BaseDetailController<Member> {
         }
     }
 
+    /**
+     * On edit button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onEditButtonAction(ActionEvent event) {
         getTitlePageStack().push("Edit");
@@ -297,13 +317,18 @@ public class UserInfoPageController extends BaseDetailController<Member> {
     /**
      * Save button dùng chung cho cả AddMode và EditMode.
      *
-     * @param event
+     * @param event the event
      */
     @FXML
     void onSaveButtonAction(ActionEvent event) {
         saveChanges();
     }
 
+    /**
+     * On delete button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onDeleteButtonAction(ActionEvent event) {
         NotificationManagerUtil.showConfirmation("Xóa người dùng này?", confirmed -> {
@@ -330,7 +355,7 @@ public class UserInfoPageController extends BaseDetailController<Member> {
     @Override
     public void loadStartStatus() {
         //Set member của bảng Detail rỗng
-        item= null;
+        item = null;
 
         // Set các trường nhập thành rỗng
         userImage.setImage(null);
@@ -349,6 +374,7 @@ public class UserInfoPageController extends BaseDetailController<Member> {
         setAddMode(false);
         setEditMode(false);
     }
+
     private void loadHistoryUser() {
         historyTableVbox.getChildren().clear();
         Map<String, Object> findCriteria2 = new HashMap<>();

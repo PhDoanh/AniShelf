@@ -26,17 +26,35 @@ import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * The type Basic controller.
+ */
 public class BasicController {
     private static final String DEFAULT_USER_FXML = "/image/general/small_avatar.png";
     private static final String LOGIN_FXML = "/view/UserLoginPage.fxml";
+    /**
+     * The constant DEFAULT_BOOK_IMAGE.
+     */
     protected static final String DEFAULT_BOOK_IMAGE = "/image/default/book.png";
 
+    /**
+     * The constant ADMIN_MENU_FXML.
+     */
     protected static final String ADMIN_MENU_FXML = "/view/AdminNavBar.fxml";
+    /**
+     * The constant SETTING_FXML.
+     */
     protected static final String SETTING_FXML = "/view/AdminSettingPage.fxml";
 
     private static final String DASHBOARD_FXML = "/view/AdminHomePage.fxml";
+    /**
+     * The constant TOPBOOK_CARD_FXML.
+     */
     protected static final String TOPBOOK_CARD_FXML = "/view/TopBookCard.fxml";
 
+    /**
+     * The constant MESSAGE_FXML.
+     */
     protected static final String MESSAGE_FXML = "/view/AdminEmailMessage.fxml";
 
     private static final String BOOK_PAGE_FXML = "/view/BookPage.fxml";
@@ -46,36 +64,99 @@ public class BasicController {
 
     private static Stack<String> titlePageStack = new Stack<>();
 
+    /**
+     * The constant loginLoader.
+     */
     protected static final FXMLLoader loginLoader;
+    /**
+     * The constant loginPane.
+     */
     protected static final Node loginPane;
 
+    /**
+     * The constant adminMenuPaneLoader.
+     */
     protected static final FXMLLoader adminMenuPaneLoader;
+    /**
+     * The constant adminMenuPane.
+     */
     protected static final Node adminMenuPane;
 
+    /**
+     * The constant defaultUserImage.
+     */
     protected static Image defaultUserImage;
+    /**
+     * The constant defaultBookImage.
+     */
     protected static Image defaultBookImage;
 
+    /**
+     * The constant dashboardLoader.
+     */
     protected static final FXMLLoader dashboardLoader;
+    /**
+     * The constant dashboardPane.
+     */
     protected static final AnchorPane dashboardPane;
 
+    /**
+     * The constant topBookCardLoader.
+     */
     protected static final FXMLLoader topBookCardLoader;
+    /**
+     * The constant topBookCardPane.
+     */
     protected static final Node topBookCardPane;
 
+    /**
+     * The constant messageLoader.
+     */
     protected static final FXMLLoader messageLoader;
+    /**
+     * The constant messagePane.
+     */
     protected static final Node messagePane;
 
+    /**
+     * The constant userPagePaneLoader.
+     */
     protected static final FXMLLoader userPagePaneLoader;
+    /**
+     * The constant userPagePane.
+     */
     protected static final Node userPagePane;
 
+    /**
+     * The constant borrowPagePaneLoader.
+     */
     protected static final FXMLLoader borrowPagePaneLoader;
+    /**
+     * The constant borrowPagePane.
+     */
     protected static final Node borrowPagePane;
 
+    /**
+     * The constant bookPagePaneLoader.
+     */
     protected static final FXMLLoader bookPagePaneLoader;
+    /**
+     * The constant bookPagePane.
+     */
     protected static final Node bookPagePane;
 
+    /**
+     * The constant reservationPagePaneLoader.
+     */
     protected static final FXMLLoader reservationPagePaneLoader;
+    /**
+     * The constant reservationPagePane.
+     */
     protected static final Node reservationPagePane;
 
+    /**
+     * The Service invoker.
+     */
     protected ServiceInvoker serviceInvoker = new ServiceInvoker();
 
     static {
@@ -113,10 +194,15 @@ public class BasicController {
         reservationPagePaneLoader = loadFXML(RESERVATION_PAGE_FXML, BasicController.class);
         reservationPagePane = loadPane(reservationPagePaneLoader, BasicController.class);
 
-        adminMenuPaneLoader = loadFXML(ADMIN_MENU_FXML,BasicController.class);
+        adminMenuPaneLoader = loadFXML(ADMIN_MENU_FXML, BasicController.class);
         adminMenuPane = loadPane(adminMenuPaneLoader, BasicController.class);
     }
 
+    /**
+     * Gets title page stack.
+     *
+     * @return the title page stack
+     */
     public Stack<String> getTitlePageStack() {
         return titlePageStack;
     }
@@ -124,10 +210,10 @@ public class BasicController {
     /**
      * hàm load Pane
      *
-     * @param fxml
-     * @param clazz
-     * @param <T>
-     * @return pane
+     * @param <T>   the type parameter
+     * @param fxml  the fxml
+     * @param clazz the clazz
+     * @return pane t
      */
     public static <T> T loadPane(FXMLLoader fxml, Class<?> clazz) {
         T pane = null; // Khai báo biến pane kiểu T
@@ -163,7 +249,7 @@ public class BasicController {
      * hàm này dùng để loadFXML.
      *
      * @param fxml  đường dẫn của FXML
-     * @param clazz
+     * @param clazz the clazz
      * @return FXMLLoader yêu cầu
      */
     public static FXMLLoader loadFXML(String fxml, Class<?> clazz) {
@@ -173,10 +259,10 @@ public class BasicController {
     /**
      * hàm dùng để set chiều rộng của child theo parent.
      *
-     * @param child  có thể là VBox, HBox
-     * @param parent là scrollPane
      * @param <T>    thuộc tính của child
      * @param <U>    thuộc tính của parent
+     * @param child  có thể là VBox, HBox
+     * @param parent là scrollPane
      */
     public <T, U> void childFitWidthParent(T child, U parent) {
         if (child instanceof VBox && parent instanceof ScrollPane) {
@@ -210,10 +296,10 @@ public class BasicController {
     /**
      * hàm dùng để set chiều cao của child theo parent.
      *
-     * @param child  có thể là VBox, HBox
-     * @param parent là scrollPane
      * @param <T>    thuộc tính của child
      * @param <U>    thuộc tính của parent
+     * @param child  có thể là VBox, HBox
+     * @param parent là scrollPane
      */
     public <T, U> void childFitHeightParent(T child, U parent) {
         if (child instanceof VBox && parent instanceof ScrollPane) {
@@ -236,7 +322,7 @@ public class BasicController {
             ScrollPane scrollPaneParent = (ScrollPane) parent;
 
             anchorPaneChild.prefHeightProperty().bind(scrollPaneParent.widthProperty().subtract(17));
-        } else if(child instanceof AnchorPane && parent instanceof VBox) {
+        } else if (child instanceof AnchorPane && parent instanceof VBox) {
             AnchorPane anchorPaneChild = (AnchorPane) child;
             VBox vboxChild = (VBox) parent;
             anchorPaneChild.prefHeightProperty().bind(vboxChild.heightProperty());
@@ -246,8 +332,9 @@ public class BasicController {
 
     /**
      * Hàm lấy Cat từ List và chuyển về định dạng Cat1, Cat2, Cat3...
-     * @param categories
-     * @return
+     *
+     * @param categories the categories
+     * @return categories
      */
     public String getCategories(List<Category> categories) {
         if (categories == null || categories.isEmpty()) {
@@ -271,8 +358,9 @@ public class BasicController {
 
     /**
      * Hàm để lấy tất cả Author từ List và chuyển nó về định dạng Au1, Au2,...
-     * @param authors
-     * @return
+     *
+     * @param authors the authors
+     * @return authors
      */
     public String getAuthors(List<Author> authors) {
         if (authors == null || authors.isEmpty()) {
@@ -295,6 +383,7 @@ public class BasicController {
     /**
      * Hàm để lấy mở cửa sổ lấy ảnh.
      *
+     * @param o the o
      * @return đường dẫn của ảnh
      */
     public String getImagePath(Object o) {
@@ -313,11 +402,11 @@ public class BasicController {
             // Tạo tên tệp mới dựa trên ID người dùng
             String imageFile = o.toString() + getFileExtension(selectedFile.toPath());
             String newImageFile = "";
-            Path avatarFolder =Paths.get("");
-            if(o instanceof Member) {
+            Path avatarFolder = Paths.get("");
+            if (o instanceof Member) {
                 avatarFolder = Paths.get("src/main/resources/image/upload");
                 newImageFile = "/image/upload/" + imageFile;
-            } else if (o instanceof Book){
+            } else if (o instanceof Book) {
                 avatarFolder = Paths.get("src/main/resources/image/upload");
                 newImageFile = "/image/upload/" + imageFile;
             }
@@ -336,7 +425,7 @@ public class BasicController {
 
                 BufferedImage originalImage = ImageIO.read(selectedFile);
 
-                ImageIO.write(originalImage, "PNG",destinationPath.toFile());
+                ImageIO.write(originalImage, "PNG", destinationPath.toFile());
 
                 return destinationPath.toUri().toString();
             } catch (IOException e) {
@@ -349,6 +438,7 @@ public class BasicController {
             return null;
         }
     }
+
     private String getFileExtension(Path path) {
         String fileName = path.toString();
         int dotIndex = fileName.lastIndexOf('.');
@@ -362,7 +452,7 @@ public class BasicController {
      * Hàm kiểm tra tính hợp lệ của ngày tháng năm.
      *
      * @param dateStr ngày tháng cần kiểm tra
-     * @return true/false
+     * @return true /false
      */
     public boolean isValidDate(String dateStr) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");

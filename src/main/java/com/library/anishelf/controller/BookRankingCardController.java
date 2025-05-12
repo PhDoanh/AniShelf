@@ -20,6 +20,9 @@ import java.util.List;
 
 import static com.library.anishelf.controller.SuggestedBookCardController.executor;
 
+/**
+ * The type Book ranking card controller.
+ */
 public class BookRankingCardController {
     private SceneManagerUtil sceneManagerUtil = SceneManagerUtil.getInstance();
 
@@ -47,17 +50,18 @@ public class BookRankingCardController {
 
     /**
      * thiết lập dữ liệu cho card.
+     *
      * @param book truyện
      * @param rank hạng
      */
-    public void setData(Book book,String rank) {
+    public void setData(Book book, String rank) {
         this.book = book;
         bookNameLabel.setText("book name");
         authorNameLabel.setText("author");
         bookNameLabel.setText(book.getTitle());
         String author = "";
         List<Author> authorList = book.getAuthors();
-        for(int i = 0;i<authorList.size();i++) {
+        for (int i = 0; i < authorList.size(); i++) {
             author += authorList.get(i).getName() + ",";
         }
         authorNameLabel.setText(author);
@@ -77,6 +81,7 @@ public class BookRankingCardController {
 
     /**
      * chọn đọc truyện.
+     *
      * @param actionEvent khi ấn vào
      */
     public void onReadButtonAction(ActionEvent actionEvent) {
@@ -105,6 +110,7 @@ public class BookRankingCardController {
 
     /**
      * từ rate sang Inage.
+     *
      * @param numOfStar rate
      * @return Image
      */

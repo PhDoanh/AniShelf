@@ -14,6 +14,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * The type Admin setting page controller.
+ */
 public class AdminSettingPageController {
 
     @FXML
@@ -55,6 +58,11 @@ public class AdminSettingPageController {
     private AppInfo settings;
     private int adminID;
 
+    /**
+     * Sets admin id.
+     *
+     * @param adminID the admin id
+     */
     public void setAdminID(int adminID) {
         this.adminID = adminID;
         themeBox.getItems().addAll("Normal", "Dark", "Pink", "Gold");
@@ -89,6 +97,11 @@ public class AdminSettingPageController {
         }
     }
 
+    /**
+     * On contact button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onContactButtonAction(ActionEvent event) {
         ibLabel.setVisible(true);
@@ -99,20 +112,38 @@ public class AdminSettingPageController {
         pause.play();
     }
 
+    /**
+     * On theme box button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onThemeBoxButtonAction(MouseEvent event) {
 
     }
 
+    /**
+     * Initialize.
+     */
     public void initialize() {
 
     }
 
+    /**
+     * On change password button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onChangePasswordButtonAction(ActionEvent event) {
         NotificationManagerUtil.showInfo("Chức năng này hiện chưa khả dụng");
     }
 
+    /**
+     * On general setting button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onGeneralSettingButtonAction(ActionEvent event) {
         hihiPane.setVisible(false);
@@ -121,6 +152,11 @@ public class AdminSettingPageController {
         setActiveButton(generalSettingButton);
     }
 
+    /**
+     * On hihi button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onHihiButtonAction(ActionEvent event) {
         hihiPane.setVisible(true);
@@ -129,6 +165,11 @@ public class AdminSettingPageController {
         setActiveButton(hihiButton);
     }
 
+    /**
+     * On security button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onSecurityButtonAction(ActionEvent event) {
         hihiPane.setVisible(false);
@@ -137,12 +178,20 @@ public class AdminSettingPageController {
         setActiveButton(securityButton);
     }
 
+    /**
+     * On close button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onCloseButtonAction(ActionEvent event) {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Reset.
+     */
     public void reset() {
         hihiPane.setVisible(false);
         generalSettingPane.setVisible(true);

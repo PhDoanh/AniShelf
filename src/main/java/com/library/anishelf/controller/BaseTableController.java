@@ -13,22 +13,54 @@ import javafx.scene.layout.VBox;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * The type Base table controller.
+ *
+ * @param <T> the type parameter
+ * @param <P> the type parameter
+ * @param <R> the type parameter
+ */
 public abstract class BaseTableController<T, P extends BasePageController, R extends BaseRowController<T, P>> extends BasicController {
+    /**
+     * The Scroll pane.
+     */
     @FXML
     protected ScrollPane scrollPane;
+    /**
+     * The Table vbox.
+     */
     @FXML
     protected VBox tableVbox;
 
+    /**
+     * The Items list.
+     */
     protected ObservableSet<T> itemsList = FXCollections.observableSet(new HashSet<>());
+    /**
+     * The Main controller.
+     */
     protected BasePageController mainController;
+    /**
+     * The Find criteria.
+     */
     protected Map<String, Object> findCriteria = new HashMap<>();
 
     private static final int LOAD_THRESHOLD = 10;  // Số hàng trước khi đến cuối bảng để kích hoạt tải thêm
     private int loadedItemsCount = 0;  // Theo dõi số hàng hiện tại đã được tải
     private static final int ITEMS_PER_LOAD = 20; // Số hàng sẽ được tải mỗi lần
 
+    /**
+     * Gets row fxml.
+     *
+     * @return the row fxml
+     */
     protected abstract String getRowFXML();
 
+    /**
+     * Load data from source.
+     *
+     * @throws SQLException the sql exception
+     */
     protected abstract void loadDataFromSource() throws SQLException;
 
     /**
@@ -81,7 +113,7 @@ public abstract class BaseTableController<T, P extends BasePageController, R ext
     /**
      * Sau khi lấy set mainController (PageController) thì mới tiến hành load các hàng vào bảng.
      *
-     * @param mainController
+     * @param mainController the main controller
      */
     public void setMainController(BasePageController mainController) {
         this.mainController = mainController;
@@ -93,7 +125,7 @@ public abstract class BaseTableController<T, P extends BasePageController, R ext
     /**
      * Lấy mainController (PageController) của fxml này.
      *
-     * @return
+     * @return main controller
      */
     public BasePageController getMainController() {
         return mainController;
@@ -115,6 +147,9 @@ public abstract class BaseTableController<T, P extends BasePageController, R ext
         });
     }
 
+    /**
+     * Load more rows.
+     */
     protected void loadMoreRows() {
         if (loadedItemsCount < itemsList.size()) {
             int remainingItems = itemsList.size() - loadedItemsCount;
@@ -134,7 +169,7 @@ public abstract class BaseTableController<T, P extends BasePageController, R ext
     /**
      * Tải các hàng vào Table.
      *
-     * @param item
+     * @param item the item
      */
     protected void loadRow(T item) {
         try {

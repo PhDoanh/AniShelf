@@ -6,6 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
+/**
+ * The type Book table row controller.
+ */
 public class BookTableRowController extends BaseRowController<Book, BookPageController> {
 
 

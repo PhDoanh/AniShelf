@@ -27,6 +27,9 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The type Suggestion table.
+ */
 public class SuggestionTable {
 
     @FXML
@@ -38,12 +41,25 @@ public class SuggestionTable {
 
     private SuggestionRowClickListener rowClickListener;
     private List<Object> suggestList = new ArrayList<>();
+    /**
+     * The Unique members map.
+     */
     Map<Integer, Member> uniqueMembersMap = new HashMap<>();
+    /**
+     * The Search criteria.
+     */
     Map<String, Object> searchCriteria = new HashMap<>();
     private TextField activeTextField;
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
+    /**
+     * Instantiates a new Suggestion table.
+     *
+     * @param scrollPane     the scroll pane
+     * @param suggestionVBox the suggestion v box
+     * @param listView       the list view
+     */
     public SuggestionTable(ScrollPane scrollPane, VBox suggestionVBox, ListView<HBox> listView) {
         this.suggestionTable = suggestionVBox;
         this.scrollPane = scrollPane;
@@ -51,11 +67,19 @@ public class SuggestionTable {
 
     }
 
-    // Thêm setter cho listener
+    /**
+     * Sets row click listener.
+     *
+     * @param listener the listener
+     */
+// Thêm setter cho listener
     public void setRowClickListener(SuggestionRowClickListener listener) {
         this.rowClickListener = listener;
     }
 
+    /**
+     * Load suggestion rows async.
+     */
     public void loadSuggestionRowsAsync() {
         Task<List<Node>> loadRowsTask = new Task<>() {
             @Override
@@ -65,7 +89,9 @@ public class SuggestionTable {
                 int count = 0;
 
                 for (Object o : suggestList) {
-                    if (count == 30) break;
+                    if (count == 30) {
+                        break;
+                    }
 
                     try {
                         FXMLLoader loader = new FXMLLoader(SuggestionTable.class.getResource(
@@ -108,6 +134,12 @@ public class SuggestionTable {
         executorService.submit(loadRowsTask);
     }
 
+    /**
+     * Load find data.
+     *
+     * @param typeData the type data
+     * @param value    the value
+     */
     public void loadFindData(String typeData, String value) {
         boolean loaded = false;
         suggestList.clear();
@@ -189,7 +221,7 @@ public class SuggestionTable {
                     return;
                 case "bookISBNAPI":
                     Book book = BookAPIService.searchBookByISBN(value);
-                    if(book!= null) {
+                    if (book != null) {
                         suggestList.add(book);
                     }
                     break;
@@ -223,6 +255,13 @@ public class SuggestionTable {
 
     }
 
+    /**
+     * Load find data.
+     *
+     * @param typeData  the type data
+     * @param value     the value
+     * @param member_ID the member id
+     */
     public void loadFindData(String typeData, String value, String member_ID) {
         suggestList.clear();
         searchCriteria.clear();
@@ -242,7 +281,7 @@ public class SuggestionTable {
                     searchCriteria.put("barcode", value);
                     searchCriteria.put("BookReservationStatus", BookReservationStatus.WAITING);
                     List<BookReservation> listbook = BookReservationDAO.getInstance().findByCriteria(searchCriteria);
-                    if(listbook.size() > 0) {
+                    if (listbook.size() > 0) {
                         System.out.println("Co dat truoc ne");
                         for (BookReservation bookReservation : listbook) {
                             suggestList.add(bookReservation.getBookItem());
@@ -259,7 +298,7 @@ public class SuggestionTable {
                     searchCriteria.put("title", value);
                     searchCriteria.put("BookReservationStatus", BookReservationStatus.WAITING);
                     List<BookReservation> listbook2 = BookReservationDAO.getInstance().findByCriteria(searchCriteria);
-                    if(listbook2.size() > 0) {
+                    if (listbook2.size() > 0) {
                         System.out.println("Co dat truoc ne");
                         for (BookReservation bookReservation : listbook2) {
                             suggestList.add(bookReservation.getBookItem());
@@ -299,12 +338,20 @@ public class SuggestionTable {
     }
 
 
+    /**
+     * Update suggestion pane for active field.
+     */
     public void updateSuggestionPaneForActiveField() {
         if (activeTextField != null) {
             updateSuggestionPanePosition(activeTextField);
         }
     }
 
+    /**
+     * Update suggestion pane position.
+     *
+     * @param textField the text field
+     */
     public void updateSuggestionPanePosition(TextField textField) {
         activeTextField = textField;
         // Lấy tọa độ của textField trong Scene

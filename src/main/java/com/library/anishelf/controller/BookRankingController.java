@@ -13,8 +13,14 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * The type Book ranking controller.
+ */
 public class BookRankingController implements Initializable {
 
+    /**
+     * The Ranking v box.
+     */
     @FXML
     VBox rankingVBox;
 
@@ -32,12 +38,14 @@ public class BookRankingController implements Initializable {
                 fxmlLoader.setLocation(getClass().getResource("/view/BookRankingCard.fxml"));
                 HBox cardBox = fxmlLoader.load();
                 BookRankingCardController cardController = fxmlLoader.getController();
-                cardController.setData(highRankBooks.get(i),String.valueOf(i+1));
+                cardController.setData(highRankBooks.get(i), String.valueOf(i + 1));
                 rankingVBox.getChildren().add(cardBox);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(i == 8) break;
+            if (i == 8) {
+                break;
+            }
         }
     }
 }

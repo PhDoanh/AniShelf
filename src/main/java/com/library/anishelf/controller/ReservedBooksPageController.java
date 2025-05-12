@@ -7,6 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * The type Reserved books page controller.
+ */
 public class ReservedBooksPageController extends BasePageController<BookReservation, ReservedBookInfoController, ReservedBooksTableController> {
 
     private static final String TABLE_FXML = "/view/ReservedBooksTable.fxml";
@@ -45,6 +48,11 @@ public class ReservedBooksPageController extends BasePageController<BookReservat
         this.detailLocation.getChildren().add(super.detailPane);
     }
 
+    /**
+     * On return button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onReturnButtonAction(ActionEvent event) {
         while (getTitlePageStack().peek() != "Quản lý đặt trước truyện") {

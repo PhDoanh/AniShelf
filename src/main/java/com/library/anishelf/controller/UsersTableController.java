@@ -13,7 +13,13 @@ import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
 
+/**
+ * The type Users table controller.
+ */
 public class UsersTableController extends BaseTableController<Member, UsersPageController, UsersTableRowController> {
+    /**
+     * The constant ROW_FXML.
+     */
     protected static final String ROW_FXML = "/view/UsersTableRow.fxml";
     @FXML
     private Button addButton;
@@ -39,9 +45,12 @@ public class UsersTableController extends BaseTableController<Member, UsersPageC
     @Override
     protected void loadDataFromSource() throws SQLException {
         itemsList.addAll(MemberDAO.getInstance().findAll());
-        adminHomePageController.setTotalReaderLabel(itemsList.size()+"");
+        adminHomePageController.setTotalReaderLabel(itemsList.size() + "");
     }
 
+    /**
+     * Initialize.
+     */
     @FXML
     public void initialize() {
         adminHomePageController = dashboardLoader.getController();
@@ -60,6 +69,11 @@ public class UsersTableController extends BaseTableController<Member, UsersPageC
         });
     }
 
+    /**
+     * On add button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onAddButtonAction(ActionEvent event) {
         mainController.loadAddPane();
@@ -68,6 +82,7 @@ public class UsersTableController extends BaseTableController<Member, UsersPageC
     @Override
     protected void getCriteria() {
     }
+
     @Override
     protected void searchCriteria() {
         itemsList.clear();

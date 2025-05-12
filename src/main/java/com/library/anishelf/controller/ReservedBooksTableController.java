@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * The type Reserved books table controller.
+ */
 public class ReservedBooksTableController extends BaseTableController<BookReservation, ReservedBooksPageController, ReservedBooksTableRowController> {
 
     private static final String ROW_FXML = "/view/ReservedBooksTableRow.fxml";
@@ -46,6 +49,9 @@ public class ReservedBooksTableController extends BaseTableController<BookReserv
     @FXML
     private VBox tableVbox;
 
+    /**
+     * Initialize.
+     */
     @FXML
     protected void initialize() {
         statusFindBox.getItems().add("None");
@@ -65,8 +71,8 @@ public class ReservedBooksTableController extends BaseTableController<BookReserv
     @Override
     protected void getCriteria() {
         findCriteria.clear();
-        if(!bookNameFindText.getText().isEmpty()){
-            findCriteria.put("title",bookNameFindText.getText());
+        if (!bookNameFindText.getText().isEmpty()) {
+            findCriteria.put("title", bookNameFindText.getText());
         }
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // hoặc định dạng phù hợp với dữ liệu của bạn
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -89,6 +95,11 @@ public class ReservedBooksTableController extends BaseTableController<BookReserv
 
     }
 
+    /**
+     * On add button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onAddButtonAction(ActionEvent event) {
         mainController.loadAddPane();
@@ -106,6 +117,11 @@ public class ReservedBooksTableController extends BaseTableController<BookReserv
         loadRows();
     }
 
+    /**
+     * On find button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onFindButtonAction(ActionEvent event) {
         searchCriteria();

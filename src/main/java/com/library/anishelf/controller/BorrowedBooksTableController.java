@@ -17,6 +17,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * The type Borrowed books table controller.
+ */
 public class BorrowedBooksTableController extends BaseTableController<BookIssue, BorrowedBookPageController, BorrowedBooksTableRowController> {
 
     private static final String ROW_FXML = "/view/BorrowedBooksTableRow.fxml";
@@ -53,6 +56,9 @@ public class BorrowedBooksTableController extends BaseTableController<BookIssue,
 
     private AdminHomePageController adminHomePageController;
 
+    /**
+     * Initialize.
+     */
     public void initialize() {
         statusFindBox.getItems().add("None");
         statusFindBox.getItems().addAll(BookIssueStatus.BORROWED.toString(), BookIssueStatus.RETURNED.toString(), BookIssueStatus.LOST.toString());
@@ -71,14 +77,15 @@ public class BorrowedBooksTableController extends BaseTableController<BookIssue,
         findCriteria.clear();
         findCriteria.put("BookItemStatus", BookItemStatus.LOANED.toString());
         int totalBorrow = BookItemDAO.getInstance().findByCriteria(findCriteria).size();
-        adminHomePageController.setTotalBorrowLabel(totalBorrow+"");
+        adminHomePageController.setTotalBorrowLabel(totalBorrow + "");
         findCriteria.clear();
     }
+
     @Override
-    protected void getCriteria(){
+    protected void getCriteria() {
         findCriteria.clear();
-        if(!bookNameFindText.getText().isEmpty()){
-            findCriteria.put("title",bookNameFindText.getText());
+        if (!bookNameFindText.getText().isEmpty()) {
+            findCriteria.put("title", bookNameFindText.getText());
         }
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // hoặc định dạng phù hợp với dữ liệu của bạn
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -88,19 +95,24 @@ public class BorrowedBooksTableController extends BaseTableController<BookIssue,
             createdDate.format(outputFormatter);
             findCriteria.put("creation_date", createdDate.toString());
         }
-        if(!borrowerFindText.getText().isEmpty()){
-            findCriteria.put("fullname",borrowerFindText.getText());
+        if (!borrowerFindText.getText().isEmpty()) {
+            findCriteria.put("fullname", borrowerFindText.getText());
         }
 
-        if(!memeberIDFindText.getText().isEmpty()){
-            findCriteria.put("member_ID",memeberIDFindText.getText());
+        if (!memeberIDFindText.getText().isEmpty()) {
+            findCriteria.put("member_ID", memeberIDFindText.getText());
         }
-        if(statusFindBox.getValue() != "None" && statusFindBox.getValue() != null){
-            findCriteria.put("BookIssueStatus",statusFindBox.getValue());
+        if (statusFindBox.getValue() != "None" && statusFindBox.getValue() != null) {
+            findCriteria.put("BookIssueStatus", statusFindBox.getValue());
         }
 
     }
 
+    /**
+     * On add button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onAddButtonAction(ActionEvent event) {
         mainController.loadAddPane();
@@ -109,19 +121,24 @@ public class BorrowedBooksTableController extends BaseTableController<BookIssue,
     @Override
     protected void searchCriteria() {
         getCriteria();
-        if(findCriteria.isEmpty()) {
+        if (findCriteria.isEmpty()) {
             loadData();
             return;
         }
         try {
             itemsList.clear();
             itemsList.addAll(BookIssueDAO.getInstance().findByCriteria(findCriteria));
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         loadRows();
     }
 
+    /**
+     * On find button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onFindButtonAction(ActionEvent event) {
         searchCriteria();

@@ -17,6 +17,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type More book page controller.
+ */
 public class MoreBookPageController {
 
     @FXML
@@ -24,9 +27,9 @@ public class MoreBookPageController {
 
     private VBox test = new VBox();
 
-    private HBox row1Box = new HBox(), row2Box=new HBox();
+    private HBox row1Box = new HBox(), row2Box = new HBox();
 
-    private ScrollPane scrollPane1=new ScrollPane(),scrollPane2=new ScrollPane();
+    private ScrollPane scrollPane1 = new ScrollPane(), scrollPane2 = new ScrollPane();
     @FXML
     private Pagination pagination;
 
@@ -36,6 +39,9 @@ public class MoreBookPageController {
 
     private List<Book> bookList = new ArrayList<>();
 
+    /**
+     * Initialize.
+     */
     public void initialize() {
         try {
             bookList = BookDAO.getInstance().findAll();
@@ -59,8 +65,9 @@ public class MoreBookPageController {
 
     /**
      * load các truyện
+     *
      * @param start chỉ số truyện đầu
-     * @param end chỉ số truyện cuối
+     * @param end   chỉ số truyện cuối
      * @return VBox chứa tất cả truyện
      */
     public VBox loadBook(int start, int end) {
@@ -102,6 +109,7 @@ public class MoreBookPageController {
 
     /**
      * về dashboard.
+     *
      * @param event khi ấn
      */
     public void onBackButtonAction(ActionEvent event) {

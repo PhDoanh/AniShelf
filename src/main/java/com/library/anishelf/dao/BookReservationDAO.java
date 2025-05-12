@@ -74,8 +74,8 @@ public class BookReservationDAO implements GenericDAO<BookReservation> {
 
     @Override
     public void insert(@NotNull BookReservation entity) throws SQLException {
-        logger.debug(TAG, "Thêm đặt chỗ mới cho truyện: ISBN=" + entity.getBookItem().getIsbn() + 
-                     ", barcode=" + entity.getBookItem().getBookBarcode());
+        logger.debug(TAG, "Thêm đặt chỗ mới cho truyện: ISBN=" + entity.getBookItem().getIsbn() +
+                ", barcode=" + entity.getBookItem().getBookBarcode());
         try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(INSERT_BOOK_RESERVATION, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, entity.getMember().getPerson().getId());
             preparedStatement.setInt(2, entity.getBookItem().getBookBarcode());
@@ -84,7 +84,7 @@ public class BookReservationDAO implements GenericDAO<BookReservation> {
 
             int result = preparedStatement.executeUpdate();
             logger.info(TAG, "Thêm đặt chỗ thành công, " + result + " dòng bị ảnh hưởng");
-            
+
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int reservationId = generatedKeys.getInt(1);
@@ -92,7 +92,7 @@ public class BookReservationDAO implements GenericDAO<BookReservation> {
                     logger.debug(TAG, "Đặt chỗ mới được tạo với ID: " + reservationId);
                 }
             }
-            
+
             memberDAO.fetchCache(entity.getMember().getPerson().getId());
             bookItemDAO.invalidateBookItemCache(entity.getBookItem().getBookBarcode());
             bookDAO.invalidateBookCache(entity.getBookItem().getIsbn());
@@ -162,14 +162,14 @@ public class BookReservationDAO implements GenericDAO<BookReservation> {
     public BookReservation findById(@NotNull Number keywords) throws SQLException {
         int reservationId = keywords.intValue();
         logger.debug(TAG, "Tìm kiếm đặt chỗ với ID: " + reservationId);
-        
+
         // Kiểm tra cache trước
         BookReservation cachedReservation = bookReservationCache.getIfPresent(reservationId);
         if (cachedReservation != null) {
             logger.info(TAG, "Tìm thấy đặt chỗ ID " + reservationId + " trong cache");
             return cachedReservation;
         }
-        
+
         try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(SELECT_BOOK_RESERVATION_BY_ID)) {
             preparedStatement.setInt(1, reservationId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -182,7 +182,7 @@ public class BookReservationDAO implements GenericDAO<BookReservation> {
                             resultSet.getString("due_date"),
                             BookReservationStatus.valueOf(resultSet.getString("BookReservationStatus"))
                     );
-                    
+
                     // Lưu vào cache
                     bookReservationCache.put(bookReservation.getId(), bookReservation);
                     logger.info(TAG, "Tìm thấy và cache đặt chỗ ID: " + reservationId);
@@ -205,7 +205,7 @@ public class BookReservationDAO implements GenericDAO<BookReservation> {
             logger.warning(TAG, "Tìm kiếm với tiêu chí rỗng, trả về danh sách trống");
             return new ArrayList<>();
         }
-        
+
         logger.debug(TAG, "Tìm kiếm đặt chỗ theo tiêu chí: " + criteria);
         StringBuilder findBookReservationByCriteria = new StringBuilder("SELECT DISTINCT (\"reservation_ID\") FROM \"BookReservation\" " +
                 "JOIN \"Members\" ON \"BookReservation\".\"member_ID\" = \"Members\".\"member_ID\" " +
@@ -315,37 +315,38 @@ public class BookReservationDAO implements GenericDAO<BookReservation> {
 
     /**
      * Tạo đặt trước sách theo ISBN thay vì quét mã vạch
-     * @param member Thành viên đặt sách
-     * @param isbn ISBN của sách cần đặt
+     *
+     * @param member          Thành viên đặt sách
+     * @param isbn            ISBN của sách cần đặt
      * @param reservationDate Ngày đặt sách
-     * @param dueDate Ngày hẹn trả
+     * @param dueDate         Ngày hẹn trả
      * @return BookReservation đã tạo hoặc null nếu không tìm thấy sách
      * @throws SQLException nếu có lỗi xảy ra khi thao tác database
      */
     public BookReservation createReservationByISBN(Member member, long isbn, String reservationDate, String dueDate) throws SQLException {
         logger.debug(TAG, "Tạo đặt sách mới theo ISBN: " + isbn + " cho thành viên ID: " + member.getPerson().getId());
-        
+
         // Tìm BookItem có sẵn đầu tiên với ISBN tương ứng
         BookItem bookItem = bookItemDAO.findFirstAvailableBookItemByISBN(isbn);
-        
+
         if (bookItem == null) {
             logger.warning(TAG, "Không tìm thấy bản sao nào có sẵn của truyện có ISBN: " + isbn);
             return null;
         }
-        
+
         // Tạo đối tượng BookReservation
         BookReservation reservation = new BookReservation(0, member, bookItem, reservationDate, dueDate, BookReservationStatus.WAITING);
-        
+
         // Lưu vào cơ sở dữ liệu
         insert(reservation);
-        
+
         // Cập nhật trạng thái của BookItem thành RESERVED
         bookItem.setBookItemStatus(BookItemStatus.RESERVED);
         bookItemDAO.updateEntity(bookItem);
-        
-        logger.info(TAG, "Đã tạo đặt truyện thành công với ID: " + reservation.getId() + 
-                   ", barcode: " + bookItem.getBookBarcode());
-        
+
+        logger.info(TAG, "Đã tạo đặt truyện thành công với ID: " + reservation.getId() +
+                ", barcode: " + bookItem.getBookBarcode());
+
         return reservation;
     }
 }

@@ -15,31 +15,43 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Sử dụng cơ chế Singleton để đảm bảo chỉ có một instance trong toàn ứng dụng.
  */
 public class RuntimeDebugUtil {
-    // Hằng số cho các level log
+    /**
+     * The constant LEVEL_DEBUG.
+     */
+// Hằng số cho các level log
     public static final int LEVEL_DEBUG = 0;
+    /**
+     * The constant LEVEL_INFO.
+     */
     public static final int LEVEL_INFO = 1;
+    /**
+     * The constant LEVEL_WARNING.
+     */
     public static final int LEVEL_WARNING = 2;
+    /**
+     * The constant LEVEL_ERROR.
+     */
     public static final int LEVEL_ERROR = 3;
-    
+
     // Hằng số cho đường dẫn file log
     private static final String LOG_DIRECTORY = "logs";
     private static final String DEFAULT_LOG_FILE = "application.log";
 
     // Instance singleton
     private static RuntimeDebugUtil instance;
-    
+
     // Level log hiện tại, mặc định là DEBUG (log tất cả)
     private int currentLogLevel = LEVEL_DEBUG;
-    
+
     // Đường dẫn đến file log
     private String logFilePath;
-    
+
     // Flag để kiểm soát việc ghi ra file
     private boolean logToFile = true;
-    
+
     // Flag để kiểm soát việc ghi ra terminal
     private boolean logToConsole = true;
-    
+
     // Format thời gian cho log
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
@@ -59,10 +71,10 @@ public class RuntimeDebugUtil {
             if (!logDir.exists()) {
                 logDir.mkdirs();
             }
-            
+
             // Khởi tạo đường dẫn file log
             logFilePath = LOG_DIRECTORY + File.separator + DEFAULT_LOG_FILE;
-            
+
             // Khởi tạo luồng xử lý log
             startLoggerThread();
         } catch (Exception e) {
@@ -94,7 +106,7 @@ public class RuntimeDebugUtil {
 
     /**
      * Lấy instance của RuntimeDebugUtil (Singleton pattern)
-     * 
+     *
      * @return Instance duy nhất của RuntimeDebugUtil
      */
     public static synchronized RuntimeDebugUtil getInstance() {
@@ -106,7 +118,7 @@ public class RuntimeDebugUtil {
 
     /**
      * Thiết lập level log tối thiểu sẽ được hiển thị
-     * 
+     *
      * @param level Level log (DEBUG, INFO, WARNING, ERROR)
      */
     public void setLogLevel(int level) {
@@ -119,7 +131,7 @@ public class RuntimeDebugUtil {
 
     /**
      * Bật/tắt ghi log ra file
-     * 
+     *
      * @param enable true để bật, false để tắt
      */
     public void enableFileLogging(boolean enable) {
@@ -128,7 +140,7 @@ public class RuntimeDebugUtil {
 
     /**
      * Bật/tắt hiển thị log trên terminal
-     * 
+     *
      * @param enable true để bật, false để tắt
      */
     public void enableConsoleLogging(boolean enable) {
@@ -137,7 +149,7 @@ public class RuntimeDebugUtil {
 
     /**
      * Đặt đường dẫn tùy chỉnh cho file log
-     * 
+     *
      * @param filePath Đường dẫn đến file log
      */
     public void setLogFile(String filePath) {
@@ -150,8 +162,8 @@ public class RuntimeDebugUtil {
 
     /**
      * Ghi log debug
-     * 
-     * @param tag Tag để phân loại log
+     *
+     * @param tag     Tag để phân loại log
      * @param message Nội dung log
      */
     public void debug(String tag, String message) {
@@ -160,8 +172,8 @@ public class RuntimeDebugUtil {
 
     /**
      * Ghi log thông tin
-     * 
-     * @param tag Tag để phân loại log
+     *
+     * @param tag     Tag để phân loại log
      * @param message Nội dung log
      */
     public void info(String tag, String message) {
@@ -170,8 +182,8 @@ public class RuntimeDebugUtil {
 
     /**
      * Ghi log cảnh báo
-     * 
-     * @param tag Tag để phân loại log
+     *
+     * @param tag     Tag để phân loại log
      * @param message Nội dung log
      */
     public void warning(String tag, String message) {
@@ -180,8 +192,8 @@ public class RuntimeDebugUtil {
 
     /**
      * Ghi log lỗi
-     * 
-     * @param tag Tag để phân loại log
+     *
+     * @param tag     Tag để phân loại log
      * @param message Nội dung log
      */
     public void error(String tag, String message) {
@@ -190,29 +202,29 @@ public class RuntimeDebugUtil {
 
     /**
      * Ghi log lỗi với exception
-     * 
-     * @param tag Tag để phân loại log
+     *
+     * @param tag     Tag để phân loại log
      * @param message Nội dung log
-     * @param e Exception cần ghi lại
+     * @param e       Exception cần ghi lại
      */
     public void error(String tag, String message, Throwable e) {
         StringBuilder sb = new StringBuilder(message);
         sb.append("\nStacktrace: ");
-        
+
         // Chuyển đổi stacktrace thành chuỗi
         StackTraceElement[] stackTrace = e.getStackTrace();
         for (StackTraceElement element : stackTrace) {
             sb.append("\n\tat ").append(element.toString());
         }
-        
+
         log(LEVEL_ERROR, tag, sb.toString());
     }
 
     /**
      * Phương thức chung để ghi log
-     * 
-     * @param level Level của log
-     * @param tag Tag để phân loại log
+     *
+     * @param level   Level của log
+     * @param tag     Tag để phân loại log
      * @param message Nội dung log
      */
     private void log(int level, String tag, String message) {
@@ -265,7 +277,7 @@ public class RuntimeDebugUtil {
 
     /**
      * Ghi log vào file
-     * 
+     *
      * @param logMessage Nội dung log cần ghi
      */
     private void writeLogToFile(String logMessage) {
@@ -284,7 +296,7 @@ public class RuntimeDebugUtil {
         // Dừng luồng xử lý log
         isRunning = false;
         loggerThread.interrupt();
-        
+
         // Xử lý các log còn lại trong queue
         while (!logQueue.isEmpty()) {
             try {
@@ -296,7 +308,7 @@ public class RuntimeDebugUtil {
             }
         }
     }
-    
+
     /**
      * Xóa file log hiện tại và tạo file mới
      */
@@ -312,7 +324,7 @@ public class RuntimeDebugUtil {
             error("RuntimeDebugUtil", "Không thể xóa file log", e);
         }
     }
-    
+
     /**
      * Tạo file log mới với timestamp
      */

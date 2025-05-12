@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * The type Bookmark controller.
+ */
 public class BookmarkController implements Initializable {
     @FXML
     private HBox suggestHBox;
@@ -66,6 +69,7 @@ public class BookmarkController implements Initializable {
 
     /**
      * thêm truyện đánh dấu.
+     *
      * @param book truyện
      * @throws IOException ném ngoại lệ
      */
@@ -80,23 +84,25 @@ public class BookmarkController implements Initializable {
 
     /**
      * xoá truyện đánh dấu.
+     *
      * @param book truyện
      * @throws IOException ném ngoại lệ
      */
     public void deleteBookmark(Book book) throws IOException {
         int index = findBookMark(book.getIsbn());
-        if(index!=-1) {
+        if (index != -1) {
             bookmarkHBox.getChildren().remove(index);
         }
     }
 
     /**
      * tìm truyện.
+     *
      * @param ISBN isbn
      * @return truyện cần tìm
      */
     private int findBookMark(long ISBN) {
-        for (int i = 0;i<bookMarkList.size();i++) {
+        for (int i = 0; i < bookMarkList.size(); i++) {
             if (bookMarkList.get(i).getBook().getIsbn() == ISBN) {
                 return i;
             }

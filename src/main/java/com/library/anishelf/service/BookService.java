@@ -20,6 +20,9 @@ import javafx.scene.image.Image;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * The type Book service.
+ */
 public class BookService {
     private static BookService instance = null;
     private List<Book> allAvailableBooks = new ArrayList<>();
@@ -46,6 +49,11 @@ public class BookService {
         }
     }
 
+    /**
+     * Gets most popular books.
+     *
+     * @return the most popular books
+     */
     public List<Book> getMostPopularBooks() {
         if (mostPopularBooks == null) {
             mostPopularBooks = (ArrayList<Book>) ((ArrayList<Book>) allAvailableBooks).clone();
@@ -57,6 +65,11 @@ public class BookService {
         return mostPopularBooks;
     }
 
+    /**
+     * Gets highest rated books.
+     *
+     * @return the highest rated books
+     */
     public List<Book> getHighestRatedBooks() {
         if (highestRatedBooks == null) {
             highestRatedBooks = (ArrayList<Book>) ((ArrayList<Book>) allAvailableBooks).clone();
@@ -65,6 +78,12 @@ public class BookService {
         return highestRatedBooks;
     }
 
+    /**
+     * Gets pending reserved books.
+     *
+     * @return the pending reserved books
+     * @throws SQLException the sql exception
+     */
     public List<BookReservation> getPendingReservedBooks() throws SQLException {
         if (pendingReservedBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
@@ -76,6 +95,12 @@ public class BookService {
         return pendingReservedBooks;
     }
 
+    /**
+     * Gets bookmarks.
+     *
+     * @return the bookmarks
+     * @throws SQLException the sql exception
+     */
     public List<BookMark> getBookmarks() throws SQLException {
         if (bookmarks == null) {
             bookmarks = BookMarkDAO.getInstance().getAllBookMarksForMember(NavigationBarController.getMember());
@@ -83,6 +108,12 @@ public class BookService {
         return bookmarks;
     }
 
+    /**
+     * Gets returned books.
+     *
+     * @return the returned books
+     * @throws SQLException the sql exception
+     */
     public List<BookIssue> getReturnedBooks() throws SQLException {
         if (returnedBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
@@ -93,6 +124,12 @@ public class BookService {
         return returnedBooks;
     }
 
+    /**
+     * Gets currently borrowed books.
+     *
+     * @return the currently borrowed books
+     * @throws SQLException the sql exception
+     */
     public List<BookIssue> getCurrentlyBorrowedBooks() throws SQLException {
         if (currentlyBorrowedBooks == null) {
             Map<String, Object> criteria = new HashMap<>();
@@ -103,10 +140,20 @@ public class BookService {
         return currentlyBorrowedBooks;
     }
 
+    /**
+     * Gets all available books.
+     *
+     * @return the all available books
+     */
     public List<Book> getAllAvailableBooks() {
         return allAvailableBooks;
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static BookService getInstance() {
         if (instance == null) {
             logger.debug(TAG, "Tạo mới instance BookService");
@@ -120,6 +167,12 @@ public class BookService {
         Collections.sort(books, comparator);
     }
 
+    /**
+     * Find book in all books book.
+     *
+     * @param book the book
+     * @return the book
+     */
     public Book findBookInAllBooks(Book book) {
         logger.debug(TAG, "Tìm truyện trong danh sách với ISBN: " + book.getIsbn());
         Book findBook;
@@ -137,6 +190,11 @@ public class BookService {
         return findBook;
     }
 
+    /**
+     * Gets reserved books count.
+     *
+     * @return the reserved books count
+     */
     public int getReservedBooksCount() {
         try {
             logger.debug(TAG, "Đếm số truyện đã đặt trước");
@@ -148,6 +206,11 @@ public class BookService {
         }
     }
 
+    /**
+     * Gets borrowing books count.
+     *
+     * @return the borrowing books count
+     */
     public int getBorrowingBooksCount() {
         try {
             logger.debug(TAG, "Đếm số truyện đang mượn");
@@ -159,6 +222,11 @@ public class BookService {
         }
     }
 
+    /**
+     * Add reserved book.
+     *
+     * @param bookReservation the book reservation
+     */
     public void addReservedBook(BookReservation bookReservation) {
         logger.debug(TAG, "Thêm truyện đặt trước: " + bookReservation.getBookItem().getTitle());
         try {
@@ -172,15 +240,20 @@ public class BookService {
         }
     }
 
+    /**
+     * Remove reserved book.
+     *
+     * @param bookReservation the book reservation
+     */
     public void removeReservedBook(BookReservation bookReservation) {
         logger.debug(TAG, "Xóa truyện đặt trước: " + bookReservation.getBookItem().getTitle());
         int index = findReservedBookIndex(bookReservation.getBookItem().getIsbn());
 
-        if(index != -1) {
+        if (index != -1) {
             pendingReservedBooks.remove(index);
             logger.debug(TAG, "Đã xóa truyện đặt trước thành công");
         } else {
-            logger.warning(TAG, "Không tìm thấy truyện đặt trước để xóa với ISBN: " + 
+            logger.warning(TAG, "Không tìm thấy truyện đặt trước để xóa với ISBN: " +
                     bookReservation.getBookItem().getIsbn());
         }
     }
@@ -191,7 +264,7 @@ public class BookService {
             if (pendingReservedBooks == null) {
                 pendingReservedBooks = BookService.getInstance().getPendingReservedBooks();
             }
-            
+
             for (int i = 0; i < pendingReservedBooks.size(); i++) {
                 if (pendingReservedBooks.get(i).getBookItem().getIsbn() == isbn) {
                     logger.debug(TAG, "Tìm thấy truyện đặt trước tại vị trí: " + i);
@@ -206,6 +279,11 @@ public class BookService {
         }
     }
 
+    /**
+     * Add marked book.
+     *
+     * @param bookMark the book mark
+     */
     public void addMarkedBook(BookMark bookMark) {
         logger.debug(TAG, "Thêm bookmark cho truyện: " + bookMark.getBook().getTitle());
         try {
@@ -225,6 +303,11 @@ public class BookService {
         }
     }
 
+    /**
+     * Remove marked book.
+     *
+     * @param bookMark the book mark
+     */
     public void removeMarkedBook(BookMark bookMark) {
         logger.debug(TAG, "Xóa bookmark cho truyện: " + bookMark.getBook().getTitle());
         try {
@@ -264,6 +347,12 @@ public class BookService {
         }
     }
 
+    /**
+     * Create load image task task.
+     *
+     * @param book the book
+     * @return the task
+     */
     public Task<Image> createLoadImageTask(Book book) {
         return new Task<>() {
             @Override
@@ -281,11 +370,11 @@ public class BookService {
                 try {
                     logger.debug(TAG, "Tải hình ảnh từ đường dẫn: " + imagePath);
                     Image image = new Image(imagePath, true);
-                    
+
                     if (image.isError()) {
                         throw new Exception("Hình ảnh lỗi: " + image.getException().getMessage());
                     }
-                    
+
                     BOOK_IMAGE_CACHE.put(imagePath, image); // Lưu vào cache
                     logger.debug(TAG, "Đã tải và lưu hình ảnh vào cache thành công");
                     return image;
@@ -302,58 +391,67 @@ public class BookService {
         };
     }
 
+    /**
+     * Clear cache.
+     */
     public void clearCache() {
         logger.debug(TAG, "Bắt đầu xóa toàn bộ cache BookService");
         instance = null;
-        
+
         // Xóa cache hình ảnh
         logger.debug(TAG, "Xóa cache hình ảnh, kích thước cache trước khi xóa: " + BOOK_IMAGE_CACHE.estimatedSize());
         BOOK_IMAGE_CACHE.invalidateAll();
-        
+
         // Xóa các danh truyện cache
         logger.debug(TAG, "Xóa danh sách truyện, số lượng trước khi xóa: " + allAvailableBooks.size());
         allAvailableBooks.clear();
-        
+
         if (mostPopularBooks != null) {
             logger.debug(TAG, "Xóa danh sách truyện phổ biến, số lượng: " + mostPopularBooks.size());
             mostPopularBooks.clear();
         }
-        
+
         if (highestRatedBooks != null) {
             logger.debug(TAG, "Xóa danh sách truyện đánh giá cao, số lượng: " + highestRatedBooks.size());
             highestRatedBooks.clear();
         }
-        
+
         if (pendingReservedBooks != null) {
             logger.debug(TAG, "Xóa danh sách truyện đặt trước, số lượng: " + pendingReservedBooks.size());
             pendingReservedBooks.clear();
         }
-        
+
         if (bookmarks != null) {
             logger.debug(TAG, "Xóa danh sách bookmark, số lượng: " + bookmarks.size());
             bookmarks.clear();
         }
-        
+
         if (returnedBooks != null) {
             logger.debug(TAG, "Xóa danh sách truyện đã trả, số lượng: " + returnedBooks.size());
             returnedBooks.clear();
         }
-        
+
         if (currentlyBorrowedBooks != null) {
             logger.debug(TAG, "Xóa danh sách truyện đang mượn, số lượng: " + currentlyBorrowedBooks.size());
             currentlyBorrowedBooks.clear();
         }
-        
+
         logger.info(TAG, "Đã xóa toàn bộ cache BookService thành công");
     }
 
+    /**
+     * Is book marked boolean.
+     *
+     * @param ISBN the isbn
+     * @return the boolean
+     */
     public boolean isBookMarked(Long ISBN) {
         logger.debug(TAG, "Kiểm tra xem truyện có ISBN: " + ISBN + " đã được bookmark chưa");
         try {
             if (bookmarks == null) {
                 getBookmarks();
             }
-            
+
             // Tối ưu bằng cách sử dụng findMarkedBookIndex thay vì duyệt lại danh sách
             boolean result = findMarkedBookIndex(ISBN) != -1;
             logger.debug(TAG, "Kết quả kiểm tra bookmark: " + (result ? "Đã bookmark" : "Chưa bookmark"));

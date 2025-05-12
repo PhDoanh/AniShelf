@@ -9,10 +9,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * The type User home page controller.
+ */
 public class UserHomePageController implements Initializable {
     @FXML
     private HBox popularHBox;
@@ -41,7 +45,7 @@ public class UserHomePageController implements Initializable {
         // Đảm bảo ScrollPane có kích thước phù hợp
         popularHBox.setSpacing(15);
         popularHBox.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
-        
+
         // Thêm truyện phổ biến vào HBox
         int popularCount = Math.min(popularBooks.size(), MAX_DISPLAYED_BOOKS);
         for (int i = 0; i < popularCount; i++) {
@@ -69,7 +73,7 @@ public class UserHomePageController implements Initializable {
         // Đảm bảo ScrollPane có kích thước phù hợp
         highRankHBox.setSpacing(15);
         highRankHBox.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
-        
+
         // Thêm truyện xếp hạng cao vào HBox
         int highRankCount = Math.min(highRankBooks.size(), MAX_DISPLAYED_BOOKS);
         for (int i = 0; i < highRankCount; i++) {
@@ -79,11 +83,11 @@ public class UserHomePageController implements Initializable {
                 VBox cardBox = fxmlLoader.load();
                 VerticalTypeBookCardController cardController = fxmlLoader.getController();
                 cardController.setData(highRankBooks.get(i));
-                
+
                 // Set minimum width to ensure proper layout
                 cardBox.setMinWidth(123);
                 cardBox.setPrefWidth(123);
-                
+
                 highRankHBox.getChildren().add(cardBox);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -93,6 +97,7 @@ public class UserHomePageController implements Initializable {
 
     /**
      * sang MoreBook
+     *
      * @param event khi án
      */
     public void onMoreButtonAction(ActionEvent event) {

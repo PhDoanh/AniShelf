@@ -33,6 +33,8 @@ public class AvatarDropdownMenuController {
 
     /**
      * Thiết lập tham chiếu đến NavigationBarController
+     *
+     * @param controller the controller
      */
     public void setUserMenuController(NavigationBarController controller) {
         this.navigationBarController = controller;
@@ -40,6 +42,8 @@ public class AvatarDropdownMenuController {
 
     /**
      * Xử lý sự kiện khi nhấp vào nút Hồ sơ cá nhân
+     *
+     * @param event the event
      */
     @FXML
     public void onPersonalInfoButtonAction(ActionEvent event) {
@@ -54,6 +58,8 @@ public class AvatarDropdownMenuController {
 
     /**
      * Xử lý sự kiện khi nhấp vào nút Lịch sử mượn/đặt
+     *
+     * @param event the event
      */
     @FXML
     public void onHistoryButtonAction(ActionEvent event) {
@@ -68,6 +74,8 @@ public class AvatarDropdownMenuController {
 
     /**
      * Xử lý sự kiện khi nhấp vào nút Cài đặt
+     *
+     * @param actionEvent the action event
      */
     @FXML
     public void onSettingButtonAction(ActionEvent actionEvent) {
@@ -82,6 +90,8 @@ public class AvatarDropdownMenuController {
 
     /**
      * Xử lý sự kiện khi nhấp vào nút Đăng xuất
+     *
+     * @param event the event
      */
     @FXML
     public void onLogoutMenuButtonAction(ActionEvent event) {

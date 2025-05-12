@@ -7,6 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * The type Book page controller.
+ */
 public class BookPageController extends BasePageController<Book, BookInfoController, BookTableController> {
 
     private static final String TABLE_FXML = "/view/BookTable.fxml";
@@ -52,7 +55,7 @@ public class BookPageController extends BasePageController<Book, BookInfoControl
     /**
      * Khi mà bấm quay lại (page1 -> page2) thì sẽ load lại Data của bảng Table và các Summary Total
      *
-     * @param event
+     * @param event the event
      */
     @FXML
     void onReturnButton(ActionEvent event) {
@@ -67,12 +70,13 @@ public class BookPageController extends BasePageController<Book, BookInfoControl
     public void alterPage() {
         detailPage.setVisible(!detailPage.isVisible());
         tablePage.setVisible(!tablePage.isVisible());
-        if(detailPage.isVisible()) {
+        if (detailPage.isVisible()) {
             page1 = false;
         } else {
             page1 = true;
         }
     }
+
     @Override
     public void startPage() {
         page1 = true;

@@ -33,6 +33,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The type Reserved book info controller.
+ */
 public class ReservedBookInfoController extends BaseDetailController<BookReservation> {
 
     @FXML
@@ -118,11 +121,14 @@ public class ReservedBookInfoController extends BaseDetailController<BookReserva
     private boolean isSettingMember = false;
     private boolean isSettingBook = false;
 
+    /**
+     * The constant executor.
+     */
     protected static final ExecutorService executor = Executors.newFixedThreadPool(4);
 
     @Override
     protected void loadItemDetails() {
-        if(!getTitlePageStack().peek().equals(item.getId()+"")) {
+        if (!getTitlePageStack().peek().equals(item.getId() + "")) {
             getTitlePageStack().push(item.getId() + "");
         }
         member = item.getMember();
@@ -217,11 +223,15 @@ public class ReservedBookInfoController extends BaseDetailController<BookReserva
         }
         return true;
     }
+
     @Override
     public String getType() {
         return "đơn đặt truyện";
     }
 
+    /**
+     * Initialize.
+     */
     @FXML
     public void initialize() {
         borrowStatus.getItems().addAll(BookReservationStatus.values());
@@ -343,7 +353,7 @@ public class ReservedBookInfoController extends BaseDetailController<BookReserva
                         suggestionTable.updateSuggestionPanePosition(barCodeText);
                     } else {
                         suggestionPane.setLayoutX(50);
-                        suggestionPane.setLayoutY(50 );
+                        suggestionPane.setLayoutY(50);
                         suggestionPane.setVisible(false);
                     }
                 }
@@ -355,21 +365,41 @@ public class ReservedBookInfoController extends BaseDetailController<BookReserva
     }
 
 
+    /**
+     * O save button action.
+     *
+     * @param event the event
+     */
     @FXML
     void oSaveButtonAction(ActionEvent event) {
         saveChanges();
     }
 
+    /**
+     * On add button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onAddButtonAction(ActionEvent event) {
         saveChanges();
     }
 
+    /**
+     * On delete button.
+     *
+     * @param event the event
+     */
     @FXML
     void onDeleteButton(ActionEvent event) {
         deleteChanges();
     }
 
+    /**
+     * On edit button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onEditButtonAction(ActionEvent event) {
         getTitlePageStack().push("Edit");
@@ -398,6 +428,11 @@ public class ReservedBookInfoController extends BaseDetailController<BookReserva
 
     }
 
+    /**
+     * Sets member.
+     *
+     * @param member the member
+     */
     public void setMember(Member member) {
         this.member = member;
         memberNameText.setText(member.getPerson().getLastName() + " " + member.getPerson().getFirstName());
@@ -435,7 +470,7 @@ public class ReservedBookInfoController extends BaseDetailController<BookReserva
             protected Image call() throws Exception {
                 try {
                     Image image = CacheManagerUtil.getImageFromCache(bookItem.getImagePath());
-                    if(image != null) {
+                    if (image != null) {
                         System.out.println("tai anh trong cache");
                         return image;
                     } else {

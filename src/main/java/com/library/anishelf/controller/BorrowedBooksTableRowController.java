@@ -10,6 +10,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * The type Borrowed books table row controller.
+ */
 public class BorrowedBooksTableRowController extends BaseRowController<BookIssue, BorrowedBookPageController> {
 
     @FXML
@@ -60,7 +63,7 @@ public class BorrowedBooksTableRowController extends BaseRowController<BookIssue
             borrowDateLabel.setText(""); // Hoặc giá trị mặc định khác
         }
         statusLabel.setText(item.getStatus().toString());
-        if(statusLabel.getText().equals("LOST")) {
+        if (statusLabel.getText().equals("LOST")) {
             statusLabel.setStyle("-fx-text-fill: red;");
         } else if (statusLabel.getText().equals("BORROWED")) {
             statusLabel.setStyle("-fx-text-fill: blue;");

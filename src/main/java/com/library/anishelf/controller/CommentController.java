@@ -12,6 +12,9 @@ import javafx.scene.text.Text;
 
 import java.io.File;
 
+/**
+ * The type Comment controller.
+ */
 public class CommentController {
 
     private Comment comment;
@@ -26,15 +29,26 @@ public class CommentController {
 
     @FXML
     private Circle avatarImage;
+    /**
+     * The Comment box.
+     */
     @FXML
     VBox commentBox;
 
-    private String [] colors = {"FFFFFF"};
+    private String[] colors = {"FFFFFF"};
 
+    /**
+     * Sets data.
+     */
     public void setData() {
         nameLabel.setText("book name");
     }
 
+    /**
+     * Sets data.
+     *
+     * @param comment the comment
+     */
     public void setData(Comment comment) {
         this.comment = comment;
         Image image = new Image(new File(comment.getMember().getPerson().getImagePath()).toURI().toString());

@@ -3,23 +3,44 @@ package com.library.anishelf.controller;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 
+/**
+ * The type Base row controller.
+ *
+ * @param <T> the type parameter
+ * @param <P> the type parameter
+ */
 public abstract class BaseRowController<T, P extends BasePageController> extends BasicController {
+    /**
+     * The Main row hbox.
+     */
     @FXML
     protected HBox mainRowHbox;
+    /**
+     * The Item.
+     */
     protected T item;
+    /**
+     * The Main controller.
+     */
     protected P mainController;
 
+    /**
+     * The constant selectedRow.
+     */
     protected static BaseRowController selectedRow = null;
 
     /**
      * Set mainController (PageController).
      *
-     * @param controller
+     * @param controller the controller
      */
     public void setMainController(P controller) {
         this.mainController = controller;
     }
 
+    /**
+     * Initialize.
+     */
     @FXML
     public void initialize() {
         setupRowClickHandler();
@@ -36,6 +57,9 @@ public abstract class BaseRowController<T, P extends BasePageController> extends
         });
     }
 
+    /**
+     * Handle row click.
+     */
     protected void handleRowClick() {
         updateRowSelection();
         loadDetailView();
@@ -71,7 +95,7 @@ public abstract class BaseRowController<T, P extends BasePageController> extends
      * Set item cho hàng.
      * Gọi updateRowDisplay để cập nhật các trường text trong row.
      *
-     * @param item
+     * @param item the item
      */
     public void setItem(T item) {
         this.item = item;

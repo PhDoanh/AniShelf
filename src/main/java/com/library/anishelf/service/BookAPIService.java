@@ -42,20 +42,20 @@ public class BookAPIService {
     private static final Cache<String, List<Book>> bookCache = CacheManagerUtil.buildCache(20);
     private static final Random random = new Random(); // Dùng để tạo ID giống ISBN
     private static final RuntimeDebugUtil logger = RuntimeDebugUtil.getInstance();
-    
+
     // Tạo ExecutorService để quản lý các tác vụ bất đồng bộ
     private static final ExecutorService executorService = Executors.newFixedThreadPool(5);
-    
+
     // Danh sách các từ khoá cần lọc nội dung người lớn
     private static final Set<String> ADULT_CONTENT_KEYWORDS = new HashSet<>(Arrays.asList(
-            "hentai", "ecchi", "adult", "mature", "erotic", "erotica", "sex", "sexual", 
+            "hentai", "ecchi", "adult", "mature", "erotic", "erotica", "sex", "sexual",
             "nsfw", "nude", "nudity", "pornography", "porn", "18+", "explicit"
     ));
 
     /**
      * Thực thi truy vấn GraphQL tới AniList API bất đồng bộ.
-     * 
-     * @param query Chuỗi truy vấn GraphQL 
+     *
+     * @param query     Chuỗi truy vấn GraphQL
      * @param variables Các biến cho truy vấn GraphQL
      * @return CompletableFuture chứa kết quả dạng JSONObject
      */
@@ -69,11 +69,11 @@ public class BookAPIService {
             }
         }, executorService);
     }
-    
+
     /**
      * Thực thi truy vấn GraphQL tới AniList API.
-     * 
-     * @param query Chuỗi truy vấn GraphQL 
+     *
+     * @param query     Chuỗi truy vấn GraphQL
      * @param variables Các biến cho truy vấn GraphQL
      * @return Kết quả dạng JSONObject
      * @throws IOException Nếu xảy ra lỗi I/O
@@ -81,25 +81,25 @@ public class BookAPIService {
     private static JSONObject executeGraphQLQuery(String query, JSONObject variables) throws IOException {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(ANILIST_API_URL);
-            
+
             // Tạo thân yêu cầu
             JSONObject requestBody = new JSONObject();
             requestBody.put("query", query);
             if (variables != null) {
                 requestBody.put("variables", variables);
             }
-            
+
             // Thiết lập header và entity
             httpPost.setHeader("Content-Type", "application/json");
             httpPost.setHeader("Accept", "application/json");
             httpPost.setEntity(new StringEntity(requestBody.toString(), StandardCharsets.UTF_8));
-            
+
             logger.debug("BookAPIService", "Gửi yêu cầu đến AniList API: " + variables);
-            
+
             // Thực thi yêu cầu
             try (CloseableHttpResponse response = client.execute(httpPost)) {
                 HttpEntity entity = response.getEntity();
-                
+
                 if (entity != null) {
                     String responseString = EntityUtils.toString(entity);
                     return new JSONObject(responseString);
@@ -111,8 +111,8 @@ public class BookAPIService {
 
     /**
      * Tìm kiếm manga dựa theo từ khoá bất đồng bộ.
-     * 
-     * @param title Từ khoá tìm kiếm
+     *
+     * @param title    Từ khoá tìm kiếm
      * @param callback Callback xử lý kết quả khi hoàn thành
      * @return CompletableFuture chứa danh sách truyện tranh phù hợp với từ khoá
      */
@@ -124,7 +124,7 @@ public class BookAPIService {
             }
             return CompletableFuture.completedFuture(emptyList);
         }
-        
+
         // Kiểm tra cache trước
         List<Book> cachedBooks = bookCache.getIfPresent(title);
         if (cachedBooks != null) {
@@ -134,66 +134,66 @@ public class BookAPIService {
             }
             return CompletableFuture.completedFuture(cachedBooks);
         }
-        
+
         // Định nghĩa truy vấn GraphQL để tìm kiếm manga theo tiêu đề
         String query = "query ($search: String) {\n" +
-                       "  Page(page: 1, perPage: 20) {\n" +
-                       "    media(search: $search, type: MANGA, sort: POPULARITY_DESC) {\n" +
-                       "      id\n" +
-                       "      title {\n" +
-                       "        romaji\n" +
-                       "        english\n" +
-                       "        native\n" +
-                       "      }\n" +
-                       "      description\n" +
-                       "      coverImage {\n" +
-                       "        large\n" +
-                       "        medium\n" +
-                       "      }\n" +
-                       "      staff {\n" +
-                       "        edges {\n" +
-                       "          node {\n" +
-                       "            name {\n" +
-                       "              full\n" +
-                       "            }\n" +
-                       "          }\n" +
-                       "          role\n" +
-                       "        }\n" +
-                       "      }\n" +
-                       "      genres\n" +
-                       "      siteUrl\n" +
-                       "      isAdult\n" +
-                       "    }\n" +
-                       "  }\n" +
-                       "}";
-        
+                "  Page(page: 1, perPage: 20) {\n" +
+                "    media(search: $search, type: MANGA, sort: POPULARITY_DESC) {\n" +
+                "      id\n" +
+                "      title {\n" +
+                "        romaji\n" +
+                "        english\n" +
+                "        native\n" +
+                "      }\n" +
+                "      description\n" +
+                "      coverImage {\n" +
+                "        large\n" +
+                "        medium\n" +
+                "      }\n" +
+                "      staff {\n" +
+                "        edges {\n" +
+                "          node {\n" +
+                "            name {\n" +
+                "              full\n" +
+                "            }\n" +
+                "          }\n" +
+                "          role\n" +
+                "        }\n" +
+                "      }\n" +
+                "      genres\n" +
+                "      siteUrl\n" +
+                "      isAdult\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+
         // Thiết lập biến truy vấn
         JSONObject variables = new JSONObject();
         variables.put("search", title);
-        
+
         // Thực thi truy vấn bất đồng bộ
         return executeGraphQLQueryAsync(query, variables).thenApply(response -> {
             List<Book> books = new ArrayList<>();
-            
+
             if (response != null && !response.has("errors")) {
                 try {
                     JSONArray media = response.getJSONObject("data")
-                                             .getJSONObject("Page")
-                                             .getJSONArray("media");
-                    
+                            .getJSONObject("Page")
+                            .getJSONArray("media");
+
                     logger.info("BookAPIService", "Tìm thấy " + media.length() + " kết quả từ AniList cho từ khóa: " + title);
-                    
+
                     for (int i = 0; i < media.length() && books.size() < MAX_BOOK; i++) {
                         JSONObject manga = media.getJSONObject(i);
-                        
+
                         // Kiểm tra nội dung người lớn
                         if (containsAdultContent(manga)) {
-                            logger.debug("BookAPIService", "Bỏ qua nội dung người lớn: " + 
-                                    manga.getJSONObject("title").optString("english", 
-                                    manga.getJSONObject("title").optString("romaji")));
+                            logger.debug("BookAPIService", "Bỏ qua nội dung người lớn: " +
+                                    manga.getJSONObject("title").optString("english",
+                                            manga.getJSONObject("title").optString("romaji")));
                             continue;
                         }
-                        
+
                         // Chuyển đổi manga từ AniList thành đối tượng Book
                         Book book = mapMangaToBook(manga);
                         if (book != null) {
@@ -204,18 +204,18 @@ public class BookAPIService {
                     logger.error("BookAPIService", "Lỗi khi xử lý dữ liệu: " + e.getMessage(), e);
                 }
             }
-            
+
             // Lưu kết quả vào cache
             if (!books.isEmpty()) {
                 bookCache.put(title, books);
                 logger.info("BookAPIService", "Đã lưu " + books.size() + " truyện vào cache cho từ khóa: " + title);
             }
-            
+
             // Gọi callback nếu được cung cấp
             if (callback != null) {
                 callback.accept(books);
             }
-            
+
             return books;
         }).exceptionally(ex -> {
             logger.error("BookAPIService", "Lỗi khi tìm kiếm truyện bất đồng bộ: " + ex.getMessage(), ex);
@@ -229,7 +229,7 @@ public class BookAPIService {
 
     /**
      * Tìm kiếm manga dựa theo từ khoá (Phương thức đồng bộ cho tương thích ngược).
-     * 
+     *
      * @param title Từ khoá tìm kiếm
      * @return Danh sách truyện tranh phù hợp với từ khoá
      */
@@ -245,8 +245,8 @@ public class BookAPIService {
 
     /**
      * Tìm kiếm manga theo ID (được dùng như thay thế ISBN) bất đồng bộ.
-     * 
-     * @param id ID AniList hoặc chuỗi giống ISBN
+     *
+     * @param id       ID AniList hoặc chuỗi giống ISBN
      * @param callback Callback xử lý kết quả khi hoàn thành
      * @return CompletableFuture chứa đối tượng Book nếu tìm thấy, null nếu không
      */
@@ -257,7 +257,7 @@ public class BookAPIService {
             }
             return CompletableFuture.completedFuture(null);
         }
-        
+
         // Kiểm tra cache trước
         List<Book> cachedBooks = bookCache.getIfPresent(id);
         if (cachedBooks != null && !cachedBooks.isEmpty()) {
@@ -268,7 +268,7 @@ public class BookAPIService {
             }
             return CompletableFuture.completedFuture(result);
         }
-        
+
         int mediaId;
         try {
             mediaId = Integer.parseInt(id);
@@ -283,58 +283,58 @@ public class BookAPIService {
                 return result;
             });
         }
-        
+
         // Định nghĩa truy vấn GraphQL để lấy manga theo ID
         String query = "query ($id: Int) {\n" +
-                       "  Media(id: $id, type: MANGA) {\n" +
-                       "    id\n" +
-                       "    title {\n" +
-                       "      romaji\n" +
-                       "      english\n" +
-                       "      native\n" +
-                       "    }\n" +
-                       "    description\n" +
-                       "    coverImage {\n" +
-                       "      large\n" +
-                       "      medium\n" +
-                       "    }\n" +
-                       "    staff {\n" +
-                       "      edges {\n" +
-                       "        node {\n" +
-                       "          name {\n" +
-                       "            full\n" +
-                       "          }\n" +
-                       "        }\n" +
-                       "        role\n" +
-                       "      }\n" +
-                       "    }\n" +
-                       "    genres\n" +
-                       "    siteUrl\n" +
-                       "    isAdult\n" +
-                       "  }\n" +
-                       "}";
-        
+                "  Media(id: $id, type: MANGA) {\n" +
+                "    id\n" +
+                "    title {\n" +
+                "      romaji\n" +
+                "      english\n" +
+                "      native\n" +
+                "    }\n" +
+                "    description\n" +
+                "    coverImage {\n" +
+                "      large\n" +
+                "      medium\n" +
+                "    }\n" +
+                "    staff {\n" +
+                "      edges {\n" +
+                "        node {\n" +
+                "          name {\n" +
+                "            full\n" +
+                "          }\n" +
+                "        }\n" +
+                "        role\n" +
+                "      }\n" +
+                "    }\n" +
+                "    genres\n" +
+                "    siteUrl\n" +
+                "    isAdult\n" +
+                "  }\n" +
+                "}";
+
         // Thiết lập biến truy vấn
         JSONObject variables = new JSONObject();
         variables.put("id", mediaId);
-        
+
         // Thực thi truy vấn bất đồng bộ
         return executeGraphQLQueryAsync(query, variables).thenApply(response -> {
             Book book = null;
-            
+
             if (response != null && !response.has("errors") && response.getJSONObject("data").has("Media")) {
                 try {
                     JSONObject manga = response.getJSONObject("data").getJSONObject("Media");
-                    
+
                     // Kiểm tra nội dung người lớn
                     if (containsAdultContent(manga)) {
                         logger.warning("BookAPIService", "Bỏ qua nội dung người lớn cho ID: " + id);
                         return null;
                     }
-                    
+
                     // Chuyển đổi manga từ AniList thành đối tượng Book
                     book = mapMangaToBook(manga);
-                    
+
                     // Lưu kết quả vào cache
                     if (book != null) {
                         List<Book> cacheList = new ArrayList<>();
@@ -346,12 +346,12 @@ public class BookAPIService {
                     logger.error("BookAPIService", "Lỗi khi xử lý kết quả: " + e.getMessage(), e);
                 }
             }
-            
+
             // Gọi callback nếu được cung cấp
             if (callback != null) {
                 callback.accept(book);
             }
-            
+
             return book;
         }).exceptionally(ex -> {
             logger.error("BookAPIService", "Lỗi khi tìm kiếm truyện theo ID: " + ex.getMessage(), ex);
@@ -364,7 +364,7 @@ public class BookAPIService {
 
     /**
      * Tìm kiếm manga theo ID (được dùng như thay thế ISBN) - Phương thức đồng bộ cho tương thích ngược.
-     * 
+     *
      * @param id ID AniList hoặc chuỗi giống ISBN
      * @return Đối tượng Book nếu tìm thấy, null nếu không
      */
@@ -379,9 +379,10 @@ public class BookAPIService {
     }
 
     // Phần còn lại các phương thức helper không thay đổi
+
     /**
      * Kiểm tra xem manga có chứa nội dung người lớn hay không.
-     * 
+     *
      * @param manga JSONObject chứa dữ liệu manga từ AniList
      * @return true nếu chứa nội dung người lớn, false nếu không
      */
@@ -390,7 +391,7 @@ public class BookAPIService {
         if (manga.has("isAdult") && manga.getBoolean("isAdult")) {
             return true;
         }
-        
+
         // Kiểm tra thể loại (genres)
         if (manga.has("genres") && !manga.isNull("genres")) {
             JSONArray genres = manga.getJSONArray("genres");
@@ -401,7 +402,7 @@ public class BookAPIService {
                 }
             }
         }
-        
+
         // Kiểm tra mô tả
         if (manga.has("description") && !manga.isNull("description")) {
             String description = manga.getString("description").toLowerCase();
@@ -411,12 +412,12 @@ public class BookAPIService {
                 }
             }
         }
-        
+
         // Kiểm tra tiêu đề
         if (manga.has("title") && !manga.isNull("title")) {
             JSONObject title = manga.getJSONObject("title");
             String[] titleFields = {"english", "romaji", "native"};
-            
+
             for (String field : titleFields) {
                 if (title.has(field) && !title.isNull(field)) {
                     String titleText = title.getString(field).toLowerCase();
@@ -428,23 +429,23 @@ public class BookAPIService {
                 }
             }
         }
-        
+
         return false;
     }
 
     /**
      * Chuyển đổi dữ liệu manga từ AniList sang đối tượng Book.
-     * 
+     *
      * @param manga JSONObject chứa dữ liệu manga từ AniList
      * @return Đối tượng Book được điền dữ liệu từ manga
      */
     private static Book mapMangaToBook(JSONObject manga) {
         try {
             JSONObject title = manga.getJSONObject("title");
-            
+
             // Tạo ID giống ISBN từ ID AniList
             long isbn = generateIsbnFromId(manga.getLong("id"));
-            
+
             // Lấy tiêu đề tốt nhất có thể
             String bookTitle = title.optString("english");
             if (bookTitle == null || bookTitle.isEmpty() || bookTitle.equals("null")) {
@@ -453,21 +454,21 @@ public class BookAPIService {
                     bookTitle = title.optString("native", "Tiêu đề không xác định");
                 }
             }
-            
+
             // Lấy mô tả (xoá các thẻ HTML)
             String description = manga.optString("description", "Không có mô tả.");
             description = description.replaceAll("<br>", "\n").replaceAll("<.*?>", "");
-            
+
             // Kiểm tra và lọc nội dung không phù hợp trong mô tả
             description = filterAdultContent(description);
-            
+
             // Lấy ảnh bìa
             String imagePath = Book.DEFAULT_IMAGE_PATH;
             if (manga.has("coverImage") && !manga.isNull("coverImage")) {
                 JSONObject coverImage = manga.getJSONObject("coverImage");
                 imagePath = coverImage.optString("large", coverImage.optString("medium", Book.DEFAULT_IMAGE_PATH));
             }
-            
+
             // Lấy tác giả (thành viên trong nhóm "Story" hoặc "Art")
             List<Author> authors = new ArrayList<>();
             if (manga.has("staff") && !manga.isNull("staff")) {
@@ -476,9 +477,9 @@ public class BookAPIService {
                     for (int i = 0; i < staffEdges.length(); i++) {
                         JSONObject edge = staffEdges.getJSONObject(i);
                         String role = edge.optString("role", "").toLowerCase();
-                        
-                        if (role.contains("story") || role.contains("art") || role.contains("author") || 
-                            role.contains("illustrat") || role.contains("original")) {
+
+                        if (role.contains("story") || role.contains("art") || role.contains("author") ||
+                                role.contains("illustrat") || role.contains("original")) {
                             JSONObject node = edge.getJSONObject("node");
                             String name = node.getJSONObject("name").optString("full", "Không xác định");
                             authors.add(new Author(name));
@@ -486,12 +487,12 @@ public class BookAPIService {
                     }
                 }
             }
-            
+
             // Nếu không tìm thấy tác giả cụ thể, thêm giá trị mặc định
             if (authors.isEmpty()) {
                 authors.add(new Author("Tác giả không xác định"));
             }
-            
+
             // Lấy thể loại như các danh mục
             List<Category> categories = new ArrayList<>();
             JSONArray genres = manga.optJSONArray("genres");
@@ -504,26 +505,26 @@ public class BookAPIService {
                     }
                 }
             }
-            
+
             // Tạo đối tượng Book
             Book book = new Book(isbn, bookTitle, imagePath, description, "Khu vực Manga", authors, categories);
-            
+
             // Đặt URL xem trước tới trang AniList
             String siteUrl = manga.optString("siteUrl", "");
             book.setPreview(siteUrl);
-            
+
             logger.debug("BookAPIService", "Đã chuyển đổi manga thành truyện: " + bookTitle);
             return book;
-            
+
         } catch (Exception e) {
             logger.error("BookAPIService", "Lỗi khi chuyển đội manga thành truyện: " + e.getMessage(), e);
             return null;
         }
     }
-    
+
     /**
      * Lọc nội dung người lớn khỏi mô tả
-     * 
+     *
      * @param description Mô tả gốc
      * @return Mô tả đã lọc
      */
@@ -531,14 +532,14 @@ public class BookAPIService {
         if (description == null) {
             return "Không có mô tả.";
         }
-        
+
         String lowercaseDesc = description.toLowerCase();
         for (String keyword : ADULT_CONTENT_KEYWORDS) {
             if (lowercaseDesc.contains(keyword)) {
                 // Thay thế đoạn văn chứa từ khóa bằng dấu [...]
                 String[] sentences = description.split("\\. ");
                 StringBuilder filtered = new StringBuilder();
-                
+
                 for (String sentence : sentences) {
                     if (!sentence.toLowerCase().contains(keyword)) {
                         filtered.append(sentence).append(". ");
@@ -546,28 +547,28 @@ public class BookAPIService {
                         filtered.append("[...] ");
                     }
                 }
-                
+
                 return filtered.toString().trim();
             }
         }
-        
+
         return description;
     }
-    
+
     /**
      * Tạo ID giống ISBN từ ID AniList.
      * Đảm bảo tương thích với mã hiện tại yêu cầu số ISBN.
-     * 
+     *
      * @param id ID AniList
      * @return Số 13 chữ số giống ISBN
      */
     private static long generateIsbnFromId(long id) {
         // Sử dụng ID AniList làm seed để tạo ngẫu nhiên nhưng xác định ISBN
         Random seededRandom = new Random(id);
-        
+
         // ISBN-13 bắt đầu bằng 978 hoặc 979
         StringBuilder isbnBuilder = new StringBuilder("978");
-        
+
         // Thêm 9 chữ số ngẫu nhiên (giữ ID gốc trong chuỗi khi có thể)
         String idStr = String.valueOf(id);
         if (idStr.length() <= 9) {
@@ -580,7 +581,7 @@ public class BookAPIService {
             // Nếu ID dài hơn 9 chữ số, sử dụng 9 ký tự đầu tiên
             isbnBuilder.append(idStr.substring(0, 9));
         }
-        
+
         // Tính toán và thêm chữ số kiểm tra
         String isbn12 = isbnBuilder.toString();
         int sum = 0;
@@ -590,7 +591,7 @@ public class BookAPIService {
         }
         int checkDigit = (10 - (sum % 10)) % 10;
         isbnBuilder.append(checkDigit);
-        
+
         return Long.parseLong(isbnBuilder.toString());
     }
 
@@ -605,6 +606,8 @@ public class BookAPIService {
 
     /**
      * Phương thức kiểm tra cho service.
+     *
+     * @param args the input arguments
      */
     public static void main(String[] args) {
         // Thử tìm kiếm bất đồng bộ
@@ -622,21 +625,21 @@ public class BookAPIService {
                 }
             }
         });
-        
+
         // Thử tìm theo ID bất đồng bộ
         searchBookByISBNAsync("21", book -> {  // ID của One Piece trong AniList
             if (book != null) {
                 System.out.println("Tìm thấy bằng ID: " + book.getTitle());
             }
         });
-        
+
         // Đợi hoàn thành để xem kết quả trong phương thức main
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        
+
         // Đóng executor service khi test xong
         shutdown();
     }

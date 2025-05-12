@@ -20,7 +20,7 @@ public class ThemeManagerUtil {
     private static final String DRACULA_CSS = "/style/dracula.css";
     private static final String CUSTOM_CSS = "/style/custom.css";
     private static final String DEFAULT = "/style/primer-light.css";
-    
+
     // Sửa các String CSS thành class selector
     private static final String BUTTON_ACTIVE_STYLE_CLASS = "active-nav-button";
     private static final String BUTTON_INACTIVE_STYLE_CLASS = "nav-button";
@@ -34,6 +34,11 @@ public class ThemeManagerUtil {
         currentTheme = DEFAULT;
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static ThemeManagerUtil getInstance() {
         if (instance == null) {
             instance = new ThemeManagerUtil();
@@ -55,7 +60,7 @@ public class ThemeManagerUtil {
 
     /**
      * Áp dụng theme hiện tại cho một pane cụ thể.
-     * 
+     *
      * @param pane Pane cần áp dụng theme
      */
     public void applyTheme(Pane pane) {
@@ -98,7 +103,7 @@ public class ThemeManagerUtil {
     /**
      * Thay đổi màu nút trên thanh điều hướng bằng cách thay đổi CSS class thay vì inline style.
      *
-     * @param buttons Mảng các nút
+     * @param buttons      Mảng các nút
      * @param activeButton Nút đang active
      */
     public void changeMenuBarButtonColor(Button[] buttons, Button activeButton) {

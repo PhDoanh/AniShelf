@@ -14,6 +14,9 @@ import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The type Admin sugesstion row controller.
+ */
 public class AdminSugesstionRowController {
     @FXML
     private ImageView imageView;
@@ -24,12 +27,25 @@ public class AdminSugesstionRowController {
     private SuggestionTable suggestionTable;
     private String text;
     private String ImagePath;
+    /**
+     * The constant executor.
+     */
     protected static final ExecutorService executor = Executors.newFixedThreadPool(4);
 
+    /**
+     * Sets main controller.
+     *
+     * @param suggest the suggest
+     */
     public void setMainController(SuggestionTable suggest) {
         suggestionTable = suggest;
     }
 
+    /**
+     * Sets suggestion.
+     *
+     * @param o the o
+     */
     public void setSuggestion(Object o) {
         this.object = o;
         if (object instanceof Member) {
@@ -67,7 +83,7 @@ public class AdminSugesstionRowController {
                 protected Image call() throws Exception {
                     try {
                         Image image = CacheManagerUtil.getImageFromCache(bookItem.getImagePath());
-                        if(image != null) {
+                        if (image != null) {
                             System.out.println("tai anh trong cache");
                             return image;
                         } else {
@@ -102,7 +118,7 @@ public class AdminSugesstionRowController {
                 protected Image call() throws Exception {
                     try {
                         Image image = CacheManagerUtil.getImageFromCache(book.getImagePath());
-                        if(image != null) {
+                        if (image != null) {
                             System.out.println("tai anh trong cache");
                             return image;
                         } else {

@@ -22,6 +22,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+/**
+ * The type Suggested book card controller.
+ */
 public class SuggestedBookCardController {
     private SceneManagerUtil sceneManagerUtil = SceneManagerUtil.getInstance();
 
@@ -44,17 +47,21 @@ public class SuggestedBookCardController {
     @FXML
     private ImageView starImage;
 
+    /**
+     * The constant executor.
+     */
     protected static final ExecutorService executor = Executors.newFixedThreadPool(4);
 
 
     /**
      * thiết lập dữ liệu cho card.
+     *
      * @param otherBook truyện
      */
     public void setData(Book otherBook) {
         this.book = BookService.getInstance().findBookInAllBooks(otherBook);
 
-        if(this.book==null) {
+        if (this.book == null) {
             this.book = otherBook;
             book.setQuantity(10);
             book.setRate(5);
@@ -81,6 +88,7 @@ public class SuggestedBookCardController {
 
     /**
      * xem truyện.
+     *
      * @param mouseEvent khi  ấn vào
      */
     public void onBookMouseClicked(MouseEvent mouseEvent) {
@@ -112,6 +120,7 @@ public class SuggestedBookCardController {
 
     /**
      * từ sao sang image.
+     *
      * @param numOfStar số sao
      * @return Image
      */

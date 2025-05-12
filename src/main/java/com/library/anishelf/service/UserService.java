@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type User service.
+ */
 public class UserService {
     private String operation;
     private Object payload;
@@ -20,11 +23,22 @@ public class UserService {
 
     private List<Book> bookList = new ArrayList<>();
 
+    /**
+     * Instantiates a new User service.
+     *
+     * @param operation the operation
+     * @param payload   the payload
+     */
     public UserService(String operation, Object payload) {
         this.operation = operation;
         this.payload = payload;
     }
 
+    /**
+     * Gets member result.
+     *
+     * @return the member result
+     */
     public Member getMemberResult() {
         return memberResult;
     }
@@ -69,6 +83,11 @@ public class UserService {
         }
     }
 
+    /**
+     * Gets payload.
+     *
+     * @return the payload
+     */
     public Object getPayload() {
         return this.payload;
     }

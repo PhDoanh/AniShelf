@@ -7,12 +7,24 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * The type Setting page controller.
+ */
 public class SettingPageController {
+    /**
+     * The Setting box.
+     */
     @FXML
     VBox settingBox;
+    /**
+     * The Themes container.
+     */
     @FXML
     HBox themesContainer; // Container for theme options
 
+    /**
+     * Initialize.
+     */
     public void initialize() {
         // Highlight current theme
         highlightCurrentTheme();
@@ -23,7 +35,7 @@ public class SettingPageController {
      */
     private void highlightCurrentTheme() {
         String currentTheme = ThemeManagerUtil.getInstance().getCurrentThemeName();
-        
+
         // Reset all theme options
         if (themesContainer != null) {
             for (int i = 0; i < themesContainer.getChildren().size(); i++) {
@@ -32,14 +44,14 @@ public class SettingPageController {
                     themeLabel.getStyleClass().remove("selected-theme");
                 }
             }
-            
+
             // Find and highlight the current theme
             for (int i = 0; i < themesContainer.getChildren().size(); i++) {
                 if (themesContainer.getChildren().get(i) instanceof Label) {
                     Label themeLabel = (Label) themesContainer.getChildren().get(i);
-                    String themeName = themeLabel.getUserData() != null ? 
-                        themeLabel.getUserData().toString() : "";
-                    
+                    String themeName = themeLabel.getUserData() != null ?
+                            themeLabel.getUserData().toString() : "";
+
                     if (themeName.equals(currentTheme)) {
                         themeLabel.getStyleClass().add("selected-theme");
                         break;
@@ -51,6 +63,7 @@ public class SettingPageController {
 
     /**
      * Thay đổi giao diện sang Nord Light theme
+     *
      * @param mouseEvent sự kiện chuột
      */
     public void onNordLightMouseClicked(MouseEvent mouseEvent) {
@@ -61,6 +74,7 @@ public class SettingPageController {
 
     /**
      * Thay đổi giao diện sang Nord Dark theme
+     *
      * @param mouseEvent sự kiện chuột
      */
     public void onNordDarkMouseClicked(MouseEvent mouseEvent) {
@@ -71,6 +85,7 @@ public class SettingPageController {
 
     /**
      * Thay đổi giao diện sang Cupertino Dark theme
+     *
      * @param mouseEvent sự kiện chuột
      */
     public void onCupertinoDarkMouseClicked(MouseEvent mouseEvent) {
@@ -81,6 +96,7 @@ public class SettingPageController {
 
     /**
      * Thay đổi giao diện sang Cupertino Light theme
+     *
      * @param mouseEvent sự kiện chuột
      */
     public void onCupertinoLightMouseClicked(MouseEvent mouseEvent) {
@@ -91,6 +107,7 @@ public class SettingPageController {
 
     /**
      * Thay đổi giao diện sang Dracula theme
+     *
      * @param mouseEvent sự kiện chuột
      */
     public void onDraculaMouseClicked(MouseEvent mouseEvent) {
@@ -101,6 +118,7 @@ public class SettingPageController {
 
     /**
      * Thay đổi giao diện sang Primer Dark theme
+     *
      * @param mouseEvent sự kiện chuột
      */
     public void onPrimerDarkMouseClicked(MouseEvent mouseEvent) {
@@ -111,6 +129,7 @@ public class SettingPageController {
 
     /**
      * Thay đổi giao diện sang Primer Light theme
+     *
      * @param mouseEvent sự kiện chuột
      */
     public void onPrimerLightMouseClicked(MouseEvent mouseEvent) {

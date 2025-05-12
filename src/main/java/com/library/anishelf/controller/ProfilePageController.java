@@ -28,12 +28,15 @@ import java.time.format.DateTimeFormatter;
 import java.io.IOException;
 
 
+/**
+ * The type Profile page controller.
+ */
 public class ProfilePageController {
     @FXML
     private VBox contentBox;
 
     @FXML
-    private TextField phoneText, emailText, lastNameText,firstNameText;
+    private TextField phoneText, emailText, lastNameText, firstNameText;
 
     @FXML
     private DatePicker birthDate;
@@ -54,10 +57,13 @@ public class ProfilePageController {
     private Path tempSrcImagePath = null; // Đường dẫn tệp ảnh tạm trong src
     private Path tempTargetImagePath = null; // Đường dẫn tệp ảnh tạm trong target
 
+    /**
+     * Initialize.
+     */
     public void initialize() {
         genderChoiceBox.getItems().addAll("Nữ", "Nam", "Khác");
         showInfo();
-        
+
         // Đảm bảo không có ảnh tạm từ phiên trước
         deleteTemporaryImage();
     }
@@ -101,6 +107,7 @@ public class ProfilePageController {
 
     /**
      * tải ảnh lên từ local folder.
+     *
      * @param actionEvent khi ấn
      */
     public void onLoadImageButtonAction(ActionEvent actionEvent) {
@@ -116,24 +123,24 @@ public class ProfilePageController {
             try {
                 // Xóa ảnh tạm cũ nếu có
                 deleteTemporaryImage();
-                
+
                 // Tạo tên file tạm cho phiên này
                 String timestamp = String.valueOf(System.currentTimeMillis());
                 String imageFile = userIDText.getText() + "_temp_" + timestamp + getFileExtension(selectedFile.toPath());
-                
+
                 // Lưu đường dẫn mới vào biến newImageFile để sử dụng khi Save
                 newImageFile = "/image/upload/" + imageFile;
-                
+
                 // Lưu đường dẫn gốc nếu chưa lưu (để khôi phục khi cần)
                 if (originalImagePath == null) {
                     originalImagePath = NavigationBarController.getMember().getPerson().getImagePath();
                     System.out.println("Đường dẫn ảnh gốc đã lưu: " + originalImagePath);
                 }
-                
+
                 // Lưu vào thư mục tạm
                 Path srcAvatarFolder = Paths.get("src/main/resources/image/upload");
                 Path targetAvatarFolder = Paths.get("target/classes/image/upload");
-                
+
                 // Đảm bảo thư mục tồn tại
                 if (Files.notExists(srcAvatarFolder)) {
                     Files.createDirectories(srcAvatarFolder);
@@ -158,10 +165,10 @@ public class ProfilePageController {
                 // Lưu vào cả hai thư mục tạm
                 ImageIO.write(squareImage, "PNG", tempSrcImagePath.toFile());
                 ImageIO.write(squareImage, "PNG", tempTargetImagePath.toFile());
-                
+
                 // Đánh dấu có ảnh chưa lưu
                 hasUnsavedImage = true;
-                
+
                 // Chỉ hiển thị ảnh mới trên màn hình Information cho xem trước
                 Image image = new Image(tempTargetImagePath.toUri().toString(), true);
                 avatarImage.setImage(image);
@@ -176,6 +183,7 @@ public class ProfilePageController {
 
     /**
      * tìm cái đuôi file ảnh.
+     *
      * @param path đường dẫn
      * @return đuôi file ảnh
      */
@@ -190,6 +198,7 @@ public class ProfilePageController {
 
     /**
      * lưu ảnh.
+     *
      * @param actionEvent ấn vào
      */
     public void onSaveButtonAction(ActionEvent actionEvent) {
@@ -200,10 +209,10 @@ public class ProfilePageController {
                 String permanentImageFile = userIDText.getText() + getFileExtension(tempSrcImagePath);
                 Path srcAvatarFolder = Paths.get("src/main/resources/image/upload");
                 Path targetAvatarFolder = Paths.get("target/classes/image/upload");
-                
+
                 Path permanentSrcPath = srcAvatarFolder.resolve(permanentImageFile);
                 Path permanentTargetPath = targetAvatarFolder.resolve(permanentImageFile);
-                
+
                 // Xóa tệp cũ nếu tồn tại
                 if (Files.exists(permanentSrcPath)) {
                     Files.delete(permanentSrcPath);
@@ -211,16 +220,16 @@ public class ProfilePageController {
                 if (Files.exists(permanentTargetPath)) {
                     Files.delete(permanentTargetPath);
                 }
-                
+
                 // Di chuyển từ tệp tạm sang tệp chính thức
                 Files.copy(tempSrcImagePath, permanentSrcPath);
                 Files.copy(tempTargetImagePath, permanentTargetPath);
-                
+
                 // Cập nhật đường dẫn mới (không còn là tạm nữa)
                 newImageFile = "/image/upload/" + permanentImageFile;
                 NavigationBarController.getMember().getPerson().setImagePath(newImageFile);
                 System.out.println("Đã lưu ảnh mới: " + newImageFile);
-                
+
                 // Xóa tệp tạm
                 deleteTemporaryImage();
             } else if (newImageFile != null) {
@@ -229,32 +238,32 @@ public class ProfilePageController {
             } else {
                 System.out.println("Không có ảnh mới để lưu");
             }
-            
+
             // Cập nhật các thông tin khác
             NavigationBarController.getMember().getPerson().setLastName(lastNameText.getText());
             NavigationBarController.getMember().getPerson().setFirstName(firstNameText.getText());
             NavigationBarController.getMember().getPerson().setGender(getGenderEnum(genderChoiceBox.getValue().toString()));
             NavigationBarController.getMember().getPerson().setEmail(emailText.getText());
             NavigationBarController.getMember().getPerson().setPhone(phoneText.getText());
-            
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String formattedDate = birthDate.getValue().format(formatter);
             NavigationBarController.getMember().getPerson().setBirthdate(formattedDate);
 
             // Lưu thông tin vào cơ sở dữ liệu
             MemberDAO.getInstance().updateEntity(NavigationBarController.getMember());
-            
+
             // Làm mới hiển thị trên các màn hình khác
             refreshAllViews();
-            
+
             // Reset các biến sau khi lưu thành công
             newImageFile = null;
             originalImagePath = null;
             hasUnsavedImage = false;
-            
+
             // Thông báo thành công
             NotificationManagerUtil.showInfo("Cập nhật hồ sơ thành công");
-            
+
         } catch (SQLException e) {
             NotificationManagerUtil.showError("Lỗi cập nhật cơ sở dữ liệu: " + e.getMessage());
             e.printStackTrace();
@@ -266,7 +275,7 @@ public class ProfilePageController {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Cập nhật giao diện người dùng trên tất cả các màn hình liên quan
      */
@@ -277,10 +286,10 @@ public class ProfilePageController {
             if (navigationBarController != null) {
                 navigationBarController.showInfo();
             }
-            
+
             // Làm mới màn hình hiện tại
             showInfo();
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -288,13 +297,14 @@ public class ProfilePageController {
 
     /**
      * trả về String giới tính
+     *
      * @param genderEnum enum giới tính
      * @return String giới tính
      */
     private String getGender(String genderEnum) {
-        if(genderEnum.equals("MALE")) {
+        if (genderEnum.equals("MALE")) {
             return "Nam";
-        } else if(genderEnum.equals("FEMALE")) {
+        } else if (genderEnum.equals("FEMALE")) {
             return "Nữ";
         }
         return "Khác";
@@ -302,13 +312,14 @@ public class ProfilePageController {
 
     /**
      * trả về enum giới tính
+     *
      * @param gender String
      * @return enum
      */
     private Gender getGenderEnum(String gender) {
-        if(gender.equals("Nữ")) {
+        if (gender.equals("Nữ")) {
             return Gender.FEMALE;
-        } else if(gender.equals("Nam")) {
+        } else if (gender.equals("Nam")) {
             return Gender.MALE;
         }
         return Gender.OTHER;
@@ -342,10 +353,10 @@ public class ProfilePageController {
     public void restoreOriginalImageIfNeeded() {
         if (hasUnsavedImage && originalImagePath != null) {
             System.out.println("Khôi phục ảnh gốc: " + originalImagePath);
-            
+
             // Khôi phục đường dẫn ảnh gốc trong đối tượng Member
             NavigationBarController.getMember().getPerson().setImagePath(originalImagePath);
-            
+
             // Cập nhật lại NavigationBarController để hiển thị ảnh gốc
             try {
                 NavigationBarController navigationBarController = SceneManagerUtil.getInstance().getController(USER_MENU_FXML);
@@ -355,7 +366,7 @@ public class ProfilePageController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            
+
             // Xóa các tệp ảnh tạm để tránh rò rỉ bộ nhớ
             deleteTemporaryImage();
         }

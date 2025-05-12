@@ -5,6 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * The type Users page controller.
+ */
 public class UsersPageController extends BasePageController<Member, UserInfoPageController, UsersTableController> {
 
     private static final String DETAIL_FXML = "/view/UserInfoPage.fxml";
@@ -39,12 +42,14 @@ public class UsersPageController extends BasePageController<Member, UserInfoPage
         userDetailLocationPane.getChildren().add(detailPane);
         messageLocationPane.getChildren().add(messagePane);
     }
+
     @Override
     public void alterPage() {
 
     }
+
     @Override
-    public  void startPage() {
+    public void startPage() {
 
     }
 }

@@ -30,34 +30,34 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
     private static final ConcurrentHashMap<Integer, BookIssue> bookIssueCache = new ConcurrentHashMap<>(100);
     private static final RuntimeDebugUtil logger = RuntimeDebugUtil.getInstance();
     private static final String TAG = "BookIssueDAO";
-    
+
     // Giới hạn kích thước cache để tránh sử dụng quá nhiều bộ nhớ
     private static final int CACHE_SIZE_LIMIT = 200;
-    
+
     // SQL Queries tối ưu
-    private static final String INSERT_BOOK_ISSUE = 
+    private static final String INSERT_BOOK_ISSUE =
             "INSERT INTO \"BookIssue\"(\"member_ID\", \"barcode\", \"creation_date\", \"due_date\") VALUES (?, ?, ?::date, ?::date)";
 
-    private static final String UPDATE_BOOK_ISSUE = 
+    private static final String UPDATE_BOOK_ISSUE =
             "UPDATE \"BookIssue\" SET \"member_ID\" = ?, \"barcode\" = ?, \"creation_date\" = ?::date, \"due_date\" = ?::date, " +
-            "\"return_date\" = ?::date, \"BookIssueStatus\" = ?::book_issue_status WHERE \"issue_ID\" = ?";
+                    "\"return_date\" = ?::date, \"BookIssueStatus\" = ?::book_issue_status WHERE \"issue_ID\" = ?";
 
-    private static final String DELETE_BOOK_ISSUE = 
+    private static final String DELETE_BOOK_ISSUE =
             "DELETE FROM \"BookIssue\" WHERE \"issue_ID\" = ?";
 
-    private static final String SELECT_BOOK_ISSUE_BY_ID = 
+    private static final String SELECT_BOOK_ISSUE_BY_ID =
             "SELECT * FROM \"BookIssue\" WHERE \"issue_ID\" = ?";
 
-    private static final String SELECT_ALL_BOOK_ISSUES = 
+    private static final String SELECT_ALL_BOOK_ISSUES =
             "SELECT \"issue_ID\" FROM \"BookIssue\" ORDER BY \"creation_date\" DESC LIMIT 500";
-            
-    private static final String SELECT_BOOK_ISSUES_BY_MEMBER = 
+
+    private static final String SELECT_BOOK_ISSUES_BY_MEMBER =
             "SELECT \"issue_ID\" FROM \"BookIssue\" WHERE \"member_ID\" = ? ORDER BY \"creation_date\" DESC";
-            
-    private static final String SELECT_BOOK_ISSUES_BY_BARCODE = 
+
+    private static final String SELECT_BOOK_ISSUES_BY_BARCODE =
             "SELECT \"issue_ID\" FROM \"BookIssue\" WHERE \"barcode\" = ? ORDER BY \"creation_date\" DESC";
-            
-    private static final String SELECT_ACTIVE_BOOK_ISSUES = 
+
+    private static final String SELECT_ACTIVE_BOOK_ISSUES =
             "SELECT \"issue_ID\" FROM \"BookIssue\" WHERE \"BookIssueStatus\" = 'BORROWED'::book_issue_status ORDER BY \"due_date\" ASC";
 
     private BookIssueDAO() {
@@ -70,6 +70,7 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
 
     /**
      * Lấy instance của BookIssueDAO (Singleton pattern)
+     *
      * @return instance duy nhất của BookIssueDAO
      */
     public static synchronized BookIssueDAO getInstance() {
@@ -81,29 +82,30 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
 
     /**
      * Thêm BookIssue mới vào cơ sở dữ liệu
+     *
      * @param entity BookIssue cần thêm
      * @throws SQLException nếu có lỗi xảy ra khi thêm
      */
     @Override
     public void insert(@NotNull BookIssue entity) throws SQLException {
-        logger.debug(TAG, "Adding new book issue for barcode: " + entity.getBookItem().getBookBarcode() + 
-                     ", member: " + entity.getMember().getPerson().getId());
-        
+        logger.debug(TAG, "Adding new book issue for barcode: " + entity.getBookItem().getBookBarcode() +
+                ", member: " + entity.getMember().getPerson().getId());
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        
+
         try {
             connection = databaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(INSERT_BOOK_ISSUE, 
-                                                          PreparedStatement.RETURN_GENERATED_KEYS);
-            
+            preparedStatement = connection.prepareStatement(INSERT_BOOK_ISSUE,
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+
             preparedStatement.setInt(1, entity.getMember().getPerson().getId());
             preparedStatement.setInt(2, entity.getBookItem().getBookBarcode());
             preparedStatement.setString(3, entity.getIssueDate());
             preparedStatement.setString(4, entity.getDueDate());
 
             int affectedRows = preparedStatement.executeUpdate();
-            
+
             if (affectedRows == 0) {
                 logger.error(TAG, "Creating book issue failed, no rows affected");
                 throw new SQLException("Creating book issue failed, no rows affected");
@@ -113,15 +115,15 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
                 if (generatedKeys.next()) {
                     int issueId = generatedKeys.getInt(1);
                     entity.setIssueID(issueId);
-                    
+
                     // Cập nhật cache
                     addToCache(entity);
-                    
+
                     // Cập nhật các cache liên quan
                     memberDAO.fetchCache(entity.getMember().getPerson().getId());
                     bookItemDAO.invalidateBookItemCache(entity.getBookItem().getBookBarcode());
                     bookDAO.invalidateBookCache(entity.getBookItem().getIsbn());
-                    
+
                     logger.info(TAG, "Book issue created successfully with ID: " + issueId);
                 } else {
                     logger.error(TAG, "Creating book issue failed, no ID obtained");
@@ -138,6 +140,7 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
 
     /**
      * Cập nhật thông tin BookIssue trong cơ sở dữ liệu
+     *
      * @param entity BookIssue cần cập nhật
      * @return true nếu cập nhật thành công, false nếu không
      * @throws SQLException nếu có lỗi xảy ra khi cập nhật
@@ -145,14 +148,14 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
     @Override
     public boolean updateEntity(@NotNull BookIssue entity) throws SQLException {
         logger.debug(TAG, "Updating book issue: " + entity.getIssueID());
-        
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        
+
         try {
             connection = databaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(UPDATE_BOOK_ISSUE);
-            
+
             preparedStatement.setInt(1, entity.getMember().getPerson().getId());
             preparedStatement.setInt(2, entity.getBookItem().getBookBarcode());
             preparedStatement.setString(3, entity.getIssueDate());
@@ -162,16 +165,16 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
             preparedStatement.setInt(7, entity.getIssueID());
 
             int affectedRows = preparedStatement.executeUpdate();
-            
+
             if (affectedRows > 0) {
                 // Cập nhật cache
                 addToCache(entity);
-                
+
                 // Cập nhật các cache liên quan
                 memberDAO.fetchCache(entity.getMember().getPerson().getId());
                 bookItemDAO.invalidateBookItemCache(entity.getBookItem().getBookBarcode());
                 bookDAO.invalidateBookCache(entity.getBookItem().getIsbn());
-                
+
                 logger.info(TAG, "Book issue updated successfully: " + entity.getIssueID());
                 return true;
             } else {
@@ -188,6 +191,7 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
 
     /**
      * Xóa BookIssue khỏi cơ sở dữ liệu
+     *
      * @param entity BookIssue cần xóa
      * @return true nếu xóa thành công, false nếu không
      * @throws SQLException nếu có lỗi xảy ra khi xóa
@@ -195,27 +199,27 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
     @Override
     public boolean deleteEntity(@NotNull BookIssue entity) throws SQLException {
         logger.debug(TAG, "Deleting book issue: " + entity.getIssueID());
-        
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        
+
         try {
             connection = databaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(DELETE_BOOK_ISSUE);
-            
+
             preparedStatement.setInt(1, entity.getIssueID());
 
             int affectedRows = preparedStatement.executeUpdate();
-            
+
             if (affectedRows > 0) {
                 // Xóa khỏi cache
                 bookIssueCache.remove(entity.getIssueID());
-                
+
                 // Cập nhật các cache liên quan
                 memberDAO.fetchCache(entity.getMember().getPerson().getId());
                 bookItemDAO.invalidateBookItemCache(entity.getBookItem().getBookBarcode());
                 bookDAO.invalidateBookCache(entity.getBookItem().getIsbn());
-                
+
                 logger.info(TAG, "Book issue deleted successfully: " + entity.getIssueID());
                 return true;
             } else {
@@ -232,6 +236,7 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
 
     /**
      * Tìm BookIssue theo ID
+     *
      * @param keywords ID của BookIssue cần tìm
      * @return BookIssue nếu tìm thấy, null nếu không
      * @throws SQLException nếu có lỗi xảy ra khi tìm kiếm
@@ -239,33 +244,33 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
     @Override
     public BookIssue findById(@NotNull Number keywords) throws SQLException {
         int issueId = keywords.intValue();
-        
+
         // Kiểm tra cache trước
         BookIssue cachedIssue = bookIssueCache.get(issueId);
         if (cachedIssue != null) {
             logger.debug(TAG, "Cache hit for book issue: " + issueId);
             return cachedIssue;
         }
-        
+
         logger.debug(TAG, "Cache miss for book issue: " + issueId + ", fetching from database");
-        
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        
+
         try {
             connection = databaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(SELECT_BOOK_ISSUE_BY_ID);
-            
+
             preparedStatement.setInt(1, issueId);
             resultSet = preparedStatement.executeQuery();
-            
+
             if (resultSet.next()) {
                 BookIssue bookIssue = createBookIssueFromResultSet(resultSet);
-                
+
                 // Cập nhật cache
                 addToCache(bookIssue);
-                
+
                 logger.info(TAG, "Book issue found: " + issueId);
                 return bookIssue;
             } else {
@@ -282,6 +287,7 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
 
     /**
      * Tìm kiếm BookIssue theo các tiêu chí
+     *
      * @param criteria Map các tiêu chí tìm kiếm
      * @return Danh sách BookIssue tìm thấy
      * @throws SQLException nếu có lỗi xảy ra khi tìm kiếm
@@ -289,12 +295,12 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
     @Override
     public List<BookIssue> findByCriteria(@NotNull Map<String, Object> criteria) throws SQLException {
         logger.debug(TAG, "Searching book issues by criteria: " + criteria);
-        
+
         if (criteria.isEmpty()) {
             logger.warning(TAG, "Empty criteria, returning all book issues");
             return findAll();
         }
-        
+
         // Tối ưu cho một số trường hợp tìm kiếm phổ biến
         if (criteria.size() == 1) {
             // Trường hợp tìm theo member_ID
@@ -322,16 +328,16 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
                 return getActiveBorrowedIssues();
             }
         }
-        
+
         // Xây dựng truy vấn động cho các trường hợp phức tạp
         StringBuilder sqlBuilder = new StringBuilder(
-            "SELECT DISTINCT \"BookIssue\".\"issue_ID\", \"BookIssue\".\"creation_date\" FROM \"BookIssue\" ");
-        
+                "SELECT DISTINCT \"BookIssue\".\"issue_ID\", \"BookIssue\".\"creation_date\" FROM \"BookIssue\" ");
+
         // Chỉ thêm JOIN khi cần thiết
         boolean needMembersJoin = false;
         boolean needBookItemJoin = false;
         boolean needBooksJoin = false;
-        
+
         for (String key : criteria.keySet()) {
             if (key.equals("fullname") || key.startsWith("Members.")) {
                 needMembersJoin = true;
@@ -342,40 +348,40 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
                 needBooksJoin = true;
             }
         }
-        
+
         if (needMembersJoin) {
             sqlBuilder.append("JOIN \"Members\" ON \"BookIssue\".\"member_ID\" = \"Members\".\"member_ID\" ");
         }
-        
+
         if (needBookItemJoin) {
             sqlBuilder.append("JOIN \"BookItem\" ON \"BookIssue\".\"barcode\" = \"BookItem\".\"barcode\" ");
         }
-        
+
         if (needBooksJoin) {
             sqlBuilder.append("JOIN \"Books\" ON \"BookItem\".\"ISBN\" = \"Books\".\"ISBN\" ");
         }
-        
+
         sqlBuilder.append("WHERE ");
 
         List<Object> paramValues = new ArrayList<>();
         List<String> dateFields = List.of("creation_date", "due_date", "return_date");
         List<String> statusFields = List.of("BookIssueStatus");
-        
+
         int paramCount = 0;
-        
+
         for (Map.Entry<String, Object> entry : criteria.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
-            
+
             if (value == null) {
                 logger.warning(TAG, "Skipping null value for key: " + key);
                 continue;
             }
-            
+
             if (paramCount > 0) {
                 sqlBuilder.append(" AND ");
             }
-            
+
             if ("fullname".equals(key)) {
                 sqlBuilder.append("CONCAT(\"Members\".\"last_name\", ' ', \"Members\".\"first_name\") ILIKE ?");
                 paramValues.add("%" + value.toString() + "%");
@@ -405,32 +411,32 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
                         tableColumn = "\"" + parts[0] + "\".\"" + parts[1] + "\"";
                     }
                 }
-                
+
                 sqlBuilder.append(tableColumn).append(" ILIKE ?");
                 paramValues.add("%" + value.toString() + "%");
             }
-            
+
             paramCount++;
         }
-        
+
         if (paramCount == 0) {
             // Nếu không có điều kiện hợp lệ, trả về tất cả
             return findAll();
         }
-        
+
         sqlBuilder.append(" ORDER BY \"BookIssue\".\"creation_date\" DESC LIMIT 500");
-        
+
         String sqlQuery = sqlBuilder.toString();
         logger.debug(TAG, "Generated SQL query: " + sqlQuery);
-        
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        
+
         try {
             connection = databaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sqlQuery);
-            
+
             // Thiết lập các tham số
             for (int i = 0; i < paramValues.size(); i++) {
                 Object value = paramValues.get(i);
@@ -440,9 +446,9 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
                     preparedStatement.setString(i + 1, value.toString());
                 }
             }
-            
+
             resultSet = preparedStatement.executeQuery();
-            
+
             List<BookIssue> bookIssues = new ArrayList<>();
             while (resultSet.next()) {
                 int issueId = resultSet.getInt("issue_ID");
@@ -451,7 +457,7 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
                     bookIssues.add(bookIssue);
                 }
             }
-            
+
             logger.info(TAG, "Found " + bookIssues.size() + " book issues matching criteria");
             return bookIssues;
         } catch (SQLException e) {
@@ -464,22 +470,23 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
 
     /**
      * Lấy tất cả BookIssue từ cơ sở dữ liệu
+     *
      * @return Danh sách tất cả BookIssue
      * @throws SQLException nếu có lỗi xảy ra khi truy vấn
      */
     @Override
     public List<BookIssue> findAll() throws SQLException {
         logger.debug(TAG, "Selecting all book issues (limited to 500)");
-        
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        
+
         try {
             connection = databaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(SELECT_ALL_BOOK_ISSUES);
             resultSet = preparedStatement.executeQuery();
-            
+
             List<BookIssue> bookIssues = new ArrayList<>();
             while (resultSet.next()) {
                 int issueId = resultSet.getInt("issue_ID");
@@ -488,7 +495,7 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
                     bookIssues.add(bookIssue);
                 }
             }
-            
+
             logger.info(TAG, "Selected " + bookIssues.size() + " book issues");
             return bookIssues;
         } catch (SQLException e) {
@@ -501,13 +508,14 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
 
     /**
      * Vô hiệu hóa cache cho BookIssue theo ID
+     *
      * @param issueID ID của BookIssue cần vô hiệu hóa cache
      */
     public void invalidateBookIssueCache(int issueID) {
         bookIssueCache.remove(issueID);
         logger.debug(TAG, "Book issue cache invalidated for ID: " + issueID);
     }
-    
+
     /**
      * Xóa toàn bộ cache
      */
@@ -515,27 +523,28 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
         bookIssueCache.clear();
         logger.debug(TAG, "Cleared entire book issue cache");
     }
-    
+
     /**
      * Lấy danh sách BookIssue theo Member ID
+     *
      * @param memberId ID của Member
      * @return Danh sách BookIssue của Member
      * @throws SQLException nếu có lỗi xảy ra khi truy vấn
      */
     public List<BookIssue> getBookIssuesByMember(int memberId) throws SQLException {
         logger.debug(TAG, "Getting book issues for member: " + memberId);
-        
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        
+
         try {
             connection = databaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(SELECT_BOOK_ISSUES_BY_MEMBER);
-            
+
             preparedStatement.setInt(1, memberId);
             resultSet = preparedStatement.executeQuery();
-            
+
             List<BookIssue> bookIssues = new ArrayList<>();
             while (resultSet.next()) {
                 int issueId = resultSet.getInt("issue_ID");
@@ -544,7 +553,7 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
                     bookIssues.add(bookIssue);
                 }
             }
-            
+
             logger.info(TAG, "Found " + bookIssues.size() + " book issues for member: " + memberId);
             return bookIssues;
         } catch (SQLException e) {
@@ -554,27 +563,28 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
             closeResources(preparedStatement, resultSet);
         }
     }
-    
+
     /**
      * Lấy danh sách BookIssue theo Barcode
+     *
      * @param barcode Barcode của BookItem
      * @return Danh sách BookIssue của BookItem
      * @throws SQLException nếu có lỗi xảy ra khi truy vấn
      */
     public List<BookIssue> getBookIssuesByBarcode(int barcode) throws SQLException {
         logger.debug(TAG, "Getting book issues for barcode: " + barcode);
-        
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        
+
         try {
             connection = databaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(SELECT_BOOK_ISSUES_BY_BARCODE);
-            
+
             preparedStatement.setInt(1, barcode);
             resultSet = preparedStatement.executeQuery();
-            
+
             List<BookIssue> bookIssues = new ArrayList<>();
             while (resultSet.next()) {
                 int issueId = resultSet.getInt("issue_ID");
@@ -583,7 +593,7 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
                     bookIssues.add(bookIssue);
                 }
             }
-            
+
             logger.info(TAG, "Found " + bookIssues.size() + " book issues for barcode: " + barcode);
             return bookIssues;
         } catch (SQLException e) {
@@ -593,24 +603,25 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
             closeResources(preparedStatement, resultSet);
         }
     }
-    
+
     /**
      * Lấy danh sách BookIssue đang mượn (status = BORROWED)
+     *
      * @return Danh sách BookIssue đang mượn
      * @throws SQLException nếu có lỗi xảy ra khi truy vấn
      */
     public List<BookIssue> getActiveBorrowedIssues() throws SQLException {
         logger.debug(TAG, "Getting active borrowed issues");
-        
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        
+
         try {
             connection = databaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(SELECT_ACTIVE_BOOK_ISSUES);
             resultSet = preparedStatement.executeQuery();
-            
+
             List<BookIssue> bookIssues = new ArrayList<>();
             while (resultSet.next()) {
                 int issueId = resultSet.getInt("issue_ID");
@@ -619,7 +630,7 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
                     bookIssues.add(bookIssue);
                 }
             }
-            
+
             logger.info(TAG, "Found " + bookIssues.size() + " active borrowed issues");
             return bookIssues;
         } catch (SQLException e) {
@@ -629,9 +640,10 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
             closeResources(preparedStatement, resultSet);
         }
     }
-    
+
     /**
      * Tạo đối tượng BookIssue từ ResultSet
+     *
      * @param resultSet ResultSet chứa dữ liệu BookIssue
      * @return Đối tượng BookIssue
      * @throws SQLException nếu có lỗi xảy ra khi đọc ResultSet
@@ -644,22 +656,23 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
         String dueDate = resultSet.getString("due_date");
         String returnDate = resultSet.getString("return_date");
         String statusStr = resultSet.getString("BookIssueStatus");
-        
+
         BookIssueStatus status = BookIssueStatus.valueOf(statusStr);
-        
+
         return new BookIssue(
-            issueId,
-            memberDAO.findById(memberId),
-            bookItemDAO.findById(barcode),
-            creationDate,
-            dueDate,
-            returnDate,
-            status
+                issueId,
+                memberDAO.findById(memberId),
+                bookItemDAO.findById(barcode),
+                creationDate,
+                dueDate,
+                returnDate,
+                status
         );
     }
-    
+
     /**
      * Thêm BookIssue vào cache với xử lý kích thước cache
+     *
      * @param bookIssue BookIssue cần thêm vào cache
      */
     private void addToCache(BookIssue bookIssue) {
@@ -668,7 +681,7 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
             // Nếu cache đầy, xóa 20% cache cũ nhất
             int toRemove = CACHE_SIZE_LIMIT / 5;
             logger.debug(TAG, "Cache size limit reached, removing " + toRemove + " oldest entries");
-            
+
             // Trong thực tế, cần có cơ chế để xóa các mục ít sử dụng nhất
             // Ở đây tạm thời xóa ngẫu nhiên một số lượng mục
             List<Integer> keys = new ArrayList<>(bookIssueCache.keySet());
@@ -676,15 +689,16 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
                 bookIssueCache.remove(keys.get(i));
             }
         }
-        
+
         // Thêm vào cache
         bookIssueCache.put(bookIssue.getIssueID(), bookIssue);
     }
-    
+
     /**
      * Đóng tài nguyên PreparedStatement và ResultSet
+     *
      * @param preparedStatement PreparedStatement cần đóng
-     * @param resultSet ResultSet cần đóng
+     * @param resultSet         ResultSet cần đóng
      */
     private void closeResources(PreparedStatement preparedStatement, ResultSet resultSet) {
         try {
@@ -701,37 +715,38 @@ public class BookIssueDAO implements GenericDAO<BookIssue> {
 
     /**
      * Tạo BookIssue mới cho truyện có ISBN cụ thể
-     * @param member Thành viên mượn truyện
-     * @param isbn ISBN của truyện cần mượn
+     *
+     * @param member    Thành viên mượn truyện
+     * @param isbn      ISBN của truyện cần mượn
      * @param issueDate Ngày mượn
-     * @param dueDate Ngày hẹn trả
+     * @param dueDate   Ngày hẹn trả
      * @return BookIssue đã tạo hoặc null nếu không có truyện có sẵn
      * @throws SQLException nếu có lỗi xảy ra khi thao tác database
      */
     public BookIssue createBookIssueByISBN(Member member, long isbn, String issueDate, String dueDate) throws SQLException {
         logger.debug(TAG, "Tạo mượn truyện mới theo ISBN: " + isbn + " cho thành viên: " + member.getPerson().getId());
-        
+
         // Tìm BookItem có sẵn đầu tiên với ISBN tương ứng
         BookItem bookItem = bookItemDAO.findFirstAvailableBookItemByISBN(isbn);
-        
+
         if (bookItem == null) {
             logger.warning(TAG, "Không tìm thấy bản sao nào có sẵn của truyện có ISBN: " + isbn);
             return null;
         }
-        
+
         // Tạo đối tượng BookIssue
         BookIssue bookIssue = new BookIssue(0, member, bookItem, issueDate, dueDate, null, BookIssueStatus.BORROWED);
-        
+
         // Lưu vào cơ sở dữ liệu
         insert(bookIssue);
-        
+
         // Cập nhật trạng thái của BookItem thành LOANED
         bookItem.setBookItemStatus(BookItemStatus.LOANED);
         bookItemDAO.updateEntity(bookItem);
-        
-        logger.info(TAG, "Đã tạo mượn truyện thành công với ID: " + bookIssue.getIssueID() + 
-                   ", barcode: " + bookItem.getBookBarcode());
-        
+
+        logger.info(TAG, "Đã tạo mượn truyện thành công với ID: " + bookIssue.getIssueID() +
+                ", barcode: " + bookItem.getBookBarcode());
+
         return bookIssue;
     }
 }

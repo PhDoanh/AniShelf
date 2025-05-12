@@ -6,6 +6,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
 
+/**
+ * The type Users table row controller.
+ */
 public class UsersTableRowController extends BaseRowController<Member, UsersPageController> {
 
     @FXML

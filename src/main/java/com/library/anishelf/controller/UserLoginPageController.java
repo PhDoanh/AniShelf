@@ -23,6 +23,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
+/**
+ * The type User login page controller.
+ */
 public class UserLoginPageController extends BasicController {
 
     @FXML
@@ -42,33 +45,49 @@ public class UserLoginPageController extends BasicController {
 
     @FXML
     private TextField usernameText;
-    
+
     @FXML
     private StackPane mainPane;
 
     private Role role = Role.NONE;
+    /**
+     * The constant executor.
+     */
     protected static final ExecutorService executor = Executors.newFixedThreadPool(4);
 
+    /**
+     * Initialize.
+     */
     public void initialize() {
         // Initial role is NONE (User), toggle switch should be off
         roleSwitch.setSelected(false);
-        
+
         // Add listener to update role based on toggle state
         roleSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
             role = newValue ? Role.ADMIN : Role.NONE;
         });
-        
+
         // Apply styles to components
         loginButton.getStyleClass().add("accent");
         usernameText.getStyleClass().add("rounded");
         passwordText.getStyleClass().add("rounded");
     }
 
+    /**
+     * On forgot password button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onForgotPasswordButtonAction(ActionEvent event) {
         openForgotPasswordView();
     }
 
+    /**
+     * On login button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onLoginButtonAction(ActionEvent event) {
         String username = usernameText.getText();
@@ -85,11 +104,21 @@ public class UserLoginPageController extends BasicController {
         }
     }
 
+    /**
+     * On register button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onRegisterButtonAction(ActionEvent event) {
         openRegisterView();
     }
 
+    /**
+     * On role switch action.
+     *
+     * @param event the event
+     */
     @FXML
     void onRoleSwitchAction(MouseEvent event) {
         // The role is updated automatically via the listener we added in initialize()

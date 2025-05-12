@@ -7,6 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * The type Borrowed book page controller.
+ */
 public class BorrowedBookPageController extends BasePageController<BookIssue, BorrowBookInfoController, BorrowedBooksTableController> {
 
     private static final String TABLE_FXML = "/view/BorrowedBooksTable.fxml";
@@ -38,12 +41,18 @@ public class BorrowedBookPageController extends BasePageController<BookIssue, Bo
     protected void setupControllers() {
 
     }
+
     @Override
     protected void setupViews() {
         this.tablePage.getChildren().add(super.tablePane);
         this.detailLocation.getChildren().add(super.detailPane);
     }
 
+    /**
+     * On return button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onReturnButtonAction(ActionEvent event) {
         while (getTitlePageStack().peek() != "Quản lý mượn truyện") {
@@ -52,16 +61,18 @@ public class BorrowedBookPageController extends BasePageController<BookIssue, Bo
         loadData();
         alterPage();
     }
+
     @Override
     public void alterPage() {
         detailPage.setVisible(!detailPage.isVisible());
         tablePage.setVisible(!tablePage.isVisible());
-        if(detailPage.isVisible()) {
+        if (detailPage.isVisible()) {
             page1 = false;
         } else {
             page1 = true;
         }
     }
+
     @Override
     public void startPage() {
         page1 = true;
@@ -69,7 +80,6 @@ public class BorrowedBookPageController extends BasePageController<BookIssue, Bo
         tablePage.setVisible(true);
         loadData();
     }
-
 
 
 }

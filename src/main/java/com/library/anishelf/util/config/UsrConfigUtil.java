@@ -2,6 +2,9 @@ package com.library.anishelf.util.config;
 
 import java.io.*;
 
+/**
+ * The type Usr config util.
+ */
 public class UsrConfigUtil {
     private static UsrConfigUtil instance;
     private static final String DEFAULT_CONFIG_PATH = "/config/usr_config.txt";
@@ -10,13 +13,13 @@ public class UsrConfigUtil {
     private UsrConfigUtil() {
         // File trong thư mục người dùng để lưu cấu hình cá nhân
         filePath = System.getProperty("user.home") + "/.anishelf/config/usr_config.txt";
-        
+
         // Đảm bảo thư mục tồn tại
         File configDir = new File(System.getProperty("user.home") + "/.anishelf/config");
         if (!configDir.exists()) {
             configDir.mkdirs();
         }
-        
+
         // Kiểm tra xem file cấu hình đã tồn tại chưa
         File configFile = new File(filePath);
         if (!configFile.exists()) {
@@ -28,28 +31,28 @@ public class UsrConfigUtil {
     private void copyDefaultConfig(File targetFile) {
         try {
             InputStream defaultConfig = getClass().getResourceAsStream(DEFAULT_CONFIG_PATH);
-            
+
             if (defaultConfig != null) {
                 System.out.println("Đã tìm thấy file mẫu trong resources: " + DEFAULT_CONFIG_PATH);
-                
+
                 // Tạo file đích nếu chưa tồn tại
                 if (!targetFile.exists()) {
                     targetFile.createNewFile();
                 }
-                
+
                 // Sao chép nội dung từ file mẫu sang file đích
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(defaultConfig));
                      BufferedWriter writer = new BufferedWriter(new FileWriter(targetFile))) {
-                    
+
                     String line;
                     boolean hasContent = false;
-                    
+
                     while ((line = reader.readLine()) != null) {
                         writer.write(line);
                         writer.newLine();
                         hasContent = true;
                     }
-                    
+
                     // Nếu file mẫu không có nội dung, thêm một nội dung mặc định
                     if (!hasContent) {
                         System.out.println("File mẫu rỗng, tạo nội dung mặc định");
@@ -58,24 +61,24 @@ public class UsrConfigUtil {
                         writer.newLine();
                     }
                 }
-                
+
                 System.out.println("Đã sao chép thành công file cấu hình từ mẫu tới: " + targetFile.getAbsolutePath());
             } else {
                 System.err.println("Không tìm thấy file mẫu trong resources: " + DEFAULT_CONFIG_PATH);
-                
+
                 // Tạo file với nội dung mặc định nếu không tìm thấy file mẫu
                 targetFile.createNewFile();
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(targetFile))) {
                     writer.write("default light");
                     writer.newLine();
                 }
-                
+
                 System.out.println("Đã tạo file cấu hình mặc định tại: " + targetFile.getAbsolutePath());
             }
         } catch (IOException e) {
             System.err.println("Lỗi khi tạo file cấu hình: " + e.getMessage());
             e.printStackTrace();
-            
+
             // Thử tạo file trống với nội dung mặc định
             try {
                 targetFile.createNewFile();
@@ -91,13 +94,24 @@ public class UsrConfigUtil {
         }
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static UsrConfigUtil getInstance() {
-        if(instance==null) {
+        if (instance == null) {
             instance = new UsrConfigUtil();
         }
         return instance;
     }
 
+    /**
+     * Write user info to file.
+     *
+     * @param id    the id
+     * @param color the color
+     */
     public void writeUserInfoToFile(String id, String color) {
         UsrInfo user = new UsrInfo(id, color);
 
@@ -111,6 +125,12 @@ public class UsrConfigUtil {
         }
     }
 
+    /**
+     * Find user by id usr info.
+     *
+     * @param searchId the search id
+     * @return the usr info
+     */
     public UsrInfo findUserById(String searchId) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -119,7 +139,7 @@ public class UsrConfigUtil {
                 if (parts.length >= 2) {
                     String id = parts[0];
                     String color = parts[1];
-                    
+
                     UsrInfo user = new UsrInfo(id, color);
 
                     if (user.matchesId(searchId)) {
@@ -135,6 +155,11 @@ public class UsrConfigUtil {
         return null;
     }
 
+    /**
+     * Update user info.
+     *
+     * @param updatedUser the updated user
+     */
     public void updateUserInfo(UsrInfo updatedUser) {
         try {
             // Đọc tất cả thông tin cũ vào bộ nhớ
@@ -142,7 +167,7 @@ public class UsrConfigUtil {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             String line;
             boolean userFound = false;
-            
+
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(" ");
                 if (parts.length >= 1) {
@@ -161,7 +186,7 @@ public class UsrConfigUtil {
                 }
             }
             reader.close();
-            
+
             // Nếu không tìm thấy user, thêm mới
             if (!userFound) {
                 fileContent.append(updatedUser.toFileString()).append("\n");
@@ -178,10 +203,15 @@ public class UsrConfigUtil {
         }
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         //UsrConfigUtil.getInstance().writeUserInfoToFile("123","hehe");
         System.out.println(UsrConfigUtil.getInstance().findUserById("123").getColor());
-        UsrConfigUtil.getInstance().updateUserInfo(new UsrInfo("123","rea"));
+        UsrConfigUtil.getInstance().updateUserInfo(new UsrInfo("123", "rea"));
         System.out.println(UsrConfigUtil.getInstance().findUserById("123").getColor());
     }
 }

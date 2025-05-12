@@ -33,6 +33,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+/**
+ * The type Book info controller.
+ */
 public class BookInfoController extends BaseDetailController<Book> {
 
     @FXML
@@ -115,6 +118,9 @@ public class BookInfoController extends BaseDetailController<Book> {
     private boolean isPage1 = true;
     private boolean isSettingItem = false;
     private boolean isSettingItem2 = false;
+    /**
+     * The constant executor.
+     */
     protected static final ExecutorService executor = Executors.newFixedThreadPool(4);
 
     @Override
@@ -352,11 +358,21 @@ public class BookInfoController extends BaseDetailController<Book> {
         });
     }
 
+    /**
+     * On add button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onAddButtonAction(ActionEvent event) {
         saveChanges();
     }
 
+    /**
+     * On choice image button action.
+     *
+     * @param event the event
+     */
     @FXML
     public void onChoiceImageButtonAction(ActionEvent event) {
         if (ISBNText.getText().isEmpty() || ISBNText.getText().equals("") || ISBNText.getText() == null) {
@@ -373,6 +389,11 @@ public class BookInfoController extends BaseDetailController<Book> {
         }
     }
 
+    /**
+     * On delete button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onDeleteButtonAction(ActionEvent event) {
         NotificationManagerUtil.showConfirmation("Xóa quyển truyện này?", confirmed -> {
@@ -390,6 +411,11 @@ public class BookInfoController extends BaseDetailController<Book> {
         });
     }
 
+    /**
+     * On edit button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onEditButtonAction(ActionEvent event) {
         getTitlePageStack().push("Edit");
@@ -398,6 +424,11 @@ public class BookInfoController extends BaseDetailController<Book> {
         }
     }
 
+    /**
+     * On page 1 button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onPage1ButtonAction(ActionEvent event) {
         isPage1 = true;
@@ -407,6 +438,11 @@ public class BookInfoController extends BaseDetailController<Book> {
         copyBookPane.setVisible(!isPage1);
     }
 
+    /**
+     * On page 2 button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onPage2ButtonAction(ActionEvent event) {
         isPage1 = false;
@@ -416,6 +452,11 @@ public class BookInfoController extends BaseDetailController<Book> {
         copyBookPane.setVisible(!isPage1);
     }
 
+    /**
+     * On save button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onSaveButtonAction(ActionEvent event) {
         saveChanges();

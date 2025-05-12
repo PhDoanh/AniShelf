@@ -18,7 +18,7 @@ public class EmailUtil implements Runnable {
     private String recipientEmail;
     private String subject;
     private String emailBody;
-    
+
     // Logger instance
     private static final RuntimeDebugUtil logger = RuntimeDebugUtil.getInstance();
 
@@ -26,8 +26,8 @@ public class EmailUtil implements Runnable {
      * Khởi tạo đối tượng EmailUtil.
      *
      * @param recipientEmail Email người nhận
-     * @param subject Tiêu đề email
-     * @param emailBody Nội dung email
+     * @param subject        Tiêu đề email
+     * @param emailBody      Nội dung email
      */
     public EmailUtil(String recipientEmail, String subject, String emailBody) {
         this.recipientEmail = recipientEmail;
@@ -66,7 +66,7 @@ public class EmailUtil implements Runnable {
      */
     public void sendEmailSync() {
         logger.debug(TAG, "Chuẩn bị gửi email đến " + recipientEmail);
-        
+
         Session session = createSession();
 
         try {
@@ -93,33 +93,33 @@ public class EmailUtil implements Runnable {
      *
      * @param toEmail Email người nhận
      * @param subject Tiêu đề email
-     * @param body Nội dung email
+     * @param body    Nội dung email
      */
     public static void sendEmailAsync(String toEmail, String subject, String body) {
         if (toEmail == null || toEmail.isEmpty()) {
             logger.warning(TAG, "Không thể gửi email: địa chỉ email người nhận trống");
             return;
         }
-        
+
         logger.debug(TAG, "Tạo luồng gửi email bất đồng bộ đến " + toEmail);
         EmailUtil emailUtil = new EmailUtil(toEmail, subject, body);
         Thread emailThread = new Thread(emailUtil);
         emailThread.setName("Email-Thread-" + System.currentTimeMillis());
         emailThread.start();
     }
-    
+
     /**
      * Gửi email thông báo lỗi.
-     * 
-     * @param toEmail Email người nhận
+     *
+     * @param toEmail      Email người nhận
      * @param errorMessage Thông báo lỗi
      */
     public static void sendErrorNotification(String toEmail, String errorMessage) {
         String subject = "AniShelf - Thông báo lỗi hệ thống";
-        String body = "Hệ thống AniShelf ghi nhận lỗi sau:\n\n" + errorMessage + 
-                      "\n\nThời gian: " + new java.util.Date() + 
-                      "\n\nĐây là email tự động, vui lòng không trả lời.";
-        
+        String body = "Hệ thống AniShelf ghi nhận lỗi sau:\n\n" + errorMessage +
+                "\n\nThời gian: " + new java.util.Date() +
+                "\n\nĐây là email tự động, vui lòng không trả lời.";
+
         sendEmailAsync(toEmail, subject, body);
     }
 }

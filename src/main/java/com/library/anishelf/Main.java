@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The type Main.
+ */
 public class Main extends Application {
     private static final String TAG = "Main";
     private static final boolean ENABLE_FILE_LOGGING = false;

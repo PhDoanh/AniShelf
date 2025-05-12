@@ -39,29 +39,44 @@ import java.util.Map;
 
 import static com.library.anishelf.controller.SuggestedBookCardController.executor;
 
+/**
+ * The type Book controller.
+ */
 public class BookController {
     private static final String HISTORY_FXML = "/view/ReservedBorrowedHistoryPage.fxml";
     private static final String BOOKMARK_FXML = "/view/Bookmark.fxml";
     private static final String COMMENT_FXML = "/view/Comment.fxml";
-    
+
     // Thêm RuntimeDebugUtil và TAG
     private static final RuntimeDebugUtil logger = RuntimeDebugUtil.getInstance();
     private static final String TAG = "BookController";
 
     private Book book;
 
+    /**
+     * The Book box.
+     */
     @FXML
-    VBox bookBox,commentsVBox;
+    VBox bookBox, /**
+     * The Comments v box.
+     */
+    commentsVBox;
     @FXML
     private ChoiceBox<String> starChoiceBox;
     @FXML
-    private Label authorNameLabel,bookNameLabel;
+    private Label authorNameLabel, bookNameLabel;
     @FXML
     private ImageView bookImage, starImage;
     @FXML
     private Text contentText;
+    /**
+     * The Category hbox.
+     */
     @FXML
     HBox categoryHbox;
+    /**
+     * The Bookmark button.
+     */
     @FXML
     Button bookmarkButton;
 
@@ -142,6 +157,7 @@ public class BookController {
 
     /**
      * hiển thị các comment.
+     *
      * @param star rate của comment
      */
     private void showComment(int star) {
@@ -172,6 +188,7 @@ public class BookController {
 
     /**
      * đặt trước truyện.
+     *
      * @param actionEvent khi ấn vào
      */
     public void onReserveBookButtonAction(ActionEvent actionEvent) {
@@ -214,6 +231,7 @@ public class BookController {
 
     /**
      * đánh dấu truyện.
+     *
      * @param actionEvent khi ấn vào
      */
     public void onBookmarkButtonAction(ActionEvent actionEvent) {
@@ -291,6 +309,7 @@ public class BookController {
 
     /**
      * từ rate sang Image.
+     *
      * @param numOfStar số rate
      * @return ảnh của rate
      */
@@ -306,12 +325,18 @@ public class BookController {
 
     /**
      * trả về truyện.
-     * @return truyện
+     *
+     * @return truyện book
      */
     public Book getBook() {
         return book;
     }
 
+    /**
+     * Sets book.
+     *
+     * @param book the book
+     */
     public void setBook(Book book) {
         this.book = book;
         setData();
@@ -319,6 +344,7 @@ public class BookController {
 
     /**
      * từ rate choiceBox sang int
+     *
      * @param rate rate
      * @return số rate
      */
@@ -332,6 +358,7 @@ public class BookController {
 
     /**
      * mở preview.
+     *
      * @param mouseEvent sự kiện chuột
      */
     public void onOpenPreviewMouseClicked(MouseEvent mouseEvent) {
@@ -342,7 +369,7 @@ public class BookController {
                 logger.debug(TAG, "URL preview trống hoặc null");
                 return;
             }
-            
+
             // Kiểm tra nếu hệ thống hỗ trợ Desktop API
             if (Desktop.isDesktopSupported()) {
                 Desktop desktop = Desktop.getDesktop();

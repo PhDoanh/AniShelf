@@ -17,6 +17,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * The type Admin home page controller.
+ */
 public class AdminHomePageController extends BasicController {
 
     @FXML
@@ -48,44 +51,77 @@ public class AdminHomePageController extends BasicController {
     private BookPageController bookPageController;
     private static AdminNavBarController adminNavBarController;
 
+    /**
+     * Initialize.
+     */
     @FXML
     public void initialize() {
         dateReportBox.getItems().addAll("Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
                 "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12");
         dateReportBox2.getItems().addAll(2024);
         dateReportBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(dateReportBox2.getValue() != null) {
+            if (dateReportBox2.getValue() != null) {
                 loadLineChartDataForMonth(); // Gọi lại để tải dữ liệu mới
             }
         });
         dateReportBox2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(dateReportBox.getValue() != null) {
+            if (dateReportBox.getValue() != null) {
                 loadLineChartDataForMonth(); // Gọi lại để tải dữ liệu mới
             }
         });
     }
 
+    /**
+     * Sets admin book page controller.
+     *
+     * @param bookPageController the book page controller
+     */
     public void setAdminBookPageController(BookPageController bookPageController) {
         this.bookPageController = bookPageController;
     }
 
+    /**
+     * Sets admin menu controller.
+     *
+     * @param adminNavBarController the admin nav bar controller
+     */
     public void setAdminMenuController(AdminNavBarController adminNavBarController) {
         this.adminNavBarController = adminNavBarController;
         loadTopBookHbox();
     }
 
+    /**
+     * Sets total book label.
+     *
+     * @param totalBookLabel the total book label
+     */
     public void setTotalBookLabel(String totalBookLabel) {
         this.totalBookLabel.setText(totalBookLabel);
     }
 
+    /**
+     * Sets total borrow label.
+     *
+     * @param totalBorrowLabel the total borrow label
+     */
     public void setTotalBorrowLabel(String totalBorrowLabel) {
         this.totalBorrowLabel.setText(totalBorrowLabel);
     }
 
+    /**
+     * Sets total issue label.
+     *
+     * @param totalIssueLabel the total issue label
+     */
     public void setTotalIssueLabel(String totalIssueLabel) {
         this.totalIssueLabel.setText(totalIssueLabel);
     }
 
+    /**
+     * Sets total reader label.
+     *
+     * @param totalReaderLabel the total reader label
+     */
     public void setTotalReaderLabel(String totalReaderLabel) {
         this.totalReaderLabel.setText(totalReaderLabel);
     }

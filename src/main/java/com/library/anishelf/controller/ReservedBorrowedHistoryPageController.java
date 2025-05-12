@@ -21,6 +21,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * The type Reserved borrowed history page controller.
+ */
 public class ReservedBorrowedHistoryPageController implements Initializable {
     @FXML
     private VBox contentBox;
@@ -78,7 +81,7 @@ public class ReservedBorrowedHistoryPageController implements Initializable {
                 VBox cardBox = fxmlLoader.load();
                 VerticalTypeBookCardController cardController = fxmlLoader.getController();
                 cardController.setData(bookReservationList.get(i).getBookItem());
-                cardController.setReservedBook(this,bookReservationList.get(i).getBookItem());
+                cardController.setReservedBook(this, bookReservationList.get(i).getBookItem());
                 reservedHBox.getChildren().add(cardBox);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -101,6 +104,7 @@ public class ReservedBorrowedHistoryPageController implements Initializable {
 
     /**
      * thêm truyện đặt trước vào vị trí.
+     *
      * @param bookReservation truyện đặt trước
      * @throws IOException ném ngoại lệ
      */
@@ -111,27 +115,28 @@ public class ReservedBorrowedHistoryPageController implements Initializable {
         VerticalTypeBookCardController cardController = fxmlLoader.getController();
         cardController.setData(bookReservation.getBookItem());
         bookReservationList.add(bookReservation);
-        cardController.setReservedBook(this,bookReservation.getBookItem());
+        cardController.setReservedBook(this, bookReservation.getBookItem());
         System.out.println("add and size =" + bookReservationList.size());
         reservedHBox.getChildren().add(cardBox);
     }
 
     /**
      * xoá truyện đặt trước.
+     *
      * @param bookItem truyện
-     * @param vBox hộp chứa truyện
+     * @param vBox     hộp chứa truyện
      * @throws IOException ngoại lệ
      */
-    public void deleteBookReserved(BookItem bookItem,VBox vBox) throws IOException {
+    public void deleteBookReserved(BookItem bookItem, VBox vBox) throws IOException {
         NotificationManagerUtil.showConfirmation("Huỷ đặt trước truyện này?", confirmed -> {
             if (!confirmed) {
                 return;
             }
         });
-        Map<String,Object> criteria = new HashMap<>();
+        Map<String, Object> criteria = new HashMap<>();
         criteria.put("member_ID", NavigationBarController.getMember().getPerson().getId());
-        criteria.put("barcode",bookItem.getBookBarcode());
-        criteria.put("BookReservationStatus",BookReservationStatus.WAITING);
+        criteria.put("barcode", bookItem.getBookBarcode());
+        criteria.put("BookReservationStatus", BookReservationStatus.WAITING);
 
         int index = findBookReserved(bookItem.getBookBarcode());
 
@@ -140,10 +145,10 @@ public class ReservedBorrowedHistoryPageController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        if(index!=-1) {
+        if (index != -1) {
             try {
                 List<BookReservation> bookReservations = BookReservationDAO.getInstance().findByCriteria(criteria);
-                if(bookReservations.size()>0) {
+                if (bookReservations.size() > 0) {
                     bookItem.setBookItemStatus(BookItemStatus.AVAILABLE);
                     BookItemDAO.getInstance().updateEntity(bookItem);
                     BookReservation bookReservation = BookReservationDAO.getInstance().findById(bookReservations.getFirst().getId());
@@ -160,6 +165,7 @@ public class ReservedBorrowedHistoryPageController implements Initializable {
 
     /**
      * tìm truyện theo barCode
+     *
      * @param barCode barCode
      * @return truyện
      */
@@ -169,7 +175,7 @@ public class ReservedBorrowedHistoryPageController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        for (int i = 0;i<bookReservationList.size();i++) {
+        for (int i = 0; i < bookReservationList.size(); i++) {
             if (bookReservationList.get(i).getBookItem().getBookBarcode() == barCode) {
                 return i;
             }

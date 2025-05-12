@@ -1,6 +1,14 @@
 package com.library.anishelf.controller;
 
+/**
+ * The interface Suggestion row click listener.
+ */
 public interface SuggestionRowClickListener {
-        void onRowClick(Object o);
+    /**
+     * On row click.
+     *
+     * @param o the o
+     */
+    void onRowClick(Object o);
 
 }

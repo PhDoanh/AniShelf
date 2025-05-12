@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The type Forgot password page controller.
+ */
 public class ForgotPasswordPageController extends BasicController {
 
     @FXML
@@ -59,18 +62,31 @@ public class ForgotPasswordPageController extends BasicController {
     private boolean isStep2;
     private boolean isStep3;
 
+    /**
+     * Initialize.
+     */
     public void initialize() {
         isStep1 = true;
     }
 
+    /**
+     * On return login button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onReturnLoginButtonAction(ActionEvent event) {
         openLoginView();
     }
 
+    /**
+     * On continue button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onContinueButtonAction(ActionEvent event) {
-        if(checkEmail()) {
+        if (checkEmail()) {
             isStep1 = !isStep1;
             isStep2 = true;
             isStep3 = false;
@@ -80,16 +96,26 @@ public class ForgotPasswordPageController extends BasicController {
         }
     }
 
+    /**
+     * On send again button.
+     *
+     * @param event the event
+     */
     @FXML
     void onSendAgainButton(ActionEvent event) {
-        if(checkEmail()) {
+        if (checkEmail()) {
             NotificationManagerUtil.showInfo("Đã gửi lại mã OTP");
         }
     }
 
+    /**
+     * On verify button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onVerifyButtonAction(ActionEvent event) {
-        if(checkOTP()) {
+        if (checkOTP()) {
             isStep1 = false;
             isStep2 = false;
             isStep3 = true;
@@ -100,13 +126,18 @@ public class ForgotPasswordPageController extends BasicController {
         }
     }
 
+    /**
+     * On re password button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onRePasswordButtonAction(ActionEvent event) {
-        if(checkPassword()) {
+        if (checkPassword()) {
             try {
-            AccountDAO.getInstance().changePassword(emailText.getText(),passwordText.getText());
-            NotificationManagerUtil.showInfo("Đổi mật khẩu thành công");
-            openLoginView();
+                AccountDAO.getInstance().changePassword(emailText.getText(), passwordText.getText());
+                NotificationManagerUtil.showInfo("Đổi mật khẩu thành công");
+                openLoginView();
             } catch (Exception e) {
                 NotificationManagerUtil.showError("Đổi mật khẩu thất bại");
             }
@@ -116,11 +147,11 @@ public class ForgotPasswordPageController extends BasicController {
     private boolean checkPassword() {
         String password1 = passwordText.getText();
         String password2 = rePasswordText.getText();
-        if(password1.isEmpty() || password1.equals(" ")) {
+        if (password1.isEmpty() || password1.equals(" ")) {
             NotificationManagerUtil.showInfo("Mật khẩu không được để trống");
             return false;
         }
-        if(!password1.equals(password2)) {
+        if (!password1.equals(password2)) {
             NotificationManagerUtil.showInfo("Mật khẩu không khớp");
             return false;
         }
@@ -158,6 +189,11 @@ public class ForgotPasswordPageController extends BasicController {
         }
     }
 
+    /**
+     * On to email button action.
+     *
+     * @param actionEvent the action event
+     */
     public void onToEmailButtonAction(ActionEvent actionEvent) {
         isStep1 = !isStep1;
         isStep2 = true;

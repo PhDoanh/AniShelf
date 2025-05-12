@@ -30,6 +30,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The type Borrow book info controller.
+ */
 public class BorrowBookInfoController extends BaseDetailController<BookIssue> {
 
     @FXML
@@ -119,6 +122,9 @@ public class BorrowBookInfoController extends BaseDetailController<BookIssue> {
     private boolean isSettingMember = false;
     private boolean isSettingBook = false;
 
+    /**
+     * The constant executor.
+     */
     protected static final ExecutorService executor = Executors.newFixedThreadPool(4);
 
     @Override
@@ -233,6 +239,9 @@ public class BorrowBookInfoController extends BaseDetailController<BookIssue> {
     }
 
 
+    /**
+     * Initialize.
+     */
     @FXML
     public void initialize() {
         borrowStatus.getItems().addAll(BookIssueStatus.values());
@@ -378,21 +387,41 @@ public class BorrowBookInfoController extends BaseDetailController<BookIssue> {
 
     }
 
+    /**
+     * O save button action.
+     *
+     * @param event the event
+     */
     @FXML
     void oSaveButtonAction(ActionEvent event) {
         saveChanges();
     }
 
+    /**
+     * On add button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onAddButtonAction(ActionEvent event) {
         saveChanges();
     }
 
+    /**
+     * On delete button.
+     *
+     * @param event the event
+     */
     @FXML
     void onDeleteButton(ActionEvent event) {
         deleteChanges();
     }
 
+    /**
+     * On edit button action.
+     *
+     * @param event the event
+     */
     @FXML
     void onEditButtonAction(ActionEvent event) {
         getTitlePageStack().push("Edit");
@@ -421,6 +450,11 @@ public class BorrowBookInfoController extends BaseDetailController<BookIssue> {
 
     }
 
+    /**
+     * Sets member.
+     *
+     * @param member the member
+     */
     public void setMember(Member member) {
         this.member = member;
         memberNameText.setText(member.getPerson().getLastName() + " " + member.getPerson().getFirstName());
@@ -468,7 +502,7 @@ public class BorrowBookInfoController extends BaseDetailController<BookIssue> {
         barCodeText.setText(String.valueOf(bookItem.getBookBarcode()));
         categoryText.setText(getCategories(bookItem.getCategories()));
         authorNameText.setText(getAuthors(bookItem.getAuthors()));
-        
+
         // Tải ảnh bất đồng bộ
         Task<Image> loadImageTask = new Task<>() {
             @Override
@@ -478,7 +512,7 @@ public class BorrowBookInfoController extends BaseDetailController<BookIssue> {
                     if (bookItem.getImagePath() == null || bookItem.getImagePath().trim().isEmpty()) {
                         throw new Exception("Đường dẫn ảnh trống hoặc null");
                     }
-                    
+
                     Image image = CacheManagerUtil.getImageFromCache(bookItem.getImagePath());
                     if (image != null) {
                         return image;

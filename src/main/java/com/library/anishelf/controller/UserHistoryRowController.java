@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * The type User history row controller.
+ */
 public class UserHistoryRowController {
 
     @FXML
@@ -26,8 +29,13 @@ public class UserHistoryRowController {
     @FXML
     private Label statusLabel;
 
+    /**
+     * Sets book item.
+     *
+     * @param bookIssue the book issue
+     */
     public void setBookItem(BookIssue bookIssue) {
-        barcodeLabel.setText(bookIssue.getBookItem().getBookBarcode()+"");
+        barcodeLabel.setText(bookIssue.getBookItem().getBookBarcode() + "");
         bookNameLabel.setText(bookIssue.getBookItem().getTitle());
         //Xử lý ngày
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // hoặc định dạng phù hợp với dữ liệu của bạn
@@ -35,7 +43,7 @@ public class UserHistoryRowController {
 
         try {
             // Chuyển đổi và định dạng cho borrowDate
-            if (bookIssue.getDueDate()!= null) {
+            if (bookIssue.getDueDate() != null) {
                 LocalDate createdDate = LocalDate.parse(bookIssue.getDueDate(), inputFormatter);
                 borrowDateLabel.setText(createdDate.format(outputFormatter));
             } else {
@@ -50,7 +58,7 @@ public class UserHistoryRowController {
 
         try {
             // Chuyển đổi và định dạng cho borrowDate
-            if (bookIssue.getDueDate()!= null) {
+            if (bookIssue.getDueDate() != null) {
                 LocalDate createdDate = LocalDate.parse(bookIssue.getDueDate(), inputFormatter);
                 returnDateLabel.setText(createdDate.format(outputFormatter));
             } else {
@@ -63,11 +71,10 @@ public class UserHistoryRowController {
             returnDateLabel.setText(""); // Hoặc giá trị mặc định khác
         }
 
-        statusLabel.setText(bookIssue.getStatus()+"");
-        if(bookIssue.getStatus().equals(BookIssueStatus.LOST)) {
+        statusLabel.setText(bookIssue.getStatus() + "");
+        if (bookIssue.getStatus().equals(BookIssueStatus.LOST)) {
             statusLabel.setStyle(("-fx-text-fill: red;"));
-        }
-        else if (bookIssue.getStatus().equals(BookIssueStatus.BORROWED)) {
+        } else if (bookIssue.getStatus().equals(BookIssueStatus.BORROWED)) {
             statusLabel.setStyle(("-fx-text-fill: blue;"));
         } else {
             statusLabel.setStyle(("-fx-text-fill: green;"));

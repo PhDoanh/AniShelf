@@ -16,39 +16,42 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * The type Member dao.
+ */
 public class MemberDAO implements GenericDAO<Member> {
     private static MemberDAO memberDAO;
 
     private static DatabaseConnection databaseConnection;
     private static Cache<Integer, Member> cache;
     private static final RuntimeDebugUtil logger = RuntimeDebugUtil.getInstance();
-    
+
     // Hằng số cho các câu lệnh SQL
     private static final String INSERT_MEMBER =
             "INSERT INTO \"Members\" (\"first_name\", \"last_name\", \"birth_date\", \"gender\", \"email\", \"phone\", \"image_path\") "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-    
-    private static final String INSERT_USER = 
+
+    private static final String INSERT_USER =
             "INSERT INTO \"Users\" (\"username\", \"password\", \"member_ID\") VALUES (?, ?, ?)";
 
-    private static final String UPDATE_MEMBER = 
+    private static final String UPDATE_MEMBER =
             "UPDATE \"Members\" " +
-            "SET \"first_name\" = ?, \"last_name\" = ?, \"birth_date\" = ?, \"gender\" = ?, \"email\" = ?, \"phone\" = ?, \"image_path\" = ?" +
-            " WHERE \"member_ID\" = ?";
+                    "SET \"first_name\" = ?, \"last_name\" = ?, \"birth_date\" = ?, \"gender\" = ?, \"email\" = ?, \"phone\" = ?, \"image_path\" = ?" +
+                    " WHERE \"member_ID\" = ?";
 
-    private static final String UPDATE_ACCOUNT = 
+    private static final String UPDATE_ACCOUNT =
             "UPDATE \"Users\" SET \"AccountStatus\" = ?::account_status WHERE \"user_ID\" = ?";
 
-    private static final String DELETE_MEMBER = 
+    private static final String DELETE_MEMBER =
             "DELETE FROM \"Members\" WHERE \"member_ID\" = ?";
-            
-    private static final String DELETE_USER = 
+
+    private static final String DELETE_USER =
             "DELETE FROM \"Users\" WHERE \"member_ID\" = ?";
 
-    private static final String FIND_MEMBER = 
+    private static final String FIND_MEMBER =
             "SELECT * FROM \"Members\" m JOIN \"Users\" u ON m.\"member_ID\" = u.\"member_ID\" WHERE m.\"member_ID\" = ?";
 
-    private static final String SELECT_ALL_MEMBERS = 
+    private static final String SELECT_ALL_MEMBERS =
             "SELECT * FROM \"Members\" m JOIN \"Users\" u ON m.\"member_ID\" = u.\"member_ID\"";
 
     /**
@@ -62,7 +65,7 @@ public class MemberDAO implements GenericDAO<Member> {
 
     /**
      * Lấy instance duy nhất của MemberDAO (Singleton pattern)
-     * 
+     *
      * @return Instance của MemberDAO
      */
     public static synchronized MemberDAO getInstance() {
@@ -74,7 +77,7 @@ public class MemberDAO implements GenericDAO<Member> {
 
     /**
      * Thêm thông tin tài khoản người dùng
-     * 
+     *
      * @param username Tên đăng nhập
      * @param password Mật khẩu
      * @param memberID ID của thành viên
@@ -90,7 +93,7 @@ public class MemberDAO implements GenericDAO<Member> {
 
             int rowsAffected = preparedStatement.executeUpdate();
             boolean success = rowsAffected == 1;
-            
+
             if (success) {
                 logger.info("MemberDAO", "Thêm tài khoản thành công cho thành viên ID: " + memberID);
                 return true;
@@ -106,7 +109,7 @@ public class MemberDAO implements GenericDAO<Member> {
 
     /**
      * Tạo mật khẩu ngẫu nhiên 6 chữ số
-     * 
+     *
      * @return Chuỗi mật khẩu ngẫu nhiên
      */
     private String createRandomPassword() {
@@ -118,7 +121,7 @@ public class MemberDAO implements GenericDAO<Member> {
 
     /**
      * Xử lý chuỗi ngày tháng và chuyển đổi thành đối tượng Date SQL
-     * 
+     *
      * @param birthDateStr Chuỗi ngày tháng
      * @return Date SQL hoặc null nếu chuỗi không hợp lệ
      */
@@ -127,13 +130,13 @@ public class MemberDAO implements GenericDAO<Member> {
             logger.debug("MemberDAO", "Ngày sinh rỗng hoặc null");
             return null;
         }
-        
+
         try {
             // Loại bỏ múi giờ nếu có
             if (birthDateStr.contains("+")) {
                 birthDateStr = birthDateStr.substring(0, birthDateStr.indexOf("+")).trim();
             }
-            
+
             Date sqlDate = Date.valueOf(birthDateStr);
             return sqlDate;
         } catch (IllegalArgumentException e) {
@@ -144,10 +147,10 @@ public class MemberDAO implements GenericDAO<Member> {
 
     /**
      * Thiết lập tham số cho PreparedStatement về ngày sinh
-     * 
+     *
      * @param preparedStatement PreparedStatement cần thiết lập
-     * @param parameterIndex Vị trí tham số
-     * @param birthDateStr Chuỗi ngày sinh
+     * @param parameterIndex    Vị trí tham số
+     * @param birthDateStr      Chuỗi ngày sinh
      * @throws SQLException nếu có lỗi xảy ra khi thiết lập tham số
      */
     private void setBirthDateParameter(PreparedStatement preparedStatement, int parameterIndex, String birthDateStr) throws SQLException {
@@ -165,13 +168,13 @@ public class MemberDAO implements GenericDAO<Member> {
         try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(INSERT_MEMBER, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, member.getPerson().getFirstName());
             preparedStatement.setString(2, member.getPerson().getLastName());
-            
+
             // Thiết lập ngày sinh
             setBirthDateParameter(preparedStatement, 3, member.getPerson().getBirthdate());
-            
+
             // Thiết lập giới tính
             preparedStatement.setObject(4, member.getPerson().getGender().toString(), Types.OTHER);
-            
+
             preparedStatement.setString(5, member.getPerson().getEmail());
             preparedStatement.setString(6, member.getPerson().getPhone());
             preparedStatement.setString(7, member.getPerson().getImagePath());
@@ -186,7 +189,7 @@ public class MemberDAO implements GenericDAO<Member> {
                 if (generatedKeys.next()) {
                     int memberId = generatedKeys.getInt(1);
                     logger.info("MemberDAO", "Đã thêm thành viên với ID: " + memberId);
-                    
+
                     String password = createRandomPassword();
                     if (addUser(member.getPerson().getPhone(), password, memberId)) {
                         logger.info("MemberDAO", "Gửi email thông tin tài khoản đến: " + member.getPerson().getEmail());
@@ -210,8 +213,8 @@ public class MemberDAO implements GenericDAO<Member> {
 
     /**
      * Cập nhật trạng thái tài khoản
-     * 
-     * @param status Trạng thái mới
+     *
+     * @param status   Trạng thái mới
      * @param memberID ID của thành viên
      * @return true nếu cập nhật thành công, false nếu thất bại
      * @throws SQLException nếu có lỗi xảy ra khi thao tác với database
@@ -224,13 +227,13 @@ public class MemberDAO implements GenericDAO<Member> {
 
             int rowsAffected = preparedStatement.executeUpdate();
             boolean success = rowsAffected > 0;
-            
+
             if (success) {
                 logger.info("MemberDAO", "Cập nhật trạng thái tài khoản thành công cho thành viên ID: " + memberID);
             } else {
                 logger.warning("MemberDAO", "Không thể cập nhật trạng thái tài khoản cho thành viên ID: " + memberID);
             }
-            
+
             return success;
         } catch (SQLException e) {
             logger.error("MemberDAO", "Lỗi SQL khi cập nhật trạng thái tài khoản: " + e.getMessage(), e);
@@ -243,7 +246,7 @@ public class MemberDAO implements GenericDAO<Member> {
         logger.debug("MemberDAO", "Bắt đầu cập nhật thông tin thành viên ID: " + member.getPerson().getId());
         Connection connection = databaseConnection.getConnection();
         boolean originalAutoCommit = connection.getAutoCommit();
-        
+
         try {
             connection.setAutoCommit(false);
 
@@ -251,13 +254,13 @@ public class MemberDAO implements GenericDAO<Member> {
             try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MEMBER)) {
                 preparedStatement.setString(1, member.getPerson().getFirstName());
                 preparedStatement.setString(2, member.getPerson().getLastName());
-                
+
                 // Thiết lập ngày sinh
                 setBirthDateParameter(preparedStatement, 3, member.getPerson().getBirthdate());
-                
+
                 // Thiết lập giới tính
                 preparedStatement.setObject(4, member.getPerson().getGender().toString(), Types.OTHER);
-                
+
                 preparedStatement.setString(5, member.getPerson().getEmail());
                 preparedStatement.setString(6, member.getPerson().getPhone());
                 preparedStatement.setString(7, member.getPerson().getImagePath());
@@ -269,7 +272,7 @@ public class MemberDAO implements GenericDAO<Member> {
                     connection.rollback();
                     return false;
                 }
-                
+
                 logger.info("MemberDAO", "Đã cập nhật thông tin cá nhân cho thành viên ID: " + member.getPerson().getId());
             }
 
@@ -284,7 +287,7 @@ public class MemberDAO implements GenericDAO<Member> {
                     connection.rollback();
                     return false;
                 }
-                
+
                 logger.info("MemberDAO", "Đã cập nhật thông tin tài khoản ID: " + member.getAccId());
             }
 
@@ -308,13 +311,13 @@ public class MemberDAO implements GenericDAO<Member> {
             logger.warning("MemberDAO", "Không thể xóa thành viên: tham số null");
             return false;
         }
-        
+
         int memberId = member.getPerson().getId();
         logger.debug("MemberDAO", "Bắt đầu xóa thành viên ID: " + memberId);
-        
+
         Connection connection = databaseConnection.getConnection();
         boolean originalAutoCommit = connection.getAutoCommit();
-        
+
         try {
             connection.setAutoCommit(false);
 
@@ -323,7 +326,7 @@ public class MemberDAO implements GenericDAO<Member> {
             try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER)) {
                 preparedStatement.setInt(1, memberId);
                 userRowsDeleted = preparedStatement.executeUpdate();
-                
+
                 if (userRowsDeleted > 0) {
                     logger.info("MemberDAO", "Đã xóa thông tin tài khoản cho thành viên ID: " + memberId);
                 } else {
@@ -335,7 +338,7 @@ public class MemberDAO implements GenericDAO<Member> {
             try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_MEMBER)) {
                 preparedStatement.setInt(1, memberId);
                 int memberRowsDeleted = preparedStatement.executeUpdate();
-                
+
                 if (memberRowsDeleted > 0) {
                     logger.info("MemberDAO", "Đã xóa thông tin thành viên ID: " + memberId);
                 } else {
@@ -363,14 +366,14 @@ public class MemberDAO implements GenericDAO<Member> {
     public Member findById(Number keywords) throws SQLException {
         int memberId = keywords.intValue();
         logger.debug("MemberDAO", "Tìm kiếm thành viên với ID: " + memberId);
-        
+
         // Kiểm tra trong cache trước
         Member cachedMember = cache.getIfPresent(memberId);
         if (cachedMember != null) {
             logger.info("MemberDAO", "Tìm thấy thành viên ID " + memberId + " trong cache");
             return cachedMember;
         }
-        
+
         try (PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(FIND_MEMBER)) {
             preparedStatement.setInt(1, memberId);
 
@@ -386,16 +389,16 @@ public class MemberDAO implements GenericDAO<Member> {
                             resultSet.getString("email"),
                             resultSet.getString("phone")
                     );
-                    
+
                     Member member = new Member(
                             resultSet.getInt("user_ID"),
                             resultSet.getString("username"),
                             resultSet.getString("password"),
                             AccountStatus.valueOf(resultSet.getString("AccountStatus")),
-                            resultSet.getString("added_at_timestamp"), 
+                            resultSet.getString("added_at_timestamp"),
                             person
                     );
-                    
+
                     // Lưu vào cache
                     cache.put(memberId, member);
                     logger.info("MemberDAO", "Tìm thấy và cache thành viên ID: " + memberId);
@@ -418,7 +421,7 @@ public class MemberDAO implements GenericDAO<Member> {
             logger.warning("MemberDAO", "Tìm kiếm với tiêu chí rỗng, trả về danh sách rỗng");
             return Collections.emptyList();
         }
-        
+
         logger.debug("MemberDAO", "Tìm kiếm thành viên theo tiêu chí: " + criteria);
         StringBuilder findMemberByCriteria = new StringBuilder("SELECT * FROM \"Members\" m JOIN \"Users\" u ON m.\"member_ID\" = u.\"member_ID\" WHERE ");
 
@@ -453,7 +456,7 @@ public class MemberDAO implements GenericDAO<Member> {
                         members.add(member);
                     }
                 }
-                
+
                 logger.info("MemberDAO", "Tìm thấy " + members.size() + " thành viên theo tiêu chí");
                 return members;
             }
@@ -476,7 +479,7 @@ public class MemberDAO implements GenericDAO<Member> {
                         members.add(member);
                     }
                 }
-                
+
                 logger.info("MemberDAO", "Đã lấy " + members.size() + " thành viên từ database");
                 return members;
             }
@@ -488,7 +491,7 @@ public class MemberDAO implements GenericDAO<Member> {
 
     /**
      * Xóa thành viên khỏi bộ nhớ cache
-     * 
+     *
      * @param memberID ID của thành viên cần xóa khỏi cache
      */
     public void fetchCache(int memberID) {

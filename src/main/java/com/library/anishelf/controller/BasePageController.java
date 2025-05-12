@@ -6,23 +6,61 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 
+/**
+ * The type Base page controller.
+ *
+ * @param <T>  the type parameter
+ * @param <D>  the type parameter
+ * @param <TB> the type parameter
+ */
 public abstract class BasePageController<T, D extends BaseDetailController<T>,
         TB extends BaseTableController<T, ? extends BasePageController, ? extends BaseRowController>>
         extends BasicController {
 
+    /**
+     * The Detail loader.
+     */
     protected FXMLLoader detailLoader;
+    /**
+     * The Table loader.
+     */
     protected FXMLLoader tableLoader;
+    /**
+     * The Detail pane.
+     */
     protected Node detailPane;
+    /**
+     * The Table pane.
+     */
     protected Node tablePane;
 
+    /**
+     * The Detail controller.
+     */
     protected D detailController;
+    /**
+     * The Table controller.
+     */
     protected TB tableController;
 
 
+    /**
+     * Gets detail fxml path.
+     *
+     * @return the detail fxml path
+     */
     protected abstract String getDetailFXMLPath();
 
+    /**
+     * Gets table fxml path.
+     *
+     * @return the table fxml path
+     */
     protected abstract String getTableFXMLPath();
 
+    /**
+     * The Page 1.
+     */
     protected boolean page1 = true;
 
     /**
@@ -58,7 +96,7 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
     /**
      * Load Detail cho item.
      *
-     * @param item
+     * @param item the item
      */
     public void loadDetail(T item) {
         if (detailController.hasUnsavedChanges()) {
@@ -72,6 +110,11 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
         }
     }
 
+    /**
+     * Load detail item.
+     *
+     * @param item the item
+     */
     protected void loadDetailItem(T item) {
         detailController.loadStartStatus();
         detailController.setItem(item);
@@ -89,13 +132,16 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
             NotificationManagerUtil.showConfirmation("Thông tin đang thêm/sửa sẽ bị mất", confirmed -> {
                 if (confirmed) {
                     loadAddNewItem();
-                } 
+                }
             });
         } else {
             loadAddNewItem();
         }
     }
 
+    /**
+     * Load add new item.
+     */
     protected void loadAddNewItem() {
         detailController.loadStartStatus();
         detailController.setAddMode(true);
@@ -111,12 +157,24 @@ public abstract class BasePageController<T, D extends BaseDetailController<T>,
         tableController.loadData();
     }
 
+    /**
+     * Alter page.
+     */
     public abstract void alterPage();
 
+    /**
+     * Start page.
+     */
     public abstract void startPage();
 
+    /**
+     * Sets controllers.
+     */
     protected abstract void setupControllers();
 
+    /**
+     * Sets views.
+     */
     protected abstract void setupViews();
 
 }

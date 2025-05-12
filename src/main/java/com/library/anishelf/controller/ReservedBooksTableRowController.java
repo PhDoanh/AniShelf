@@ -11,6 +11,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * The type Reserved books table row controller.
+ */
 public class ReservedBooksTableRowController extends BaseRowController<BookReservation, ReservedBooksPageController> {
 
     @FXML
@@ -61,9 +64,9 @@ public class ReservedBooksTableRowController extends BaseRowController<BookReser
             borrowDateLabel.setText(""); // Hoặc giá trị mặc định khác
         }
         statusLabel.setText(item.getReservationStatus().toString());
-        if(item.getReservationStatus().equals(BookReservationStatus.CANCELED)) {
+        if (item.getReservationStatus().equals(BookReservationStatus.CANCELED)) {
             statusLabel.setStyle("-fx-text-fill: red;");
-        } else if(item.getReservationStatus().equals(BookReservationStatus.WAITING)) {
+        } else if (item.getReservationStatus().equals(BookReservationStatus.WAITING)) {
             statusLabel.setStyle("-fx-text-fill: blue");
         } else if (item.getReservationStatus().equals(BookReservationStatus.COMPLETED)) {
             statusLabel.setStyle("-fx-text-fill:green;");

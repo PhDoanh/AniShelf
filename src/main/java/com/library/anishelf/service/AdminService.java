@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Admin service.
+ */
 public class AdminService implements ServiceHandler {
     private String operationType;
     private Object payload;
@@ -17,26 +20,47 @@ public class AdminService implements ServiceHandler {
     private Book bookResponse;
     private BookDAO bookDAO;
     private BookItem bookItemResponse;
-    
+
+    /**
+     * Instantiates a new Admin service.
+     *
+     * @param operationType the operation type
+     * @param payload       the payload
+     */
     public AdminService(String operationType, Object payload) {
         this.operationType = operationType;
         this.payload = payload;
         bookDAO = BookDAO.getInstance();
     }
 
+    /**
+     * Gets member response.
+     *
+     * @return the member response
+     */
     public Member getMemberResponse() {
         return memberResponse;
     }
 
+    /**
+     * Gets book response.
+     *
+     * @return the book response
+     */
     public Book getBookResponse() {
         return bookResponse;
     }
 
+    /**
+     * Gets book item response.
+     *
+     * @return the book item response
+     */
     public BookItem getBookItemResponse() {
         return bookItemResponse;
     }
 
-    
+
     public boolean handleRequest() {
         try {
             switch (operationType) {
@@ -51,35 +75,34 @@ public class AdminService implements ServiceHandler {
                         BookReservationDAO.getInstance().insert((BookReservation) payload);
                         return true;
                     } else if (payload instanceof BookIssue) {
-                            Map<String, Object> findCriteria = new HashMap<>();
-                            findCriteria.put("BookReservationStatus", BookReservationStatus.WAITING);
-                            findCriteria.put("member_ID", ((BookIssue) payload).getMember().getPerson().getId());
-                            findCriteria.put("barcode", ((BookIssue) payload).getBookItem().getBookBarcode());
-                            List<BookReservation> bookReservationsList = BookReservationDAO.getInstance().findByCriteria(findCriteria);
-                            if (bookReservationsList.size() > 0) {
-                                BookIssue newBookIssue = new BookIssue(((BookIssue) payload).getMember(),bookReservationsList.getFirst().getBookItem(),((BookIssue) payload).getIssueDate(),((BookIssue) payload).getDueDate());
-                                BookIssueDAO.getInstance().insert(newBookIssue);
-                                bookReservationsList.getFirst().setReservationStatus(BookReservationStatus.COMPLETED);
-                                BookReservationDAO.getInstance().updateEntity(bookReservationsList.getFirst());
-                                return true;
-                            } else  if(BookDAO.getInstance().findById(((BookIssue) payload).getBookItem().getIsbn()).getstatus() == BookStatus.AVAILABLE)  {
-                                BookIssueDAO.getInstance().insert((BookIssue) payload);
-                                return true;
-                            } else {
-                                NotificationManagerUtil.showInfo("Không có sẵn truyện để mượn.");
-                                return false;
-                            }
+                        Map<String, Object> findCriteria = new HashMap<>();
+                        findCriteria.put("BookReservationStatus", BookReservationStatus.WAITING);
+                        findCriteria.put("member_ID", ((BookIssue) payload).getMember().getPerson().getId());
+                        findCriteria.put("barcode", ((BookIssue) payload).getBookItem().getBookBarcode());
+                        List<BookReservation> bookReservationsList = BookReservationDAO.getInstance().findByCriteria(findCriteria);
+                        if (bookReservationsList.size() > 0) {
+                            BookIssue newBookIssue = new BookIssue(((BookIssue) payload).getMember(), bookReservationsList.getFirst().getBookItem(), ((BookIssue) payload).getIssueDate(), ((BookIssue) payload).getDueDate());
+                            BookIssueDAO.getInstance().insert(newBookIssue);
+                            bookReservationsList.getFirst().setReservationStatus(BookReservationStatus.COMPLETED);
+                            BookReservationDAO.getInstance().updateEntity(bookReservationsList.getFirst());
+                            return true;
+                        } else if (BookDAO.getInstance().findById(((BookIssue) payload).getBookItem().getIsbn()).getstatus() == BookStatus.AVAILABLE) {
+                            BookIssueDAO.getInstance().insert((BookIssue) payload);
+                            return true;
+                        } else {
+                            NotificationManagerUtil.showInfo("Không có sẵn truyện để mượn.");
+                            return false;
+                        }
                     }
                     return false;
                 case "delete":
                     if (payload instanceof Book) {
                         BookDAO.getInstance().deleteEntity((Book) payload);
                         return true;
-                    } else
-                    if (payload instanceof Member) {
+                    } else if (payload instanceof Member) {
                         MemberDAO.getInstance().deleteEntity((Member) payload);
                         return true;
-                    } else if(payload instanceof BookReservation) {
+                    } else if (payload instanceof BookReservation) {
                         BookItem bookItem = ((BookReservation) payload).getBookItem();
                         bookItem.setBookItemStatus(BookItemStatus.AVAILABLE);
                         BookItemDAO.getInstance().updateEntity(bookItem);
@@ -88,7 +111,7 @@ public class AdminService implements ServiceHandler {
                         BookReservationDAO.getInstance().updateEntity(bookReservation);
                         BookReservationDAO.getInstance().deleteEntity((BookReservation) payload);
                         return true;
-                    } else if(payload instanceof BookIssue) {
+                    } else if (payload instanceof BookIssue) {
                         BookItem bookItem = ((BookIssue) payload).getBookItem();
                         bookItem.setBookItemStatus(BookItemStatus.AVAILABLE);
                         BookItemDAO.getInstance().updateEntity(bookItem);
@@ -104,14 +127,14 @@ public class AdminService implements ServiceHandler {
                     } else if (payload instanceof Member) {
                         MemberDAO.getInstance().updateEntity((Member) payload);
                         return true;
-                    } else if(payload instanceof BookIssue) {
+                    } else if (payload instanceof BookIssue) {
                         BookIssueDAO.getInstance().updateEntity((BookIssue) payload);
                         return true;
-                    } else if(payload instanceof BookReservation) {
+                    } else if (payload instanceof BookReservation) {
                         BookReservationDAO.getInstance().updateEntity((BookReservation) payload);
                         return true;
                     }
-                    
+
                     return false;
                 case "block":
                     if (payload instanceof Member) {
@@ -141,7 +164,7 @@ public class AdminService implements ServiceHandler {
         } catch (
                 SQLException e) {
             System.out.println("Lỗi AdminService:" + e.getMessage());
-            return false; 
+            return false;
         }
     }
 }

@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * The type Advanced search controller.
+ */
 public class AdvancedSearchController {
     @FXML
     private Pagination pagination;
@@ -25,6 +28,9 @@ public class AdvancedSearchController {
     private TextField searchText;
     @FXML
     private ChoiceBox<String> categoryChoiceBox;
+    /**
+     * The Category box.
+     */
     @FXML
     HBox categoryBox;
 
@@ -61,7 +67,7 @@ public class AdvancedSearchController {
                     fxmlLoader.setLocation(getClass().getResource("/view/Category.fxml"));
                     AnchorPane anchorPane = fxmlLoader.load();
                     CategoryController categoryController = fxmlLoader.getController();
-                    categoryController.setData(categoryList.get(i).getCatagoryName(),this);
+                    categoryController.setData(categoryList.get(i).getCatagoryName(), this);
                     categoryBox.getChildren().add(anchorPane);
 
                 } catch (IOException e) {
@@ -75,6 +81,7 @@ public class AdvancedSearchController {
 
     /**
      * từ thanh tìm kiếm truyền vào tìm kiếm cụ thể.
+     *
      * @param keyword từ khoá truyền vào
      */
     public void setSearchText(String keyword) {
@@ -84,14 +91,16 @@ public class AdvancedSearchController {
 
     /**
      * thêm điều kiện.
+     *
      * @param category điều kiện
      */
     public void addCategoryCriteria(String category) {
-        criteria.put("category_name",category);
+        criteria.put("category_name", category);
     }
 
     /**
      * xoá điều kiện.
+     *
      * @param category điều kiện
      */
     public void deleteCategoryCriteria(String category) {
@@ -182,7 +191,8 @@ public class AdvancedSearchController {
 
     /**
      * tải lên các truyện tìm được.
-     * @param index thứ tự của truyện
+     *
+     * @param index  thứ tự của truyện
      * @param rowBox hàng chứa truyện
      */
     private void loadBookCard(int index, HBox rowBox) {
